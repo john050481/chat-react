@@ -1,0 +1,15 @@
+.sidebar-chats {
+    border-right: #969497 solid 3px;
+}
+
+@media /*(min-width: 500px) and*/ (max-width: 600px) {
+    .sidebar-chats {width: 50px;} /*виден при ширине экрана от 500 до 1000 px*/
+}
+
+.sidebar {
+    background: #f6f6f6;
+    flex: 0 0 auto;
+    width: 250px;
+    order: 1;
+    order: 0;
+}

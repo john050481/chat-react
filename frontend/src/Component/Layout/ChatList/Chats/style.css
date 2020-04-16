@@ -1,0 +1,33 @@
+.chats {
+    height: calc(100vh - 160px);
+    overflow-y: auto;
+}
+
+.chat {
+    cursor: pointer;
+}
+
+.chat.active{
+    background: #969497;
+}
+
+.chat.active.card {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.chat:hover:not(.active) {
+    background: #e3e3e3;
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+@media /*(min-width: 500px) and*/ (max-width: 600px) {
+    .chat__name {display: none; position: absolute} /*виден при ширине экрана от 500 до 1000 px*/
+    .blockquote-footer {display: none; position: absolute}
+}

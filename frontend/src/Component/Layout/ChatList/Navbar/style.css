@@ -1,0 +1,15 @@
+.navbarsidebar-block {
+
+}
+
+.search-contact button {
+    margin: 0px 0px 0px 0px;
+}
+
+.search-contact input {
+    margin: 0px 0px 0px 0x;
+}
+
+@media /*(min-width: 500px) and*/ (max-width: 600px) {
+    .search-contact {display: none;} /*виден при ширине экрана от 500 до 1000 px*/
+}
