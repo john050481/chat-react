@@ -23,9 +23,9 @@ export default function App() {
       <BrowserRouter>
           <nav>
               <ul>
-                  <li>
-                      <Link to="/">Home</Link>
-                  </li>
+                  <li><Link to="/">Home</Link></li>
+                  <li><Link to="/chat">Chat</Link></li>
+                  <li><Link to="/about">About</Link></li>
                   <li>
                       {/* @john0504/react-authform нужно переделать */}
                       {/* нужен props: 1)для редиректа, 2)для isAuth (а не Redux connect) */}
@@ -35,7 +35,7 @@ export default function App() {
                           redirectUrl='...',
                           isAuth=false
                           ) */}
-                      <Link to="/about">About (!!!сделать компонент RequireAuth)</Link>
+                      <Link to="/aboutauth">About (!!!сделать компонент RequireAuth)</Link>
                   </li>
                   <li>
                       <Link to="/auth">Auth</Link>
@@ -46,7 +46,11 @@ export default function App() {
               {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
               <Switch>
-                  <Route path="/about" component={RequireAuth(About)} />
+                  <Route path="/chat">
+                      <RootLayout />
+                  </Route>
+                  <Route path="/aboutauth" component={RequireAuth(About)} />
+                  <Route path="/about" component={About} />
                   <Route path="/auth">
                     <AuthForm isAuth={false}/>
                   </Route>
