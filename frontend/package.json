@@ -12,6 +12,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
+    "@john0504/react-authform": "^1.0.4",
     "bootstrap": "^4.4.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",

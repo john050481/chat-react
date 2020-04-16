@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var config = require('./config');
+let session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -19,6 +20,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//-----------SESSION+MONGO-----------
+let mongoStore = require('./lib/sessionStore');
+app.use(session({
+  secret: config.get("session:secret"),
+  key: config.get("session:key"),
+  cookie: config.get("session:cookie"),
+  store: mongoStore
+}));
+
+//app.use(require('./middleware/sendHttpError'));
+app.use(require('./middleware/loadUser'));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
