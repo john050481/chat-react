@@ -17,3 +17,5 @@ export const REQUEST_CHATS = 'REQUEST_CHATS'
 export const FETCHED_CHATID = 'FETCHED_CHATID'
 export const FETCHED_MESSAGES = 'FETCHED_MESSAGES'
 export const FETCHED_CHATS = 'FETCHED_CHATS'
+
+export const AUTH = 'AUTH'
