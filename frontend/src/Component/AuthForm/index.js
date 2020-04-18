@@ -2,37 +2,33 @@ import './style.css';
 import React, {useState} from 'react';
 import {AuthForm} from "@john0504/react-authform";
 import {useRouter} from '../../hooks/useRouter';
-import Loader from '../Loader';
-import Alert from '../Alert';
-//import Alert from 'react-bootstrap/Alert';
+import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
-import {showLoader, hideLoader, showAlert, hideAlert} from "../../redux/actions";
-import {connect} from "react-redux";
 import Container from "react-bootstrap/Container";
 
-function AuthFormApp(props) {
+export default function AuthFormApp(props) {
     console.log('Render AuthForm', props.auth)
 
-    const [loader, setLoader] = useState(false);
-    const [alert, setAlert] = useState(false);
+    const [spinner, setSpinner] = useState(false);
+    const [alert, setAlert] = useState('');
 
     const router = useRouter();
     const auth = props.auth;
 
     function handlingPromise(promise, cb) {
-        props.showLoader();
+        setSpinner(true);
         return promise
             .finally( () => {
-                props.hideLoader();
+                setSpinner(false);
             })
             .then( result => {
                 console.log("RESULT = ", result);
-                props.showAlert({text: 'Success!!!', options: {variant: 'success'}});
+                setAlert('Success!!!'); //{text: 'Success!!!', options: {variant: 'success'}}
                 cb && cb()
             })
             .catch( error => {
                 console.log("ERROR = ", error)
-                props.showAlert({text: error.message, options: {variant: 'warning'}})
+                setAlert(error.message); //{text: error.message, options: {variant: 'warning'}}
             })
     }
 
@@ -86,26 +82,17 @@ function AuthFormApp(props) {
                     handleSignOut = {handleSignOut}
                 />
                 <Container className='authform-footer'>
-                    <Alert />
-                    <Loader />
+                    { (alert)
+                        ? <Alert variant="warning">
+                              {alert}
+                          </Alert>
+                        : null
+                    }
+                    { (spinner)
+                        ? <Spinner animation="border" variant="secondary" />
+                        : null
+                    }
                 </Container>
               </>
     )
 }
-
-const mapStateToProps = store => {
-    return {
-        alertText: store.app.alert.text,
-        alertOptions: store.app.alert.options,
-        loaderVisible: store.app.loader.visible,
-        loaderOptions: store.app.loader.options,
-    }
-}
-const mapDispatchToProps = {
-    showLoader,
-    hideLoader,
-    showAlert,
-    hideAlert
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AuthFormApp)
