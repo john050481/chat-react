@@ -69,7 +69,7 @@ export default function AuthFormApp(props) {
         handlingPromise(promise);
     }
 
-    return ( (auth.user === null)
+    return ( auth.user === null
             ? <Container className='authform-spinner-container'>
                 <Spinner className='authform-spinner' animation="grow" variant="secondary" />
               </Container>
