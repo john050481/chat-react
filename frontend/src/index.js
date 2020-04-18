@@ -13,6 +13,8 @@ import {myMiddleware} from './redux/middleware'
 import mySagas from './redux/sagas';
 //---------------------------------AUTH---------------------------------------
 import { ProvideAuth } from "./hooks/useAuth";
+//---------------------------------ROUTE--------------------------------------
+import {BrowserRouter} from "react-router-dom";
 //----------------------------------------------------------------------------
 
 let sagaMiddleware = createSagaMiddleware();
@@ -30,7 +32,9 @@ sagaMiddleware.run(mySagas);
 ReactDOM.render(
     <ProvideAuth>
         <Provider store={store}>
-            <App />
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
         </Provider>
     </ProvideAuth>, document.getElementById('app')
 );
