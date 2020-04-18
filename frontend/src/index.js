@@ -28,9 +28,9 @@ let store = createStore(reducerRoot, composeEnhancers(
 sagaMiddleware.run(mySagas);
 
 ReactDOM.render(
-    <Provider store={store}>
-        <ProvideAuth>
+    <ProvideAuth>
+        <Provider store={store}>
             <App />
-        </ProvideAuth>
-    </Provider>, document.getElementById('app')
+        </Provider>
+    </ProvideAuth>, document.getElementById('app')
 );

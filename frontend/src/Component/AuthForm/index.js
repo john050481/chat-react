@@ -10,7 +10,7 @@ export default function AuthFormApp(props) {
     console.log('Render AuthForm', props.auth)
 
     const [spinner, setSpinner] = useState(false);
-    const [alert, setAlert] = useState('');
+    const [alert, setAlert] = useState({text: '', variant: 'success'});
 
     const router = useRouter();
     const auth = props.auth;
@@ -23,12 +23,12 @@ export default function AuthFormApp(props) {
             })
             .then( result => {
                 console.log("RESULT = ", result);
-                setAlert('Success!!!'); //{text: 'Success!!!', options: {variant: 'success'}}
+                setAlert({text: 'Success!!!', variant: 'success'}); //{text: 'Success!!!', options: {variant: 'success'}}
                 cb && cb()
             })
             .catch( error => {
                 console.log("ERROR = ", error)
-                setAlert(error.message); //{text: error.message, options: {variant: 'warning'}}
+                setAlert({text: error.message, variant: 'danger'}); //{text: error.message, options: {variant: 'warning'}}
             })
     }
 
@@ -82,9 +82,9 @@ export default function AuthFormApp(props) {
                     handleSignOut = {handleSignOut}
                 />
                 <Container className='authform-footer'>
-                    { (alert)
-                        ? <Alert variant="warning">
-                              {alert}
+                    { (alert.text)
+                        ? <Alert variant={alert.variant}>
+                              {alert.text}
                           </Alert>
                         : null
                     }
