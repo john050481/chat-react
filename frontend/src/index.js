@@ -11,6 +11,8 @@ import createSagaMiddleware from 'redux-saga';
 import {reducerRoot} from './redux/reducerRoot'
 import {myMiddleware} from './redux/middleware'
 import mySagas from './redux/sagas';
+//---------------------------------AUTH---------------------------------------
+import { ProvideAuth } from "./hooks/useAuth";
 //----------------------------------------------------------------------------
 
 let sagaMiddleware = createSagaMiddleware();
@@ -27,6 +29,8 @@ sagaMiddleware.run(mySagas);
 
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+        <ProvideAuth>
+            <App />
+        </ProvideAuth>
     </Provider>, document.getElementById('app')
 );

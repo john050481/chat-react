@@ -1,0 +1,11 @@
+.authform-footer {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.authform-spinner {
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+}
