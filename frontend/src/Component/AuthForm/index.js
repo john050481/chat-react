@@ -70,8 +70,8 @@ export default function AuthFormApp(props) {
     }
 
     return ( (auth.user === null)
-            ? <Container className='authform-spinner'>
-                <Spinner animation="grow" variant="secondary" />
+            ? <Container className='authform-spinner-container'>
+                <Spinner className='authform-spinner' animation="grow" variant="secondary" />
               </Container>
             : <>
                 <AuthForm
