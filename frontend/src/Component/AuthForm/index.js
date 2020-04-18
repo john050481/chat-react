@@ -34,10 +34,9 @@ export default function AuthFormApp(props) {
 
     function handlerForm(e) {
         e.preventDefault();
-
         let form = {};
+
         let formElem = e.currentTarget.form;
-        console.log('formElem = ', formElem)
         if (formElem) {
             let data = new FormData(formElem);
             for (let pair of data.entries()) {
@@ -45,6 +44,7 @@ export default function AuthFormApp(props) {
             }
             console.log('form = ', form);
         }
+
         return form;
     }
 
