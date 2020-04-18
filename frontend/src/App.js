@@ -5,8 +5,7 @@ import React from 'react'
 
 import {BrowserRouter, Switch, Route, Link} from "react-router-dom";
 
-import { useRequireAuth } from "./hooks/useRequireAuth";
-import { useAuth, ProvideAuth } from "./hooks/useAuth";
+import { useAuth } from "./hooks/useAuth";
 
 import AuthForm from './Component/AuthForm'
 import {RequireAuth} from "@john0504/react-authform";
