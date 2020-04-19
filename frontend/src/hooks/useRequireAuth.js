@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 function useRequireAuth(WrappedComponent, redirectUrl) {
     return function WithAuthorization(props) {
-        console.log('Render WithAuthorization');
+        console.log('Render WithAuthorization HOC/hook');
         const auth = useAuth();
 
         if (!auth.user) {
