@@ -25,17 +25,13 @@ export default function AuthFormApp(props) {
             .finally( () => {
                 setSpinner(false);
             })
-            .then( result => {
+            .then( async (result) => {
                 console.log("RESULT = ", result);
                 setAlert({text: 'Success!!!' + ' ' + messageSuccess, variant: 'success'});
+                if (delaySec) await startFinalCountDown(DELAY)
+                if (redirectUrl) router.push(redirectUrl)
                 return result;
             })
-            .then( async () => {
-                if (delaySec) await startFinalCountDown(DELAY)
-            })
-            .then( () => {
-                if (redirectUrl) router.push(redirectUrl)
-            } )
             .catch( error => {
                 console.log("ERROR = ", error)
                 setAlert({text: error.message, variant: 'danger'});
@@ -43,12 +39,9 @@ export default function AuthFormApp(props) {
     }
 
     async function startFinalCountDown(timeSec) {
-        const delay = timeSec => new Promise( resolve => setTimeout(resolve, timeSec*1000) );
-
         for (let i = timeSec; i >= 0; i--) {
-            console.log('###' + i + '###');
             setCountDown(i);
-            await delay(1);
+            await new Promise( resolve => setTimeout(resolve, 1000) );
         }
     }
 
