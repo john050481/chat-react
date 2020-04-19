@@ -1,6 +1,4 @@
 import {
-    CREATE_MESSAGE,
-    FETCH_MESSAGE,
     REQUEST_CHATID,
     FETCHED_CHATID,
     FETCHED_MESSAGES,
@@ -16,8 +14,6 @@ const init = {
 
 export default function (state = init, action) {
     switch (action.type) {
-        case CREATE_MESSAGE:
-            return {...state, messages: [...state.messages, ...action.payload]}
         case REQUEST_CHATID:
             return { ...state, chatId: action.payload }
         case FETCHED_CHATID:

@@ -1,6 +1,5 @@
 import {
     SHOW_LAYOUT,
-    CREATE_MESSAGE,
     HIDE_ALERT,
     HIDE_LOADER,
     SHOW_ALERT,
@@ -12,13 +11,6 @@ import {
 } from './types'
 
 let timerIdAlert = null;
-
-export function createMessage(post) {
-    return {
-        type: CREATE_MESSAGE,
-        payload: [post]
-    }
-}
 
 //___REQUEST_CHATS/CONTACTS_ALL___
 export function requestChats() {

@@ -1,6 +1,3 @@
-export const CREATE_MESSAGE = 'POST/CREATE_MESSAGE'
-export const FETCH_MESSAGE = 'POST/FETCH_MESSAGE'
-
 export const SHOW_LOADER = 'APP/SHOW_LOADER'
 export const HIDE_LOADER = 'APP/HIDE_LOADER'
 
