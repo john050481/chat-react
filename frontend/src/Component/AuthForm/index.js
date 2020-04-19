@@ -7,13 +7,14 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from "react-bootstrap/Container";
 
-const DELAY = 3000;
+const DELAY = 3;//sec
 
 export default function AuthFormApp(props) {
     console.log('Render AuthForm')
 
     const [spinner, setSpinner] = useState(false);
     const [alert, setAlert] = useState({text: '', variant: 'success'});
+    const [countDown, setCountDown] = useState(0);
 
     const router = useRouter();
     const auth = useAuth();
@@ -36,13 +37,20 @@ export default function AuthFormApp(props) {
             })
     }
 
-    const delay = time => new Promise( resolve => setTimeout(resolve, time) );
+    const delay = timeSec => new Promise( resolve => setTimeout(resolve, timeSec*1000) );
+    async function startFinalCountDown(timeSec) {
+        for (let i = timeSec; i >= 0; i--) {
+            console.log('###' + i + '###');
+            setCountDown(i);
+            await delay(1);
+        }
+    }
 
     function handleSignIn(e, formData) {//SIGNIN
         e.preventDefault();
         const promise = auth.signin(formData.email, formData.password);
         handlingPromise(promise)
-            .then( async r => await delay(DELAY) )
+            .then( r => startFinalCountDown(DELAY))
             .then( r => router.push('/chat') )
             .catch( e => {} );
     }
@@ -50,7 +58,7 @@ export default function AuthFormApp(props) {
         e.preventDefault();
         const promise = auth.signup(formData.email, formData.password);
         handlingPromise(promise)
-            .then( async r => await delay(DELAY) )
+            .then( r => startFinalCountDown(DELAY))
             .then( r => router.push('/chat') )
             .catch( e => {} );
     }
@@ -81,7 +89,7 @@ export default function AuthFormApp(props) {
             <Container className='authform-footer'>
                 { (alert.text)
                     ? <Alert variant={alert.variant}>
-                          {alert.text}
+                          { alert.text + ' ' + (countDown ? countDown : '') }
                       </Alert>
                     : null
                 }
