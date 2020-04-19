@@ -12,12 +12,8 @@ import useRequireAuth from './hooks/useRequireAuth';
 
 import AuthForm from './Component/AuthForm'
 import RootLayout from './Component/Layout/Root'
+import About from './Component/About';
 
-//--------------------EXAMPLE
-function About() {
-    return <h2>About</h2>;
-}
-//---------------------------
 export default function App() {
     const auth = useAuth();
 

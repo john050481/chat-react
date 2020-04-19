@@ -1,12 +1,13 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import {FaSearch, FaCog, FaUserAlt, FaSignOutAlt} from "react-icons/fa";
+import {FaSearch, FaCog, FaUserAlt, FaSignOutAlt, FaInfo} from "react-icons/fa";
 import {showLayout} from "../../../../redux/actions";
 import {connect} from "react-redux";
 import SearchMessage from '../../../SearchMessage'
 import Settings from '../../../Settings';
 import UserProfile from "../../../UserProfile";
 import AuthForm from '../../../AuthForm';
+import About from '../../../About';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -19,7 +20,8 @@ function NavBarRoot(props) {
         UserProfile: <UserProfile />,
         SearchMessage: <SearchMessage />,
         Settings: <Settings />,
-        AuthForm: <AuthForm />
+        AuthForm: <AuthForm />,
+        About: <About />
     }
 
     function handleClick(e) {
@@ -38,6 +40,7 @@ function NavBarRoot(props) {
                 <Row>
                     <Col>
                         <Button variant="outline-success" data-component='UserProfile' title="user profile"><FaUserAlt /></Button>
+                        <Button variant="outline-light" data-component='About' title="about"><FaInfo /></Button>
                     </Col>
                 </Row>
             </Container>
