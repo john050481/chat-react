@@ -19,7 +19,7 @@ export default function AuthFormApp(props) {
     const router = useRouter();
     const auth = useAuth();
 
-    function handlingPromise(promise, delaySec, redirectUrl) {
+    function handlingPromise(promise, messageSuccess='', delaySec, redirectUrl) {
         setSpinner(true);
         return promise
             .finally( () => {
@@ -27,7 +27,7 @@ export default function AuthFormApp(props) {
             })
             .then( result => {
                 console.log("RESULT = ", result);
-                setAlert({text: 'Success!!!', variant: 'success'});
+                setAlert({text: 'Success!!!' + ' ' + messageSuccess, variant: 'success'});
                 return result;
             })
             .then( async () => {
@@ -55,22 +55,22 @@ export default function AuthFormApp(props) {
     function handleSignIn(e, formData) {//SIGNIN
         e.preventDefault();
         const promise = auth.signin(formData.email, formData.password);
-        handlingPromise(promise, DELAY, '/chat')
+        handlingPromise(promise, 'Вы вошли в систему!', DELAY, '/chat')
     }
     function handleSignUp(e, formData) {//SIGNUP
         e.preventDefault();
         const promise = auth.signup(formData.email, formData.password);
-        handlingPromise(promise, DALAY, '/chat')
+        handlingPromise(promise, 'Вы зарегистрировались и вошли в систему!', DELAY, '/chat')
     }
     function handleForgotPass(e, formData) {//FORGOTPASS
         e.preventDefault();
         const promise = auth.sendPasswordResetEmail(formData.email);
-        handlingPromise(promise)
+        handlingPromise(promise, 'Инструкции отправлены на Вашу почту!')
     }
     function handleSignOut(e, formData) {//SIGNOUT
         e.preventDefault();
         const promise = auth.signout();
-        handlingPromise(promise)
+        handlingPromise(promise, 'Вы вышли из системы!')
     }
 
     return (
