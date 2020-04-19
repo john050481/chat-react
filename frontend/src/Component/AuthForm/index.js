@@ -24,19 +24,17 @@ export default function AuthFormApp(props) {
             })
             .then( result => {
                 console.log("RESULT = ", result);
-                setAlert({text: 'Success!!!', variant: 'success'}); //{text: 'Success!!!', options: {variant: 'success'}}
+                setAlert({text: 'Success!!!', variant: 'success'});
                 return result;
             })
             .catch( error => {
                 console.log("ERROR = ", error)
-                setAlert({text: error.message, variant: 'danger'}); //{text: error.message, options: {variant: 'warning'}}
+                setAlert({text: error.message, variant: 'danger'});
                 throw error;
             })
     }
 
-    function delay(time) {
-        return new Promise( resolve => setTimeout(resolve, time) );
-    }
+    const delay = time => new Promise( resolve => setTimeout(resolve, time) );
 
     function handleSignIn(e, formData) {//SIGNIN
         e.preventDefault();
