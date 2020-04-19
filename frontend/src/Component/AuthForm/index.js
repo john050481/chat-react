@@ -7,6 +7,8 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from "react-bootstrap/Container";
 
+const DELAY = 3000;
+
 export default function AuthFormApp(props) {
     console.log('Render AuthForm')
 
@@ -40,7 +42,7 @@ export default function AuthFormApp(props) {
         e.preventDefault();
         const promise = auth.signin(formData.email, formData.password);
         handlingPromise(promise)
-            .then( async r => await delay(3000) )
+            .then( async r => await delay(DELAY) )
             .then( r => router.push('/chat') )
             .catch( e => {} );
     }
@@ -48,7 +50,7 @@ export default function AuthFormApp(props) {
         e.preventDefault();
         const promise = auth.signup(formData.email, formData.password);
         handlingPromise(promise)
-            .then( async r => await delay(3000) )
+            .then( async r => await delay(DELAY) )
             .then( r => router.push('/chat') )
             .catch( e => {} );
     }
