@@ -82,8 +82,8 @@ export default function AuthFormApp(props) {
             <Container className='authform-footer'>
                 { (alert.text)
                     ? <Alert variant={alert.variant}>
-                        {alert.text}
-                    </Alert>
+                          {alert.text}
+                      </Alert>
                     : null
                 }
                 { (spinner)
