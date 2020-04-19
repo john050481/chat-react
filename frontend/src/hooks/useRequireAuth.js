@@ -11,7 +11,7 @@ function useRequireAuth(WrappedComponent, redirectUrl) {
             if (!redirectUrl) return null;
             return <Redirect to={redirectUrl} />;
         }
-        return WrappedComponent(props);
+        return <WrappedComponent {...props} />
     }
 };
 
