@@ -6,7 +6,9 @@ import {
     SHOW_ALERT,
     SHOW_LOADER,
     REQUEST_CHATID,
-    REQUEST_CHATS
+    REQUEST_CHATS,
+    USER_LOGIN,
+    USER_LOGOUT
 } from './types'
 
 let timerIdAlert = null;
@@ -71,5 +73,18 @@ export function showAlert(props = {text: '', options: {}}) {
 export function hideAlert() {
     return {
         type: HIDE_ALERT
+    }
+}
+
+//___USER_AUTH___
+export function userLogin(user) {
+    return {
+        type: USER_LOGIN,
+        payload: user
+    }
+}
+export function userLogout() {
+    return {
+        type: USER_LOGOUT,
     }
 }

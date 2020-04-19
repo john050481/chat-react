@@ -3,7 +3,7 @@ import './App.css'
 import Container from "react-bootstrap/Container";
 import Spinner from "react-bootstrap/Spinner";
 
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import {Switch, Route, Redirect} from "react-router-dom";
 
@@ -13,9 +13,19 @@ import useRequireAuth from './hooks/useRequireAuth';
 import AuthForm from './Component/AuthForm'
 import RootLayout from './Component/Layout/Root'
 import About from './Component/About';
+import {userLogin, userLogout} from "./redux/actions";
+import {connect} from "react-redux";
 
-export default function App() {
+function App(props) {
     const auth = useAuth();
+
+    useEffect( () => {
+        if (auth.user) {
+            props.userLogin(auth.user);
+        } else if (auth.user === false) {
+            props.userLogout()
+        }
+    }, [auth])
 
     return ( auth.user === null
             ? <Container className='App-spinner-container'>
@@ -31,3 +41,9 @@ export default function App() {
               </Switch>
     );
 }
+
+const mapDispatchToProps = {
+    userLogin,
+    userLogout
+}
+export default connect(null, mapDispatchToProps)(App)

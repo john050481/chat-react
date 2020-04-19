@@ -1,13 +1,15 @@
-import {AUTH} from './types'
+import {USER_LOGIN} from './types'
 
 const init = {
-    isAuth: false
+    isAuth: false,
+    uid: '',
+    email: ''
 }
 
 export default function (state = init, action) {
     switch (action.type) {
-        case AUTH:
-            return {...state, isAuth: action.payload}
+        case USER_LOGIN:
+            return {...state, isAuth: true, email: action.payload.email, uid: action.payload.uid}
         default:
             return state
     }

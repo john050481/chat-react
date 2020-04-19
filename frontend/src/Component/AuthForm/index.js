@@ -16,7 +16,7 @@ export default function AuthFormApp(props) {
     const router = useRouter();
     const auth = useAuth();
 
-    function handlingPromise(promise, cb) {
+    function handlingPromise(promise) {
         setSpinner(true);
         return promise
             .finally( () => {
@@ -25,33 +25,48 @@ export default function AuthFormApp(props) {
             .then( result => {
                 console.log("RESULT = ", result);
                 setAlert({text: 'Success!!!', variant: 'success'}); //{text: 'Success!!!', options: {variant: 'success'}}
-                cb && cb()
+                return result;
             })
             .catch( error => {
                 console.log("ERROR = ", error)
                 setAlert({text: error.message, variant: 'danger'}); //{text: error.message, options: {variant: 'warning'}}
+                throw error;
             })
     }
 
-    function handleSignIn(e, formData) {
+    function delay(time) {
+        return new Promise( resolve => setTimeout(resolve, time) );
+    }
+
+    function handleSignIn(e, formData) {//SIGNIN
         e.preventDefault();
         const promise = auth.signin(formData.email, formData.password);
-        handlingPromise(promise, () => router.push('/chat'));
+        handlingPromise(promise)
+            .then( async r => await delay(3000) )
+            .then( r => router.push('/chat') )
+            .catch( e => {} );
     }
-    function handleSignUp(e, formData) {
+    function handleSignUp(e, formData) {//SIGNUP
         e.preventDefault();
         const promise = auth.signup(formData.email, formData.password);
-        handlingPromise(promise, () => router.push('/chat'));
+        handlingPromise(promise)
+            .then( async r => await delay(3000) )
+            .then( r => router.push('/chat') )
+            .catch( e => {} );
     }
-    function handleForgotPass(e, formData) {
+    function handleForgotPass(e, formData) {//FORGOTPASS
         e.preventDefault();
         const promise = auth.sendPasswordResetEmail(formData.email);
-        handlingPromise(promise);
+        handlingPromise(promise)
+            .then( r => {} )
+            .catch( e => {} );
     }
-    function handleSignOut(e, formData) {
+    function handleSignOut(e, formData) {//SIGNOUT
         e.preventDefault();
         const promise = auth.signout();
-        handlingPromise(promise);
+        handlingPromise(promise)
+            .then( r => {} )
+            .catch( e => {} );
     }
 
     return (
