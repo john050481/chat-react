@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import {FaSearch, FaCog, FaUserAlt} from "react-icons/fa";
+import {FaSearch, FaCog, FaUserAlt, FaSignOutAlt} from "react-icons/fa";
 import SearchMessage from '../../../SearchMessage'
 import {showLayout} from "../../../../redux/actions";
 import {connect} from "react-redux";
@@ -10,9 +10,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import UserProfile from "../../../UserProfile";
 import './style.css'
+import {useRouter} from '../../../../hooks/useRouter';
 
 function NavBarRoot(props) {
     console.log('Render NavBarRoot')
+
+    const router = useRouter();
 
     const components = {
         UserProfile: <UserProfile />,
@@ -50,6 +53,7 @@ function NavBarRoot(props) {
 */}
             <Button variant="outline-primary" data-component='SearchMessage' title="search message"><FaSearch /></Button>
             <Button variant="outline-dark" data-component='Settings' title="settings"><FaCog /></Button>
+            <Button variant="outline-dark" title="signout" onClick={()=>router.push('/auth')}><FaSignOutAlt /></Button>
         </div>
     )
 }
