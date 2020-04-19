@@ -33,39 +33,23 @@ export default function AuthFormApp(props) {
             })
     }
 
-    function handlerForm(e) {
+    function handleSignIn(e, formData) {
         e.preventDefault();
-        let form = {};
-
-        let formElem = e.currentTarget.form;
-        if (formElem) {
-            let data = new FormData(formElem);
-            for (let pair of data.entries()) {
-                form[pair[0]] = pair[1];
-            }
-            console.log('form = ', form);
-        }
-
-        return form;
-    }
-
-    function handleSignIn(e) {
-        const form = handlerForm(e);
-        const promise = auth.signin(form.email, form.password);
+        const promise = auth.signin(formData.email, formData.password);
         handlingPromise(promise, () => router.push('/chat'));
     }
-    function handleSignUp(e) {
-        const form = handlerForm(e);
-        const promise = auth.signup(form.email, form.password);
+    function handleSignUp(e, formData) {
+        e.preventDefault();
+        const promise = auth.signup(formData.email, formData.password);
+        handlingPromise(promise, () => router.push('/chat'));
+    }
+    function handleForgotPass(e, formData) {
+        e.preventDefault();
+        const promise = auth.sendPasswordResetEmail(formData.email);
         handlingPromise(promise);
     }
-    function handleForgotPass(e) {
-        const form = handlerForm(e);
-        const promise = auth.sendPasswordResetEmail(form.email);
-        handlingPromise(promise);
-    }
-    function handleSignOut(e) {
-        //const form = handlerForm(e);
+    function handleSignOut(e, formData) {
+        e.preventDefault();
         const promise = auth.signout();
         handlingPromise(promise);
     }
