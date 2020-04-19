@@ -20,6 +20,7 @@ export default function(props) {
             <h2>Внешнее источники/компоненты:</h2>
             <ul>
                 <li>Аутентификация: <a target='_blank' href={'https://firebase.google.com/docs/auth/web/start'}>Firebase</a></li>
+                <li>Фома аутентификации: <a target='_blank' href={'https://www.npmjs.com/package/@john0504/react-authform'}>john0504</a></li>
                 <li>Эмоджи: <a target='_blank' href={'https://emoji-api.com'}>Emoji API</a></li>
                 <li>Данные: <a target='_blank' href={'https://jsonplaceholder.typicode.com/'}>JSONPlaceholder</a></li>
                 <li>Хуки: <a target='_blank' href={'https://usehooks.com'}>useHooks.com</a></li>
