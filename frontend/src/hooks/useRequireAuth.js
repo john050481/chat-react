@@ -1,24 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import {useAuth} from '../hooks/useAuth';
 import { Redirect } from 'react-router-dom';
 
-const RequireAuth = (WrappedComponent, redirectUrl='/auth') => {
-    class WithAuthorization extends React.Component {
-        static propTypes = {
-            isAuth: PropTypes.bool
-        };
+function useRequireAuth(WrappedComponent, redirectUrl) {
+    return function WithAuthorization(props) {
+        console.log('Render WithAuthorization');
+        const auth = useAuth();
 
-        render() {
-            const { isAuth } = this.props;
-
-            if (!isAuth) {
-                if (!redirectUrl) return null;
-                return <Redirect to={redirectUrl} />;
-            }
-            return <WrappedComponent {...this.props}/>;
+        if (!auth.user) {
+            if (!redirectUrl) return null;
+            return <Redirect to={redirectUrl} />;
         }
+        return WrappedComponent(props);
     }
-    return WithAuthorization;
 };
 
-export default RequireAuth;
+export default useRequireAuth;

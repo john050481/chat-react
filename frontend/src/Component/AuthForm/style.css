@@ -3,14 +3,3 @@
     justify-content: center;
     padding-top: 50px;
 }
-
-.authform-spinner-container {
-    display: flex;
-    justify-content: center;
-    padding-top: 100px;
-}
-
-.authform-spinner {
-    width: 8rem;
-    height: 8rem;
-}

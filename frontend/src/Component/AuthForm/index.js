@@ -69,30 +69,27 @@ export default function AuthFormApp(props) {
         handlingPromise(promise);
     }
 
-    return ( auth.user === null
-            ? <Container className='authform-spinner-container'>
-                <Spinner className='authform-spinner' animation="grow" variant="secondary" />
-              </Container>
-            : <>
-                <AuthForm
-                    isAuth = {Boolean(auth.user)}
-                    handleSignIn = {handleSignIn}
-                    handleSignUp = {handleSignUp}
-                    handleForgotPass = {handleForgotPass}
-                    handleSignOut = {handleSignOut}
-                />
-                <Container className='authform-footer'>
-                    { (alert.text)
-                        ? <Alert variant={alert.variant}>
-                              {alert.text}
-                          </Alert>
-                        : null
-                    }
-                    { (spinner)
-                        ? <Spinner animation="border" variant="secondary" />
-                        : null
-                    }
-                </Container>
-              </>
+    return (
+        <>
+            <AuthForm
+                isAuth = {Boolean(auth.user)}
+                handleSignIn = {handleSignIn}
+                handleSignUp = {handleSignUp}
+                handleForgotPass = {handleForgotPass}
+                handleSignOut = {handleSignOut}
+            />
+            <Container className='authform-footer'>
+                { (alert.text)
+                    ? <Alert variant={alert.variant}>
+                        {alert.text}
+                    </Alert>
+                    : null
+                }
+                { (spinner)
+                    ? <Spinner animation="border" variant="secondary" />
+                    : null
+                }
+            </Container>
+        </>
     )
 }
