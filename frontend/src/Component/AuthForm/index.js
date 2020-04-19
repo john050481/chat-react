@@ -19,7 +19,7 @@ export default function AuthFormApp(props) {
     const router = useRouter();
     const auth = useAuth();
 
-    function handlingPromise(promise) {
+    function handlingPromise(promise, delaySec, redirectUrl) {
         setSpinner(true);
         return promise
             .finally( () => {
@@ -30,15 +30,21 @@ export default function AuthFormApp(props) {
                 setAlert({text: 'Success!!!', variant: 'success'});
                 return result;
             })
+            .then( async () => {
+                if (delaySec) await startFinalCountDown(DELAY)
+            })
+            .then( () => {
+                if (redirectUrl) router.push(redirectUrl)
+            } )
             .catch( error => {
                 console.log("ERROR = ", error)
                 setAlert({text: error.message, variant: 'danger'});
-                throw error;
             })
     }
 
-    const delay = timeSec => new Promise( resolve => setTimeout(resolve, timeSec*1000) );
     async function startFinalCountDown(timeSec) {
+        const delay = timeSec => new Promise( resolve => setTimeout(resolve, timeSec*1000) );
+
         for (let i = timeSec; i >= 0; i--) {
             console.log('###' + i + '###');
             setCountDown(i);
@@ -49,32 +55,22 @@ export default function AuthFormApp(props) {
     function handleSignIn(e, formData) {//SIGNIN
         e.preventDefault();
         const promise = auth.signin(formData.email, formData.password);
-        handlingPromise(promise)
-            .then( r => startFinalCountDown(DELAY))
-            .then( r => router.push('/chat') )
-            .catch( e => {} );
+        handlingPromise(promise, DELAY, '/chat')
     }
     function handleSignUp(e, formData) {//SIGNUP
         e.preventDefault();
         const promise = auth.signup(formData.email, formData.password);
-        handlingPromise(promise)
-            .then( r => startFinalCountDown(DELAY))
-            .then( r => router.push('/chat') )
-            .catch( e => {} );
+        handlingPromise(promise, DALAY, '/chat')
     }
     function handleForgotPass(e, formData) {//FORGOTPASS
         e.preventDefault();
         const promise = auth.sendPasswordResetEmail(formData.email);
         handlingPromise(promise)
-            .then( r => {} )
-            .catch( e => {} );
     }
     function handleSignOut(e, formData) {//SIGNOUT
         e.preventDefault();
         const promise = auth.signout();
         handlingPromise(promise)
-            .then( r => {} )
-            .catch( e => {} );
     }
 
     return (
