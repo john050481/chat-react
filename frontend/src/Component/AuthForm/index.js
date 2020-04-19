@@ -2,18 +2,19 @@ import './style.css';
 import React, {useState} from 'react';
 import {AuthForm} from "@john0504/react-authform";
 import {useRouter} from '../../hooks/useRouter';
+import {useAuth} from '../../hooks/useAuth';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from "react-bootstrap/Container";
 
 export default function AuthFormApp(props) {
-    console.log('Render AuthForm', props.auth)
+    console.log('Render AuthForm')
 
     const [spinner, setSpinner] = useState(false);
     const [alert, setAlert] = useState({text: '', variant: 'success'});
 
     const router = useRouter();
-    const auth = props.auth;
+    const auth = useAuth();
 
     function handlingPromise(promise, cb) {
         setSpinner(true);

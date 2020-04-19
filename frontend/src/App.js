@@ -29,7 +29,7 @@ export default function App() {
                   <Route exact path="/chat" component={useRequireAuth(RootLayout, '/auth')} />
                   <Route exact path="/about" component={About} />
                   <Route exact path="/auth">
-                      <AuthForm auth={auth}/>
+                      <AuthForm /*auth={auth}*/ />
                   </Route>
                   <Redirect to="/chat" />
               </Switch>
