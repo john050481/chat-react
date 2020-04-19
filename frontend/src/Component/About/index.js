@@ -10,19 +10,22 @@ export default function(props) {
             <hr />
             <h2>Использовалось:</h2>
             <ul>
-                <li>React</li>
-                <li>Redux</li>
+                <li>Javascript (Promise, async/await)</li>
+                <li>React (HOC, render prop)</li>
+                <li>Redux (connect, middleware, devtools)</li>
                 <li>Redux-saga</li>
-                <li>Redux middleware</li>
                 <li>React hooks</li>
-                <li>React-router</li>
+                <li>React-router (router dom)</li>
             </ul>
-            <h2>Внешнее API:</h2>
+            <h2>Внешнее источники/компоненты:</h2>
             <ul>
                 <li>Аутентификация: <a target='_blank' href={'https://firebase.google.com/docs/auth/web/start'}>Firebase</a></li>
                 <li>Эмоджи: <a target='_blank' href={'https://emoji-api.com'}>Emoji API</a></li>
                 <li>Данные: <a target='_blank' href={'https://jsonplaceholder.typicode.com/'}>JSONPlaceholder</a></li>
                 <li>Хуки: <a target='_blank' href={'https://usehooks.com'}>useHooks.com</a></li>
+                <li>Bootstrap: <a target='_blank' href={'https://react-bootstrap.github.io/components/'}>React-bootstrap</a></li>
+                <li>Icons: <a target='_blank' href={'https://react-icons.netlify.app/'}>React-icons</a></li>
+                <li>Effects: <a target='_blank' href={'https://reactcommunity.org/react-transition-group/'}>React-transition-group</a></li>
             </ul>
             <p>
                 <Button variant="primary" href={'https://github.com/john050481/chat-react'}>Learn more</Button>
