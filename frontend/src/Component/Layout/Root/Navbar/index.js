@@ -39,7 +39,7 @@ function NavBarRoot(props) {
             <Container>
                 <Row>
                     <Col>
-                        <Button variant="outline-success" data-component='UserProfile' title="user profile"><FaUserAlt /></Button>
+                        <Button variant="success" data-component='UserProfile' title="user profile"><FaUserAlt /></Button>
                         <Button variant="outline-light" data-component='About' title="about"><FaInfo /></Button>
                     </Col>
                 </Row>
