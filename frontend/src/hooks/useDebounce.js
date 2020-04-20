@@ -77,7 +77,7 @@ function searchCharacters(search) {
 
 // Hook
 import { useState, useEffect } from 'react';
-function useDebounce(value, delay) {
+export function useDebounce(value, delay) {
     // State and setters for debounced value
     const [debouncedValue, setDebouncedValue] = useState(value);
 
