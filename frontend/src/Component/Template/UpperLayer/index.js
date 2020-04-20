@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import {connect} from "react-redux";
 import {showLayout} from '../../../redux/actions'
 import './style.css'
@@ -6,9 +6,14 @@ import Button from "react-bootstrap/Button";
 import {IoIosClose} from "react-icons/io";
 import PropTypes from "prop-types";
 import { CSSTransition } from 'react-transition-group'
+import {useOnClickOutside} from '../../../hooks/useOnClickOutside';
 
 function UpperLayer(props) {
     console.log('Render UpperLayer, region = ', props.region);
+
+    const ref = useRef();
+    useOnClickOutside(ref, ()=>props.showLayout({}));
+
     return (
         <div className="UpperLayerBlock">
             <CSSTransition
@@ -16,7 +21,7 @@ function UpperLayer(props) {
             >
                 <>
                     { (props.layout.region === props.region)
-                        ? <div className="UpperLayer">
+                        ? <div className="UpperLayer" ref={ref}>
                             {props.render && props.render(props.region)}
                             <Button
                                 title="close"
