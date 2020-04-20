@@ -20,7 +20,8 @@ function UpperLayer(props) {
                 in={props.layout.region === props.region} timeout={200} classNames="UpperLayerBlockTransition"
             >
                 <>
-                    { (props.layout.region === props.region)
+                    {
+                        (props.layout.region === props.region)
                         ? <div className="UpperLayer" ref={ref}>
                               {props.render && props.render(props.region)}
                               <Button
@@ -31,7 +32,8 @@ function UpperLayer(props) {
                                   <IoIosClose />
                               </Button>
                           </div>
-                        : null}
+                        : null
+                    }
                 </>
             </CSSTransition>
             {props.children}
