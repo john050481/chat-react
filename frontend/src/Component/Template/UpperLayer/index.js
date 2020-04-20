@@ -22,15 +22,15 @@ function UpperLayer(props) {
                 <>
                     { (props.layout.region === props.region)
                         ? <div className="UpperLayer" ref={ref}>
-                            {props.render && props.render(props.region)}
-                            <Button
-                                title="close"
-                                variant="outline-danger"
-                                className="closeLayout"
-                                onClick={(e)=>props.showLayout({})}>
-                                <IoIosClose />
-                            </Button>
-                        </div>
+                              {props.render && props.render(props.region)}
+                              <Button
+                                  title="close"
+                                  variant="outline-danger"
+                                  className="closeLayout"
+                                  onClick={(e)=>props.showLayout({})}>
+                                  <IoIosClose />
+                              </Button>
+                          </div>
                         : null}
                 </>
             </CSSTransition>
