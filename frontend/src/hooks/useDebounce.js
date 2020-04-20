@@ -3,7 +3,7 @@
 https://usehooks.com
 #######################################################
 // Usage
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 function App() {
     // State and setters for ...
     // Search term
@@ -76,7 +76,7 @@ function searchCharacters(search) {
 */
 
 // Hook
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 function useDebounce(value, delay) {
     // State and setters for debounced value
     const [debouncedValue, setDebouncedValue] = useState(value);
