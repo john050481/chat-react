@@ -38,7 +38,6 @@ export function useOnClickOutside(ref, handler) {
                     return;
                 }
 
-                console.log('########################', ref.current, ref.current.contains(event.target));
                 handler(event);
             };
 
