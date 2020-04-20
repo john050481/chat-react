@@ -17,6 +17,7 @@ import {userLogin, userLogout} from "./redux/actions";
 import {connect} from "react-redux";
 
 function App(props) {
+    console.log('Render APP!');
     const auth = useAuth();
 
     useEffect( () => {
