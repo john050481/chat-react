@@ -44,7 +44,6 @@ function SearchedChats(props) {
                 : <ListGroup.Item>Enter search string</ListGroup.Item>
             }
         </ListGroup>
-
     )
 }
 
