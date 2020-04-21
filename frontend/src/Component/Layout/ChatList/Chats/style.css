@@ -27,7 +27,8 @@
     justify-content: flex-start;
 }
 
-@media /*(min-width: 500px) and*/ (max-width: 600px) {
-    .chat__name {display: none; position: absolute} /*виден при ширине экрана от 500 до 1000 px*/
+/*виден при ширине экрана от 500 до 600 px*/
+/*@media (min-width: 500px) and (max-width: 600px) {
+    .chat__name {display: none; position: absolute}
     .blockquote-footer {display: none; position: absolute}
-}
+}*/

@@ -5,7 +5,7 @@ import './style.css'
 import {requestChats, showLayout} from "../../../../redux/actions";
 import {connect} from "react-redux";
 import Button from "react-bootstrap/Button";
-import {FaCog, FaRedo} from "react-icons/fa";
+import {FaCog, FaRedo, FaArrowLeft, FaArrowRight} from "react-icons/fa";
 import Settings from '../../../Settings';
 
 function NavBarSidebar(props) {
@@ -20,13 +20,24 @@ function NavBarSidebar(props) {
         <div className="navbarsidebar-block">
 
             <InputGroup className="p-3 search-contact">
+                <InputGroup.Prepend>
+                    <Button
+                        variant="outline-secondary"
+                        title="hide leftbar"
+                        size="sm"
+                        onClick={()=>{props.setIsSmall(!props.isSmall)}}
+                    >
+                        {props.isSmall ? <FaArrowRight /> : <FaArrowLeft /> }
+                    </Button>
+                </InputGroup.Prepend>
                 <FormControl
+                    hidden={props.isSmall}
                     type="search"
                     placeholder="search contact"
                     aria-label="search contact"
                     aria-describedby="basic-addon2"
                 />
-                <InputGroup.Append>
+                <InputGroup.Append hidden={props.isSmall}>
                     <Button
                         variant="outline-dark"
                         data-component='Settings'

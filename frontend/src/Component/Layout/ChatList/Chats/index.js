@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {requestChat} from "../../../../redux/actions";
 import Loader from '../../../Loader';
 
-function Chats({chats, requestChat, chatId, loader}) {
+function Chats({chats, isSmall, requestChat, chatId, loader}) {
 
     function handleClick(e) {
         let curElemChatId = e.target.closest('[data-chatid]');
@@ -32,11 +32,11 @@ function Chats({chats, requestChat, chatId, loader}) {
                                      : <FaUserCircle title={chat.name} className='mr-2' size='2em'/>
                                     }
 
-                                    <span className={'chat__name'}>
-                                    {chat.name}
-                                </span>
+                                    <span className={'chat__name'} hidden={isSmall}>
+                                        {chat.name}
+                                    </span>
                                 </div>
-                                <footer className="blockquote-footer">
+                                <footer className="blockquote-footer" hidden={isSmall}>
                                     {chat.phone}
                                 </footer>
                             </blockquote>
