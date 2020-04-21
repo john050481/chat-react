@@ -18,7 +18,6 @@ function NavBarSidebar(props) {
 
     return (
         <div className="navbarsidebar-block">
-
             <InputGroup className="p-3 search-contact">
                 <InputGroup.Prepend>
                     <Button
