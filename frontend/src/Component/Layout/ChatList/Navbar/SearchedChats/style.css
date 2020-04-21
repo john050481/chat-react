@@ -1,0 +1,9 @@
+.searched-result {
+}
+
+.searched-result--item {
+    cursor: pointer;
+}
+.searched-result--item:hover {
+    background: #e3e3e3;
+}
