@@ -19,12 +19,15 @@
     top: 1px;
     z-index: 100;
     border: 2px solid;
-    border-radius: 6px;
-    border-color: #cf3056;
+    border-radius: 0px 0px 10px 10px;
+    border-color: #969497;
+    box-shadow: 0 0 10px #969497;
     color: #000;
     width: 100%;
     max-height: 300px;
     overflow-y: auto;
+    margin-top: 1px;
+    margin-left: 40px;
 }
 
 /*виден при ширине экрана от 500 до 1000 px*/

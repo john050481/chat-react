@@ -69,7 +69,7 @@ function NavBarSidebar(props) {
                 </InputGroup.Append>
             </InputGroup>
             {isShowSearchedChat
-                ? <div className='searched-contact'>
+                ? <div className='searched-contact' hidden={props.isSmall}>
                     <div className='searched-contact--wrapper'>
                         <SearchedChats
                             searchValue={searchValue}
