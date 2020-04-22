@@ -1,3 +1,5 @@
+// Функция проверяет виден ли элемент на экране
+
 // Получаем нужный элемент
 //const element = document.querySelector('#target');
 
@@ -26,10 +28,12 @@ export default function elemInWindow(target, callbackIsVisible, callbackIsNotVis
         console.clear();
         console.log('Вы видите элемент :)');
         callbackIsVisible && callbackIsVisible(target);
+        return true;
     } else {
         // Если элемент не видно, то запускаем этот код
         console.clear();
         console.log('Элемент НЕ виден!');
         callbackIsNotVisible && callbackIsNotVisible(target);
+        return false;
     };
 };
