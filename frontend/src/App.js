@@ -16,15 +16,15 @@ import About from './Component/About';
 import {userLogin, userLogout} from "./redux/actions";
 import {connect} from "react-redux";
 
-function App(props) {
+function App({userLogin, userLogout}) {
     console.log('Render APP!');
     const auth = useAuth();
 
     useEffect( () => {
         if (auth.user) {
-            props.userLogin(auth.user);
+            userLogin(auth.user);
         } else if (auth.user === false) {
-            props.userLogout()
+            userLogout()
         }
     }, [auth])
 
