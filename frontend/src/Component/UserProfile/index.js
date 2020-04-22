@@ -7,9 +7,7 @@ export default function(props) {
     console.log("render Avatar");
     return (
         <div>
-            <h1>
-                User profile
-            </h1>
+            <h1>ЗАГЛУШКА (User profile)</h1>
             <Form className="avatar-block">
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
