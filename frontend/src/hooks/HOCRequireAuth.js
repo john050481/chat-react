@@ -2,7 +2,7 @@ import React from 'react';
 import {useAuth} from '../hooks/useAuth';
 import { Redirect } from 'react-router-dom';
 
-function useRequireAuth(WrappedComponent, redirectUrl) {
+function HOCRequireAuth(WrappedComponent, redirectUrl) {
     return function WithAuthorization(props) {
         console.log('Render WithAuthorization HOC/hook');
         const auth = useAuth();
@@ -15,4 +15,4 @@ function useRequireAuth(WrappedComponent, redirectUrl) {
     }
 };
 
-export default useRequireAuth;
+export default HOCRequireAuth;

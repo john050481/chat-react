@@ -8,7 +8,7 @@ import React, {useEffect} from 'react'
 import {Switch, Route, Redirect} from "react-router-dom";
 
 import { useAuth } from "./hooks/useAuth";
-import useRequireAuth from './hooks/useRequireAuth';
+import HOCRequireAuth from './hooks/HOCRequireAuth';
 
 import AuthForm from './Component/AuthForm'
 import RootLayout from './Component/Layout/Root'
@@ -33,7 +33,7 @@ function App(props) {
                   <Spinner className='App-spinner' animation="grow" variant="info" />
               </Container>
             : <Switch>
-                  <Route exact path="/chat" component={useRequireAuth(RootLayout, '/auth')} />
+                  <Route exact path="/chat" component={HOCRequireAuth(RootLayout, '/auth')} />
                   <Route exact path="/about" component={About} />
                   <Route exact path="/auth">
                       <AuthForm /*auth={auth}*/ />
