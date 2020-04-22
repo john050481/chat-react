@@ -29,7 +29,7 @@ function SearchedChats(props) {
         //прокручиваем элемент, если он не виден
         let curElemChatId = document.querySelector(`[data-chatid=\"${chatId}\"]`);
         if (curElemChatId)
-            curElemChatId.scrollIntoView(); /* elemInWindow(curElemChatId, null, ( target => target.scrollIntoView() ) ); */
+            curElemChatId.scrollIntoView(); /* elemInWindow(curElemChatId, null, target => target.scrollIntoView() ); */
 
         props.requestChat(+chatId);
         props.setIsShowSearchedChat(false);
