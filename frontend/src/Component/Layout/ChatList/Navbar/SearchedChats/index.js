@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import ListGroup from "react-bootstrap/ListGroup";
 import {connect} from "react-redux";
 import {requestChat} from "../../../../../redux/actions";
+import elemInWindow from '../../../../../common/elemInWindow';
 
 function SearchedChats(props) {
 
@@ -22,8 +23,15 @@ function SearchedChats(props) {
     }, [props.searchValue])
 
     function handlerClick(e) {
-        console.log('e.target.dataset.id = ', e.target.dataset.id);
-        props.requestChat(+e.target.dataset.id);
+        const chatId = e.target.dataset.id;
+        console.log('e.target.dataset.id = ', chatId);
+
+        //прокручиваем элемент, если он не виден
+        let curElemChatId = document.querySelector(`[data-chatid=\"${chatId}\"]`);
+        if (curElemChatId)
+            curElemChatId.scrollIntoView(); /* elemInWindow(curElemChatId, null, ( target => target.scrollIntoView() ) ); */
+
+        props.requestChat(+chatId);
         props.setIsShowSearchedChat(false);
     }
 
