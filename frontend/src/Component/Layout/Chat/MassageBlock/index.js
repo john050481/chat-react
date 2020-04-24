@@ -17,13 +17,13 @@ export default function MessageBlock(props) {
             <div id='message-block' className='content message-block'>
                 {/*тут будут сообщения!!!*/}
             </div>
-            <div id='citation-block' className='citation-block'>
-                {
-                    props.citation
-                        ? <Citation text={props.citation} closeHandler={()=>props.setCitation('')}/>
-                        : null
-                }
-            </div>
+            {
+                props.citation
+                    ? <div className='citation-block'>
+                        <Citation text={props.citation} closeHandler={()=>props.setCitation('')}/>
+                      </div>
+                    : null
+            }
         </main>
     )
 }

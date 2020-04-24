@@ -4,7 +4,7 @@
     height: 100%;
     width: 100%;
     padding: 5px;
-    margin: 0px 0px 3px 0px;
+    margin: 0px;
     background: #ff9f7f;
     border-radius: 5px;
 }
@@ -16,6 +16,11 @@
     font-size: small;
     margin: 0px;
     padding: 0px;
+}
+
+.citation-component p {
+    margin: 0;
+    padding: 0;
 }
 
 /*
