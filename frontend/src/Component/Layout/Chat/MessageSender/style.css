@@ -40,7 +40,8 @@
     background: #f6f6f6;
     border: 2px solid black;
     border-radius: 5px;
-    overflow-y: auto
+    overflow-y: auto;
+    word-break: break-all;
 }
 
 .messagesender-button {
@@ -68,6 +69,7 @@ button:focus {
     padding: 3px;
     border-radius: 5px;
     cursor: pointer;
+    word-break: break-all;
 }
 .left-color {
     background-color: #d4b7f0;

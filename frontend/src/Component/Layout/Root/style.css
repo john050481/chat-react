@@ -72,3 +72,10 @@ html, body {
     display: flex;
     flex-direction: column;
 }
+
+button {
+    flex: 1 auto;
+    margin: 5px;
+    font-size: 18px;
+    line-height: 1.5;
+}

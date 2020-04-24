@@ -1,6 +1,6 @@
 import './style.css'
 import React from 'react'
-import Main from "../../../Template/Main";
+import Citation from '../Citation'
 
 export default function MessageBlock(props) {
 
@@ -13,9 +13,17 @@ export default function MessageBlock(props) {
     }
 
     return (
-        <main
-            className="content main-content message-block"
-            onClick={handleClick}
-        />
+        <main className="content message-block-wrapper" onClick={handleClick} >
+            <div id='message-block' className='content message-block'>
+                {/*тут будут сообщения!!!*/}
+            </div>
+            <div id='citation-block' className='citation-block'>
+                {
+                    props.citation
+                        ? <Citation text={props.citation} closeHandler={()=>props.setCitation('')}/>
+                        : null
+                }
+            </div>
+        </main>
     )
 }

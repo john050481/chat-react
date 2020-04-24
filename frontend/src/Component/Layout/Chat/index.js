@@ -25,7 +25,7 @@ export default function () {
             </Header>
 
             <Main region={region} render={render}>
-                <MessageBlock /*citation={citation}*/ setCitation={setCitation} />
+                <MessageBlock citation={citation} setCitation={setCitation} />
             </Main>
 
             <Footer style={{background: '#f6f6f6'}}>

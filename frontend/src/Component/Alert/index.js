@@ -9,7 +9,7 @@ function AlertApp(props) {
     return (
         <React.Fragment>
             {props.text
-             ? <Alert {...props.options} onClose={() => props.hideAlert()} dismissible>
+             ? <Alert className='alert-component' {...props.options} onClose={() => props.hideAlert()} dismissible>
                    {props.text}
                </Alert>
              : null}

@@ -1,19 +1,26 @@
+.message-block-wrapper {
+    height: calc(100vh - 220px);
+}
+
 .message-block {
     -webkit-justify-content: flex-end;
     -moz-justify-content: flex-end;
     -ms-justify-content: flex-end;
     -o-justify-content: flex-end;
     justify-content: flex-end;
-}
-
-.main-content {
     overflow-y: auto;
-    height: calc(100vh - 220px);
 }
 
-button {
-    flex: 1 auto;
-    margin: 5px;
-    font-size: 18px;
-    line-height: 1.5;
+.citation-block {
+    position: relative;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    order: 0;
+    order: 1;
+    overflow: hidden;
+    margin-left: 10px;
+    word-break: break-all;
 }

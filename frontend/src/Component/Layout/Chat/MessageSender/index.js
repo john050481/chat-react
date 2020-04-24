@@ -1,11 +1,12 @@
 import React, {useState, useCallback} from 'react'
 import './style.css'
 import Emoji from '../Emoji'
-import Citation from '../Citation'
 import {IoMdSend, IoIosClose} from "react-icons/io";
 import Button from "react-bootstrap/Button";
+import {showAlert} from "../../../../redux/actions";
+import {connect} from "react-redux";
 
-export default function(props) {
+function MessageSender(props) {
 
     const [caretPos, setCaretPos] = useState(null);
     const [useEmojiComponent, setUseEmojiComponent] = useState(false);
@@ -31,13 +32,14 @@ export default function(props) {
         return enterField;
     }
     function scrollDownMessageContainer() {
-        let messageContainer = document.querySelector('main.content');
+        let messageContainer = document.getElementById('message-block')//!!!querySelector('main.content');
         messageContainer.scrollTop = messageContainer.scrollHeight
     };
 
     function handleClickSend(e) {
         let target = document.querySelector('[contentEditable]');
         if (!target.innerText) {
+            props.showAlert({text: 'Введите текст!'})
             setFocusOnEnterField();
             return
         };
@@ -58,7 +60,8 @@ export default function(props) {
         message.setAttribute('data-message', true)
         message.innerText = target.innerText;
         if (citation) message.prepend(citation);
-        document.querySelector('main.content').append(message);
+//!!!        document.querySelector('main.content').append(message);
+        document.getElementById('message-block').append(message);
         target.innerText = '';
         scrollDownMessageContainer();
         setFocusOnEnterField();
@@ -94,13 +97,6 @@ export default function(props) {
                 <div className='messagesender-wrapper'>
                     <div className='element-wrapper'>
                         {
-                            props.citation
-                                ? <Citation style={{position: 'absolute', bottom: 0}} text={props.citation} closeHandler={()=>props.setCitation('')}/>
-                                : null
-                        }
-                    </div>
-                    <div className='element-wrapper'>
-                        {
                             useEmojiComponent
                                 ? <Emoji style={{position: 'absolute', bottom: 0}} callback={callbackFromEmojiComp}/>
                                 : null
@@ -131,3 +127,13 @@ export default function(props) {
         </React.Fragment>
     )
 }
+
+const mapStateToProps = store => {
+    return {
+    }
+}
+const mapDispatchToProps = {
+    showAlert
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessageSender)
