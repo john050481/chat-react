@@ -9,16 +9,26 @@
     box-shadow: inset 0px 0px 10px 0px #969497;
 }
 
+.citation-component::after {
+    content: '';
+    position: absolute;
+    left: 0px;
+    height: 60%;
+    width: 100%;
+    bottom: 1px;
+    background: linear-gradient(to top, #ffffff, transparent);
+}
+
 .citation-button {
     position: absolute;
-    right: 1px;
-    top: -3px;
-    font-size: small;
+    right: 4px;
+    top: -1px;
     margin: 0px;
-    padding: 0px;
+    color: red;
 }
 
 .citation-component p {
     margin: 0;
     padding: 0;
+    padding: 5px 15px 5px 10px;
 }
