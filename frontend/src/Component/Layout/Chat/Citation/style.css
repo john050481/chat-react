@@ -9,6 +9,13 @@
     box-shadow: inset 0px 0px 10px 0px #969497;
 }
 
+.citation-component::before {
+    content: 'Цитируем:';
+    top: -10px;
+    left: 10px;
+    color: #000000;
+}
+
 .citation-component::after {
     content: '';
     position: absolute;
