@@ -1,10 +1,7 @@
 import React from "react";
 import './style.css';
-import Card from "react-bootstrap/Card";
-import {FaUserCircle} from "react-icons/fa";
 import {connect} from "react-redux";
 import {requestChat} from "../../../../redux/actions";
-import Loader from '../../../Loader';
 import Spinner from "react-bootstrap/Spinner";
 import Container from "react-bootstrap/Container";
 import ChatItem from './ChatItem';
