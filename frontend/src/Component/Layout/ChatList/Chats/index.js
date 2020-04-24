@@ -7,6 +7,7 @@ import {requestChat} from "../../../../redux/actions";
 import Loader from '../../../Loader';
 import Spinner from "react-bootstrap/Spinner";
 import Container from "react-bootstrap/Container";
+import ChatItem from './ChatItem';
 
 function Chats({chats, isSmall, requestChat, chatId, loader}) {
 
@@ -27,28 +28,8 @@ function Chats({chats, isSmall, requestChat, chatId, loader}) {
                     <Spinner className='App-spinner' animation="grow" variant="info" />
                   </Container>
                 : chats.map(chat =>
-                  <div data-chatid={chat.id} key={chat.id}>
-                      <Card className={ 'chat' + (chatId === chat.id ? ' active' : '') }>
-                          {/*<Card.Header>Quote</Card.Header>*/}
-                          <Card.Body className='pl-2'>
-                              <blockquote className="blockquote mb-0">
-                                  <div className='chat-header'>
-                                      {loader && chatId === chat.id
-                                          ? <Loader />
-                                          : <FaUserCircle title={chat.name} className='mr-2' size='2em'/>
-                                      }
-
-                                      <span className={'chat__name'} hidden={isSmall}>
-                                        {chat.name}
-                                      </span>
-                                  </div>
-                                  <footer className="blockquote-footer" hidden={isSmall}>
-                                      {chat.phone}
-                                  </footer>
-                              </blockquote>
-                          </Card.Body>
-                      </Card>
-                  </div>)
+                    <ChatItem key={chat.id} chat={chat} isSmall={isSmall} loader={loader} />
+                  )
             }
         </div>
     )
@@ -57,9 +38,9 @@ function Chats({chats, isSmall, requestChat, chatId, loader}) {
 const mapStateToProps = store => {
     return {
         chatId: store.chat.chatId,
-        loader: store.app.loader.visible
     }
 }
+
 const mapDispatchToProps = {
     requestChat
 }
