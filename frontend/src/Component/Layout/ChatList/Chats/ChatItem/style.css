@@ -1,0 +1,23 @@
+.chat {
+    cursor: pointer;
+}
+
+.chat.active{
+    background: #969497;
+}
+
+.chat.active.card {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.chat:hover:not(.active) {
+    background: #e3e3e3;
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
