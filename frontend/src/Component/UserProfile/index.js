@@ -10,13 +10,13 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 
-function UserProfile({showAlert, alert}) {
+function UserProfile({showAlert, authUserInStore}) {
     console.log("render UserProfile");
 
     const auth = useAuth();
-    const [email, setEmail] = useState(auth.user.email);
-    const [displayName, setDisplayName] = useState( (auth.user.displayName || ''));
-    const [photoURL, setPhotoURL] = useState( (auth.user.photoURL || ''));
+    const [email, setEmail] = useState(authUserInStore.email);
+    const [displayName, setDisplayName] = useState( (authUserInStore.displayName || ''));
+    const [photoURL, setPhotoURL] = useState( (authUserInStore.photoURL || ''));
 
     function handlerUpdateProfile(e) {
         e.preventDefault();
@@ -57,18 +57,18 @@ function UserProfile({showAlert, alert}) {
 
     return (
         <div className='user-profile-block'>
-            <h1>{auth.user.displayName + ' / ' + auth.user.email}</h1>
+            <h1>{authUserInStore.displayName + ' / ' + authUserInStore.email}</h1>
 
             <Container className='user-profile-photo-container'>
                 <Row>
                     <Col xs={6} md={4}>
-                        <Image className='user-profile-photo' src={auth.user.photoURL ? auth.user.photoURL : "/defaulAvatar.png"} rounded />
+                        <Image className='user-profile-photo' src={authUserInStore.photoURL ? authUserInStore.photoURL : "/defaulAvatar.png"} rounded />
                     </Col>
                     <Col xs={6} md={4}>
-                        <Image className='user-profile-photo' src={auth.user.photoURL ? auth.user.photoURL : "/defaulAvatar.png"} roundedCircle />
+                        <Image className='user-profile-photo' src={authUserInStore.photoURL ? authUserInStore.photoURL : "/defaulAvatar.png"} roundedCircle />
                     </Col>
                     <Col xs={6} md={4}>
-                        <Image className='user-profile-photo' src={auth.user.photoURL ? auth.user.photoURL : "/defaulAvatar.png"} thumbnail />
+                        <Image className='user-profile-photo' src={authUserInStore.photoURL ? authUserInStore.photoURL : "/defaulAvatar.png"} thumbnail />
                     </Col>
                 </Row>
             </Container>
@@ -128,7 +128,7 @@ function UserProfile({showAlert, alert}) {
 
 const mapStateToProps = store => {
     return {
-        alert: store.app.alert
+        authUserInStore: store.user.user
     }
 }
 const mapDispatchToProps = {
