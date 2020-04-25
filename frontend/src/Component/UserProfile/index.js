@@ -7,17 +7,11 @@ import {useAuth} from "../../hooks/useAuth";
 import {showAlert} from "../../redux/actions";
 
 function UserProfile({showAlert}) {
-    console.log("render Avatar");
+    console.log("render UserProfile");
 
     const auth = useAuth();
-    console.log('auth.user = ', auth.firebase.auth().currentUser === auth.user, auth);
     const [email, setEmail] = useState(auth.user.email);
     const [displayName, setDisplayName] = useState( (auth.user.displayName || ''));
-
-    function handlerOnChange(e, cb) {
-        console.log('e.target.value ===', e.target.value);
-        cb && cb(e.target.value)
-    }
 
     async function handlerUpdateProfile(e) {
         e.preventDefault();
@@ -62,7 +56,7 @@ function UserProfile({showAlert}) {
             <Form className="user-profile-form">
                 <Form.Group>
                     <Form.Label>Display Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter display name" value={displayName} onChange={(e)=>handlerOnChange(e, setDisplayName)}/>
+                    <Form.Control type="text" placeholder="Enter display name" value={displayName} onChange={(e)=>setDisplayName(e.target.value)}/>
                 </Form.Group>
 
                 <Button variant="primary" onClick={handlerUpdateProfile}>
@@ -73,7 +67,7 @@ function UserProfile({showAlert}) {
 
                 <Form.Group>
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e)=>handlerOnChange(e, setEmail)}/>
+                    <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e)=>setEmail(e.target.value)}/>
                     <Form.Text className="text-muted">
                         We'll never share your email with anyone else.
                     </Form.Text>
