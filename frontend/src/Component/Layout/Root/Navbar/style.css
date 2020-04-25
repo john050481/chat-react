@@ -1,3 +1,7 @@
 .navbarroot-block {
     display: contents;
 }
+
+.navbar-root-profile-photo {
+    height: 1em;
+}

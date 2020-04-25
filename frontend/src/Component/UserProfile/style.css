@@ -13,3 +13,13 @@
     height: 2px; /* Толщина линии */
     margin: 40px 0 40px 0;
 }
+
+.user-profile-photo-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.user-profile-photo {
+    max-width: 150px;/*УБРАТЬ ПОТОМ*/
+    max-height: 150px;
+}
