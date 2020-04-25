@@ -60,7 +60,7 @@ function UserProfile({showAlert}) {
         <div className='user-profile-block'>
             <h1>User profile ({email})</h1>
             <Form className="user-profile-form">
-                <Form.Group controlId="displayName">
+                <Form.Group>
                     <Form.Label>Display Name</Form.Label>
                     <Form.Control type="text" placeholder="Enter display name" value={displayName} onChange={(e)=>handlerOnChange(e, setDisplayName)}/>
                 </Form.Group>
@@ -71,7 +71,7 @@ function UserProfile({showAlert}) {
 
                 <hr />
 
-                <Form.Group controlId="email">
+                <Form.Group>
                     <Form.Label>Email address</Form.Label>
                     <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e)=>handlerOnChange(e, setEmail)}/>
                     <Form.Text className="text-muted">
@@ -85,17 +85,17 @@ function UserProfile({showAlert}) {
 
                 <hr />
 
-                <Form.Group controlId="password">
+                <Form.Group>
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Password" />
                 </Form.Group>
 
-                <Form.Group controlId="confirmPassword">
+                <Form.Group>
                     <Form.Label>Confirm password</Form.Label>
                     <Form.Control type="password" placeholder="Confirm password" />
                 </Form.Group>
 
-                <Form.Group controlId="idCheckMeOut">
+                <Form.Group>
                     <Form.Check type="checkbox" label="Check me out" />
                 </Form.Group>
 
