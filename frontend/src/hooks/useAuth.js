@@ -140,6 +140,7 @@ function useProvideAuth() {
     // Return the user object and auth methods
     return {
         user,
+        firebase,
         signin,
         signup,
         signout,

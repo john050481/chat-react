@@ -1,3 +1,14 @@
-.avatar-block {
+.user-profile-block {
+
+}
+
+.user-profile-form {
     padding: 15px
+}
+
+.user-profile-form hr{
+    border: none; /* Убираем границу для браузера Firefox */
+    color: #969497; /* Цвет линии для остальных браузеров */
+    background-color: #969497; /* Цвет линии для браузера Firefox и Opera */
+    height: 2px; /* Толщина линии */
 }
