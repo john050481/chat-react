@@ -23,5 +23,6 @@
     overflow: hidden;
     margin-top: 10px;
     min-height: 60px;
+    max-height: 110px;
     word-break: break-all;
 }
