@@ -59,7 +59,7 @@ function UserProfile({showAlert, alert}) {
         <div className='user-profile-block'>
             <h1>{auth.user.displayName + ' / ' + auth.user.email}</h1>
 
-            <Container className='user-profile-photo-container' fakeAtr={alert}>
+            <Container className='user-profile-photo-container'>
                 <Row>
                     <Col xs={6} md={4}>
                         <Image className='user-profile-photo' src={auth.user.photoURL ? auth.user.photoURL : "/defaulAvatar.png"} rounded />
