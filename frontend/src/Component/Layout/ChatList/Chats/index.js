@@ -6,7 +6,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Container from "react-bootstrap/Container";
 import ChatItem from './ChatItem';
 
-function Chats({chats, isSmall, requestChat, chatId, loader}) {
+function Chats({isSmall, chats, chatId, requestChat}) {
 
     function handleClick(e) {
         let curElemChatId = e.target.closest('[data-chatid]');
@@ -25,7 +25,7 @@ function Chats({chats, isSmall, requestChat, chatId, loader}) {
                     <Spinner className='App-spinner' animation="grow" variant="info" />
                   </Container>
                 : chats.map(chat =>
-                    <ChatItem key={chat.id} chat={chat} isSmall={isSmall} loader={loader} />
+                    <ChatItem key={chat.id} chat={chat} isSmall={isSmall} />
                   )
             }
         </div>
@@ -35,6 +35,7 @@ function Chats({chats, isSmall, requestChat, chatId, loader}) {
 const mapStateToProps = store => {
     return {
         chatId: store.chat.chatId,
+        chats: store.chat.chats
     }
 }
 

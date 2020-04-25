@@ -5,9 +5,7 @@ import Loader from "../../../../Loader";
 import {FaUserCircle} from "react-icons/fa";
 import {connect} from "react-redux";
 
-function ChatItem(props) {
-    const {chat, isSmall, loader, chatId} = props;
-
+function ChatItem({chat, isSmall, loader, chatId}) {
     return (
         <div data-chatid={chat.id}>
             <Card className={ 'chat' + (chatId === chat.id ? ' active' : '') }>

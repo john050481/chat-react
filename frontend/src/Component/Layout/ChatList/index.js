@@ -16,7 +16,7 @@ import {useDebounce} from '../../../hooks/useDebounce';
 import {useWindowSize} from '../../../hooks/useWindowSize';
 const MAX_WIDTH = 600;//px
 
-function ChatList(props) {
+function ChatList({requestChats}) {
     console.log('Render ChatList')
 
     //уменьшение сайдбара, при ширене экрана менее MAX_WIDTH, с задержкой в 1сек
@@ -31,7 +31,7 @@ function ChatList(props) {
     let [render, setRender] = useState(()=>()=>{});
 
     useEffect( () => {
-        props.requestChats();
+        requestChats();
     }, [])
 
     return (
@@ -42,23 +42,19 @@ function ChatList(props) {
 
             <Main region={region} render={render}>
                 <aside className="sidebar">
-                    {/* RENDER CONTACTS/CHATS {...props} */}
-                    <Chats chats={props.chats} isSmall={isSmall}/>
+                    <Chats isSmall={isSmall}/>
                 </aside>
             </Main>
 
-            <Footer style={{background: '#D3D3D3'}}/>
+            <Footer style={{background: '#D3D3D3'}}>
+                {/*любые теги или компоненты*/}
+            </Footer>
         </div>
     )
 }
 
-const mapStateToProps = store => {
-    return {
-        chats: store.chat.chats
-    }
-}
 const mapDispatchToProps = {
     requestChats
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatList)
+export default connect(null, mapDispatchToProps)(ChatList)
