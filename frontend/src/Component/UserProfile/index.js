@@ -10,7 +10,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 
-function UserProfile({showAlert}) {
+function UserProfile({showAlert, alert}) {
     console.log("render UserProfile");
 
     const auth = useAuth();
@@ -59,7 +59,7 @@ function UserProfile({showAlert}) {
         <div className='user-profile-block'>
             <h1>{auth.user.displayName + ' / ' + auth.user.email}</h1>
 
-            <Container className='user-profile-photo-container'>
+            <Container className='user-profile-photo-container' fakeAtr={alert}>
                 <Row>
                     <Col xs={6} md={4}>
                         <Image className='user-profile-photo' src={auth.user.photoURL ? auth.user.photoURL : "/defaulAvatar.png"} rounded />
@@ -128,6 +128,7 @@ function UserProfile({showAlert}) {
 
 const mapStateToProps = store => {
     return {
+        alert: store.app.alert
     }
 }
 const mapDispatchToProps = {
