@@ -21,7 +21,7 @@ function UserProfile(props) {
 
     return (
         <div>
-            <h1>ЗАГЛУШКА (User profile)</h1>
+            <h1>User profile ({email})</h1>
             <Form className="avatar-block">
                 <Form.Group controlId="formDisplayName">
                     <Form.Label>Display Name</Form.Label>
