@@ -13,7 +13,7 @@ function UserProfile({showAlert}) {
     const [email, setEmail] = useState(auth.user.email);
     const [displayName, setDisplayName] = useState( (auth.user.displayName || ''));
 
-    async function handlerUpdateProfile(e) {
+    function handlerUpdateProfile(e) {
         e.preventDefault();
 
         auth.user.updateProfile({displayName})
@@ -24,7 +24,7 @@ function UserProfile({showAlert}) {
             });
     }
 
-    async function handlerUpdateEmail(e) {
+    function handlerUpdateEmail(e) {
         e.preventDefault();
 
         const currentEmail = prompt('Введите текщий email:');
