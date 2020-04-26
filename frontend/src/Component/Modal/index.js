@@ -2,9 +2,10 @@ import './style.css'
 import React, {useEffect} from 'react';
 import Modal from "react-bootstrap/Modal";
 
-function ModalApp({openModal, setOpenModal, children}) {
+function ModalApp({openModal, setOpenModal, children, ...props}) {
 
     useEffect( () => {
+        if (!openModal) return;
 
         const listener = e => e.stopPropagation();
 
@@ -16,10 +17,10 @@ function ModalApp({openModal, setOpenModal, children}) {
             document.removeEventListener('touchstart', listener, true);
         };
 
-    },[])
+    },[openModal])
 
     return (
-        <Modal show={openModal} onHide={(e) => {setOpenModal(false)}} >
+        <Modal show={openModal} onHide={(e) => {setOpenModal(false)}} {...props}>
             {children}
         </Modal>
     )

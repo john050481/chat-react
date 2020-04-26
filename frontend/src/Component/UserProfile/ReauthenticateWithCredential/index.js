@@ -1,5 +1,5 @@
 import './style.css'
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ModalApp from "../../Modal";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -10,8 +10,14 @@ function ReauthenticateWithCredential({openModal, setOpenModal, callback}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    useEffect( () => {
+        console.log('openModal ===', openModal);
+        setEmail('');
+        setPassword('');
+    },[openModal])
+
     return (
-        <ModalApp openModal={openModal} setOpenModal={setOpenModal} >
+        <ModalApp openModal={openModal} setOpenModal={setOpenModal} onHide={ (e) => {callback(e, null); setOpenModal(false)} }>
             <Modal.Header closeButton>
                 <Modal.Title>Введите ваши текущие учетные данные</Modal.Title>
             </Modal.Header>

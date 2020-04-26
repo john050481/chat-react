@@ -125,11 +125,7 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
                     Change password
                 </Button>
             </Form>
-            {
-                openModal
-                    ? <ReauthenticateWithCredential openModal={openModal} setOpenModal={setOpenModal} callback={(e, data)=>{console.log('CALLBACK FROM MODAL!!!', data)}} />
-                    : null
-            }
+            <ReauthenticateWithCredential openModal={openModal} setOpenModal={setOpenModal} callback={(e, data)=>{console.log('CALLBACK FROM MODAL!!!', data)}} />
             <Button variant="success" onClick={()=>setOpenModal(true)}>
                 Open modal
             </Button>
