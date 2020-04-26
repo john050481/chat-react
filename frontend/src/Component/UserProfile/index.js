@@ -22,6 +22,7 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
     const [photoURL, setPhotoURL] = useState( (photoURLInStore || ''));
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [checkMeOut, setCheckMeOut] = useState(false);
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -106,7 +107,8 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
                     .then( () => {
                         setPassword('');
                         setPasswordConfirm('');
-                        showAlert({text: 'Update password successful!', options: {variant: 'success'}})
+                        showAlert({text: 'Update password successful!', options: {variant: 'success'}});
+                        if (checkMeOut) auth.signout();
                     } )
                     .catch( (error) => {
                         showAlert({text: error.message, options: {variant: 'danger'}})
@@ -181,7 +183,7 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
                     <Form.Control type="password" placeholder="Confirm password" value={passwordConfirm} onChange={(e)=>setPasswordConfirm(e.target.value)}/>
                 </Form.Group>
                 <Form.Group>
-                    <Form.Check type="checkbox" label="Check me out" />
+                    <Form.Check id='checkMeOut' type="checkbox" label="Check me out" checked={checkMeOut} onChange={(e)=>setCheckMeOut(!checkMeOut)}/>
                 </Form.Group>
                 <Button variant="primary" onClick={handlerUpdatePassword}>
                     Change password
