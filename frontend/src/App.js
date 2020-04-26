@@ -36,6 +36,10 @@ function App({userLogin, userLogout}) {
                   <Route exact path="/chat" component={HOCRequireAuth(RootLayout, '/auth')} />
                   <Route exact path="/about" component={About} />
                   <Route exact path="/auth">
+                      {/*УДАЛИТЬ EXAMPLE!!!*/}
+                      <div style={{fontSize: '20px', textAlign: 'center', marginTop: '57px'}}>
+                          Для примера введите LOGIN / PASSWORD: <span style={{color: 'red'}}>example@example.ru</span>
+                      </div>
                       <AuthForm /*auth={auth}*/ />
                   </Route>
                   <Redirect to="/chat" />
