@@ -11,6 +11,8 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import ReauthenticateWithCredential from './ReauthenticateWithCredential';
 
+let callbackToModal = null;
+
 function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInStore}) {
     console.log("render UserProfile");
 
@@ -32,13 +34,24 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
             });
     }
 
-    function handlerUpdateEmail(e) {
+    async function handlerUpdateEmail(e) {
         e.preventDefault();
 
-        const currentEmail = prompt('Введите текщий email:');
-        const currentPassword = prompt('Введите текщий пароль:');
+        let currentEmail, currentPassword;
+        try {
+            ( {email: currentEmail, password: currentPassword} = await new Promise( (res, rej) => {
+                callbackToModal = res;
+                setOpenModal(true);
+            }) );
+            callbackToModal = null;
+        } catch (error) {
+            showAlert({text: error.message, options: {variant: 'danger'}})
+            console.log('Error enter data:', error);
+            return;
+        }
+
         if ( !currentEmail || !currentPassword) {
-            showAlert({text: 'НЕТ ДАННЫХ!!!', options: {variant: 'danger'}});
+            showAlert({text: 'НЕ все данные введены!!!', options: {variant: 'danger'}});
             return;
         }
         const credential = auth.firebase.auth.EmailAuthProvider.credential(currentEmail, currentPassword);
@@ -125,10 +138,11 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
                     Change password
                 </Button>
             </Form>
-            <ReauthenticateWithCredential openModal={openModal} setOpenModal={setOpenModal} callback={(e, data)=>{console.log('CALLBACK FROM MODAL!!!', data)}} />
-            <Button variant="success" onClick={()=>setOpenModal(true)}>
-                Open modal
-            </Button>
+            <ReauthenticateWithCredential
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+                callback={ (e, data) => callbackToModal(data) }
+            />
         </div>
     )
 }

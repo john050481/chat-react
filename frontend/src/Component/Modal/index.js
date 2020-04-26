@@ -4,6 +4,9 @@ import Modal from "react-bootstrap/Modal";
 
 function ModalApp({openModal, setOpenModal, children, ...props}) {
 
+    // Делаем так чтоб эффект срабатывал на погружении и останавливался: e.stopPropagation(),
+    // т.к. в хуке "useOnClickOutside.js" используются события "mousedown" и "touchstart"
+    // вешаем "addEventListener" только если модалка открыта: useEffect(..., [openModal])
     useEffect( () => {
         if (!openModal) return;
 

@@ -11,13 +11,17 @@ function ReauthenticateWithCredential({openModal, setOpenModal, callback}) {
     const [password, setPassword] = useState('');
 
     useEffect( () => {
-        console.log('openModal ===', openModal);
         setEmail('');
         setPassword('');
     },[openModal])
 
+    function handlerCallback(e, email, password) {
+        callback(e, {email, password});
+        setOpenModal(false)
+    };
+
     return (
-        <ModalApp openModal={openModal} setOpenModal={setOpenModal} onHide={ (e) => {callback(e, null); setOpenModal(false)} }>
+        <ModalApp openModal={openModal} setOpenModal={setOpenModal} onHide={ (e) => handlerCallback(e, null, null) }>
             <Modal.Header closeButton>
                 <Modal.Title>Введите ваши текущие учетные данные</Modal.Title>
             </Modal.Header>
@@ -32,10 +36,10 @@ function ReauthenticateWithCredential({openModal, setOpenModal, callback}) {
                 </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={(e) => { callback(e, {email, password}); setOpenModal(false) }}>
+                <Button variant="primary" onClick={(e) => handlerCallback(e, email, password) }>
                     Enter
                 </Button>
-                <Button variant="secondary" onClick={(e) => { callback(e, null); setOpenModal(false)} }>
+                <Button variant="secondary" onClick={(e) => handlerCallback(e, null, null) }>
                     Cancel
                 </Button>
             </Modal.Footer>
