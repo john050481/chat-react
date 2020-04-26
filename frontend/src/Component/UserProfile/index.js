@@ -34,19 +34,29 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
             });
     }
 
+    async function getCredential() {
+        let currentEmail, currentPassword;
+        try {
+            ( {email: currentEmail, password: currentPassword} = await new Promise( (response, reject) => {
+                callbackToModal = response;
+                setOpenModal(true);
+            }) );
+            callbackToModal = null;
+        } catch (error) {
+            console.log('Error reauthenticate:', error);
+            throw error;
+        }
+        return [currentEmail, currentPassword]
+    }
+
     async function handlerUpdateEmail(e) {
         e.preventDefault();
 
         let currentEmail, currentPassword;
         try {
-            ( {email: currentEmail, password: currentPassword} = await new Promise( (res, rej) => {
-                callbackToModal = res;
-                setOpenModal(true);
-            }) );
-            callbackToModal = null;
+            ( [currentEmail, currentPassword] = await getCredential() );
         } catch (error) {
             showAlert({text: error.message, options: {variant: 'danger'}})
-            console.log('Error enter data:', error);
             return;
         }
 
@@ -141,7 +151,7 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
             <ReauthenticateWithCredential
                 openModal={openModal}
                 setOpenModal={setOpenModal}
-                callback={ (e, data) => callbackToModal(data) }
+                callback={ (e, data) => callbackToModal && callbackToModal(data) }
             />
         </div>
     )

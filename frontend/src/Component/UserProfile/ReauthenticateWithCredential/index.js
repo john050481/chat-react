@@ -16,7 +16,7 @@ function ReauthenticateWithCredential({openModal, setOpenModal, callback}) {
     },[openModal])
 
     function handlerCallback(e, email, password) {
-        callback(e, {email, password});
+        callback && callback(e, {email, password});
         setOpenModal(false)
     };
 
