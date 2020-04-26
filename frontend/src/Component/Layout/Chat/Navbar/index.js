@@ -1,23 +1,23 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import {FaSearch, FaCog, FaUserAlt} from "react-icons/fa";
-import SearchMessage from '../../../SearchMessage'
+import FakeSearchMessage from '../../../FakeComponent/FakeSearchMessage'
 import {showLayout} from "../../../../redux/actions";
 import {connect} from "react-redux";
-import Settings from '../../../Settings';
+import FakeSettings from '../../../FakeComponent/FakeSettings';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import UserProfile from "../../../UserProfile";
+import FakeProfile from "../../../FakeComponent/FakeProfile";
 import './style.css'
 
 function NavBarRoot(props) {
     console.log('Render NavBarMain')
 
     const components = {
-        UserProfile: <UserProfile />,
-        SearchMessage: <SearchMessage />,
-        Settings: <Settings />
+        FakeProfile: <FakeProfile />,
+        FakeSearchMessage: <FakeSearchMessage />,
+        FakeSettings: <FakeSettings />
     }
 
     function handleClick(e) {
@@ -35,7 +35,7 @@ function NavBarRoot(props) {
             <Container>
                 <Row>
                     <Col>
-                        <Button variant="outline-success" data-component='UserProfile' title="user profile"><FaUserAlt /></Button>
+                        <Button variant="outline-success" data-component='FakeProfile' title="user profile"><FaUserAlt /></Button>
                     </Col>
                 </Row>
             </Container>
@@ -48,8 +48,8 @@ function NavBarRoot(props) {
             <Button variant="outline-info">In</Button>{' '}
             <Button variant="outline-light">Li</Button>{' '}
 */}
-            <Button variant="outline-primary" data-component='SearchMessage' title="search message"><FaSearch /></Button>
-            <Button variant="outline-dark" data-component='Settings' title="settings"><FaCog /></Button>
+            <Button variant="outline-primary" data-component='FakeSearchMessage' title="search message"><FaSearch /></Button>
+            <Button variant="outline-dark" data-component='FakeSettings' title="FakeSettings"><FaCog /></Button>
         </div>
     )
 }

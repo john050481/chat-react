@@ -6,7 +6,7 @@ import {requestChats, showLayout} from "../../../../redux/actions";
 import {connect} from "react-redux";
 import Button from "react-bootstrap/Button";
 import {FaCog, FaRedo, FaArrowLeft, FaArrowRight} from "react-icons/fa";
-import Settings from '../../../Settings';
+import FakeSettings from '../../../FakeComponent/FakeSettings';
 import SearchedChats from './SearchedChats'
 import {useOnClickOutside} from "../../../../hooks/useOnClickOutside";
 
@@ -20,7 +20,7 @@ function NavBarSidebar(props) {
     const [searchValue, setSearchValue] = useState('');
 
     function handleClickSettings(e) {
-        props.setRender( (prev) => () => <Settings /> );
+        props.setRender( (prev) => () => <FakeSettings /> );
         props.showLayout({region: props.region});
     }
 
@@ -50,7 +50,7 @@ function NavBarSidebar(props) {
                 <InputGroup.Append hidden={props.isSmall}>
                     <Button
                         variant="outline-dark"
-                        data-component='Settings'
+                        data-component='FakeSettings'
                         title="settings"
                         size="sm"
                         onClick={handleClickSettings}

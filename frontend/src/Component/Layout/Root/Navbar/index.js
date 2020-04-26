@@ -3,8 +3,8 @@ import Button from "react-bootstrap/Button";
 import {FaSearch, FaCog, FaUserAlt, FaSignOutAlt, FaInfo} from "react-icons/fa";
 import {showLayout} from "../../../../redux/actions";
 import {connect} from "react-redux";
-import SearchMessage from '../../../SearchMessage'
-import Settings from '../../../Settings';
+import FakeSearchMessage from '../../../FakeComponent/FakeSearchMessage'
+import FakeSettings from '../../../FakeComponent/FakeSettings';
 import UserProfile from "../../../UserProfile";
 import AuthForm from '../../../AuthForm';
 import About from '../../../About';
@@ -18,8 +18,8 @@ function NavBarRoot(props) {
 
     const components = {
         UserProfile: <UserProfile />,
-        SearchMessage: <SearchMessage />,
-        Settings: <Settings />,
+        FakeSearchMessage: <FakeSearchMessage />,
+        FakeSettings: <FakeSettings />,
         AuthForm: <AuthForm />,
         About: <About />
     }
@@ -44,8 +44,8 @@ function NavBarRoot(props) {
                     </Col>
                 </Row>
             </Container>
-            <Button variant="outline-primary" data-component='SearchMessage' title="search message"><FaSearch /></Button>
-            <Button variant="outline-dark" data-component='Settings' title="settings"><FaCog /></Button>
+            <Button variant="outline-primary" data-component='FakeSearchMessage' title="search message"><FaSearch /></Button>
+            <Button variant="outline-dark" data-component='FakeSettings' title="settings"><FaCog /></Button>
             <Button variant="outline-secondary" data-component='AuthForm' title="signout"><FaSignOutAlt /></Button>
         </div>
     )
