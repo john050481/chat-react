@@ -7,7 +7,7 @@ export default function() {
     console.log('Render Settings')
     return (
         <div>
-            <h1>ЗАГЛУШКА (Settings)</h1>
+            <h1>FAKE settings</h1>
             <Form className="settings-block">
                 <Form.Group controlId="exampleForm.ControlInput1">
                     <Form.Label>Email address</Form.Label>

@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 export default function FakeProfile(props) {
     return (
         <div className='fake-profile-block'>
-            <h1>Fake profile</h1>
+            <h1>FAKE profile</h1>
 
             <Form className='fake-profile-form'>
                 <Form.Row>

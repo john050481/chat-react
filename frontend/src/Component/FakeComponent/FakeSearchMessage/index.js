@@ -8,7 +8,7 @@ export default function(props) {
     console.log('Render SearchMessage');
     return (
         <div>
-            <h1>ЗАГЛУШКА (Search message)</h1>
+            <h1>FAKE search message</h1>
             <InputGroup className="p-3 search-message">
                 <FormControl
                     placeholder="search message"
