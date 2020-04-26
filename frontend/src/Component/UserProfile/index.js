@@ -9,6 +9,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
+import ReauthenticateWithCredential from './ReauthenticateWithCredential';
 
 function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInStore}) {
     console.log("render UserProfile");
@@ -122,6 +123,7 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
                     Change password
                 </Button>
             </Form>
+            <ReauthenticateWithCredential show={true} />
         </div>
     )
 }
