@@ -20,6 +20,8 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
     const [email, setEmail] = useState(emailInStore);
     const [displayName, setDisplayName] = useState( (displayNameInStore || ''));
     const [photoURL, setPhotoURL] = useState( (photoURLInStore || ''));
+    const [password, setPassword] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -81,6 +83,43 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
             });
     }
 
+    async function handlerUpdatePassword(e) {
+        e.preventDefault();
+
+        if (password !== passwordConfirm) {
+            showAlert({text: 'Пароли не одинаковые!!!', options: {variant: 'danger'}});
+            return;
+        }
+
+        let credential;
+        try {
+            credential = await getCredential();
+        } catch (error) {
+            showAlert({text: error.message, options: {variant: 'danger'}})
+            console.log('Error get/request credential:', error);
+            return;
+        }
+
+        auth.user.reauthenticateWithCredential(credential)
+            .then(() => {
+                auth.user.updatePassword(password)
+                    .then( () => {
+                        setPassword('');
+                        setPasswordConfirm('');
+                        showAlert({text: 'Update password successful!', options: {variant: 'success'}})
+                    } )
+                    .catch( (error) => {
+                        showAlert({text: error.message, options: {variant: 'danger'}})
+                        console.log('Error update password:', error)
+                    });
+            })
+            .catch( (error) => {
+                showAlert({text: error.message, options: {variant: 'danger'}})
+                console.log('Error reauthenticate:', error)
+            });
+    }
+
+
     return (
         <div className='user-profile-block'>
             <h1>{displayNameInStore + ' / ' + emailInStore}</h1>
@@ -135,16 +174,16 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
                 {/*PASSWORD*/}
                 <Form.Group>
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" />
+                    <Form.Control type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Confirm password</Form.Label>
-                    <Form.Control type="password" placeholder="Confirm password" />
+                    <Form.Control type="password" placeholder="Confirm password" value={passwordConfirm} onChange={(e)=>setPasswordConfirm(e.target.value)}/>
                 </Form.Group>
                 <Form.Group>
                     <Form.Check type="checkbox" label="Check me out" />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" onClick={handlerUpdatePassword}>
                     Change password
                 </Button>
             </Form>
