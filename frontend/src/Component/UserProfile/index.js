@@ -140,18 +140,15 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
                 </Row>
             </Container>
 
-            <hr />
-
             <Form className="user-profile-form">
-
                 {/*PROFILE*/}
+                <Form.Group>
+                    <Form.Label>Photo URL</Form.Label>
+                    <Form.Control type="text" placeholder="http://example.com/example-photo.jpg" value={photoURL} onChange={(e)=>setPhotoURL(e.target.value)}/>
+                </Form.Group>
                 <Form.Group>
                     <Form.Label>Display Name</Form.Label>
                     <Form.Control type="text" placeholder="Enter display name" value={displayName} onChange={(e)=>setDisplayName(e.target.value)}/>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Photo URL</Form.Label>
-                    <Form.Control type="text" placeholder="Enter photo URL" value={photoURL} onChange={(e)=>setPhotoURL(e.target.value)}/>
                 </Form.Group>
                 <Button variant="primary" onClick={handlerUpdateProfile}>
                     Update profile
