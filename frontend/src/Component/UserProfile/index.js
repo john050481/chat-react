@@ -34,33 +34,24 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
             });
     }
 
-    async function responseCredential() {
-        let currentEmail, currentPassword;
-        try {
-            ( {email: currentEmail, password: currentPassword} = await new Promise( (response, reject) => {
-                callbackToModal = response;
-                setOpenModal(true);
-            }) );
-            callbackToModal = null;
-        } catch (error) {
-            throw error;
-        }
-        return [currentEmail, currentPassword]
+    async function requestCredentialFromUser() {
+        const {email, password} = await new Promise( (response, reject) => {
+            callbackToModal = response;
+            setOpenModal(true);
+        });
+        callbackToModal = null;
+
+        return [email, password]
     }
 
     async function getCredential() {
-        let currentEmail, currentPassword;
-        try {
-            ( [currentEmail, currentPassword] = await responseCredential() );
-        } catch (error) {
-            throw error;
-        }
+        const [enteredEmail, enteredPassword] = await requestCredentialFromUser()
 
-        if ( !currentEmail || !currentPassword) {
+        if ( !enteredEmail || !enteredPassword) {
             throw new Error('НЕ все данные введены!!!');
         }
 
-        return auth.firebase.auth.EmailAuthProvider.credential(currentEmail, currentPassword);
+        return auth.firebase.auth.EmailAuthProvider.credential(enteredEmail, enteredPassword);
     }
 
     async function handlerUpdateEmail(e) {
@@ -71,7 +62,7 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
             credential = await getCredential();
         } catch (error) {
             showAlert({text: error.message, options: {variant: 'danger'}})
-            console.log('ERROR:', error);
+            console.log('Error get/request credential:', error);
             return;
         }
 
