@@ -53,7 +53,7 @@ function NavBarRoot(props) {
 
 const mapStateToProps = store => {
     return {
-        photoURL: store.user.user.photoURL
+        photoURL: store.user.user ? store.user.user.photoURL : ''
     }
 }
 const mapDispatchToProps = {

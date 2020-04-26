@@ -135,7 +135,7 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
                         <Image className='user-profile-photo' src={photoURLInStore ? photoURLInStore : "/defaulAvatar.png"} roundedCircle />
                     </Col>
                     <Col xs={6} md={4}>
-                        <Image className='user-profile-photo' src={photoURLInStore ? photoURLInStore : "/defaulAvatar.png"} thumbnail />
+                        <Image className='user-profile-photo photo_4x3' src={photoURLInStore ? photoURLInStore : "/defaulAvatar.png"} thumbnail />
                     </Col>
                 </Row>
             </Container>
