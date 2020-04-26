@@ -34,7 +34,7 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
             });
     }
 
-    async function getCredential() {
+    async function responseCredential() {
         let currentEmail, currentPassword;
         try {
             ( {email: currentEmail, password: currentPassword} = await new Promise( (response, reject) => {
@@ -43,28 +43,37 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
             }) );
             callbackToModal = null;
         } catch (error) {
-            console.log('Error reauthenticate:', error);
             throw error;
         }
         return [currentEmail, currentPassword]
     }
 
-    async function handlerUpdateEmail(e) {
-        e.preventDefault();
-
+    async function getCredential() {
         let currentEmail, currentPassword;
         try {
-            ( [currentEmail, currentPassword] = await getCredential() );
+            ( [currentEmail, currentPassword] = await responseCredential() );
         } catch (error) {
-            showAlert({text: error.message, options: {variant: 'danger'}})
-            return;
+            throw error;
         }
 
         if ( !currentEmail || !currentPassword) {
-            showAlert({text: 'НЕ все данные введены!!!', options: {variant: 'danger'}});
+            throw new Error('НЕ все данные введены!!!');
+        }
+
+        return auth.firebase.auth.EmailAuthProvider.credential(currentEmail, currentPassword);
+    }
+
+    async function handlerUpdateEmail(e) {
+        e.preventDefault();
+
+        let credential;
+        try {
+            credential = await getCredential();
+        } catch (error) {
+            showAlert({text: error.message, options: {variant: 'danger'}})
+            console.log('ERROR:', error);
             return;
         }
-        const credential = auth.firebase.auth.EmailAuthProvider.credential(currentEmail, currentPassword);
 
         auth.user.reauthenticateWithCredential(credential)
             .then(() => {
