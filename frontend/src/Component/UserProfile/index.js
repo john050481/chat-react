@@ -19,6 +19,8 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
     const [displayName, setDisplayName] = useState( (displayNameInStore || ''));
     const [photoURL, setPhotoURL] = useState( (photoURLInStore || ''));
 
+    const [openModal, setOpenModal] = useState(false);
+
     function handlerUpdateProfile(e) {
         e.preventDefault();
 
@@ -123,7 +125,14 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
                     Change password
                 </Button>
             </Form>
-            <ReauthenticateWithCredential show={true} />
+            {
+                openModal
+                    ? <ReauthenticateWithCredential openModal={openModal} setOpenModal={setOpenModal} callback={(e, data)=>{console.log('CALLBACK FROM MODAL!!!', data)}} />
+                    : null
+            }
+            <Button variant="success" onClick={()=>setOpenModal(true)}>
+                Open modal
+            </Button>
         </div>
     )
 }
