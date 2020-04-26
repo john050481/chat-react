@@ -12,12 +12,9 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import './style.css'
-import {useAuth} from "../../../../hooks/useAuth";
 
 function NavBarRoot(props) {
     console.log('Render NavBarRoot')
-
-    const auth = useAuth();
 
     const components = {
         UserProfile: <UserProfile />,
@@ -42,7 +39,7 @@ function NavBarRoot(props) {
             <Container>
                 <Row>
                     <Col>
-                        <Button variant="success" data-component='UserProfile' title="user profile">{auth.user.photoURL ? <img className='navbar-root-profile-photo' src={auth.user.photoURL} /> : <FaUserAlt />}</Button>
+                        <Button variant="success" data-component='UserProfile' title="user profile">{props.photoURL ? <img className='navbar-root-profile-photo' src={props.photoURL} /> : <FaUserAlt />}</Button>
                         <Button variant="outline-light" data-component='About' title="about"><FaInfo /></Button>
                     </Col>
                 </Row>
@@ -56,6 +53,7 @@ function NavBarRoot(props) {
 
 const mapStateToProps = store => {
     return {
+        photoURL: store.user.user.photoURL
     }
 }
 const mapDispatchToProps = {
