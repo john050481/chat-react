@@ -42,7 +42,7 @@ function ReauthenticateWithCredential(props) {
                 console.log('44444###########################')
             }}
         >
-            <Modal show={props.show} onHide={(e) => {console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@')}} >
+            <Modal show={props.show} onHide={(e) => {}} >
                 <Modal.Header closeButton>
                     <Modal.Title>Введите ваши текущие учетные данные</Modal.Title>
                 </Modal.Header>
