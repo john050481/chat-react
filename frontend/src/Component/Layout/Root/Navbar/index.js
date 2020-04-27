@@ -26,20 +26,22 @@ function NavBarRoot(props) {
 
     function handleClick(e) {
         e.preventDefault();
-        let btn = e.target.closest('.navbarroot-block button')
-        if (!btn) return;
-        let component = btn.dataset.component;
+        let elem = e.target.closest('[data-component]')
+        if (!elem) return;
+        let component = elem.dataset.component;
         if (!component) return;
         props.setRender( (prev) => () => components[component] );
         props.showLayout({region: props.region});
     }
 
     return (
-        <div className="navbarroot-block" onClick={handleClick}>
+        <div className="navbar-root-block" onClick={handleClick}>
             <Container>
                 <Row>
                     <Col>
-                        <Button variant="success" data-component='UserProfile' title="user profile">{props.photoURL ? <img className='navbar-root-profile-photo' src={props.photoURL} /> : <FaUserAlt />}</Button>
+                        <div className="navbar-root-profile-img">
+                            {props.photoURL ? <img data-component='UserProfile' src={props.photoURL} /> : <FaUserAlt />}
+                        </div>
                         <Button variant="outline-light" data-component='About' title="about"><FaInfo /></Button>
                     </Col>
                 </Row>

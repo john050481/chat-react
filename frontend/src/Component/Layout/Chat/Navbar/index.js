@@ -22,9 +22,9 @@ function NavBarRoot(props) {
 
     function handleClick(e) {
         e.preventDefault();
-        let btn = e.target.closest('.navbarmain-block button')
-        if (!btn) return;
-        let component = btn.dataset.component;
+        let elem = e.target.closest('[data-component]')
+        if (!elem) return;
+        let component = elem.dataset.component;
         if (!component) return;
         props.setRender( (prev) => () => components[component] );
         props.showLayout({region: props.region});
