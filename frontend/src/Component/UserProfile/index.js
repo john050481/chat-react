@@ -11,8 +11,6 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import ReauthenticateWithCredential from './ReauthenticateWithCredential';
 
-let callbackToModal = null;
-
 function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInStore}) {
     console.log("render UserProfile");
 
@@ -24,6 +22,7 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [checkMeOut, setCheckMeOut] = useState(false);
 
+    const [callbackToModal, setCallbackToModal] = useState(null);
     const [openModal, setOpenModal] = useState(false);
 
     function handlerUpdateProfile(e) {
@@ -39,10 +38,10 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
 
     async function requestCredentialFromUser() {
         const {email, password} = await new Promise( (response, reject) => {
-            callbackToModal = response;
+            setCallbackToModal((prev) => response);
             setOpenModal(true);
         });
-        callbackToModal = null;
+        setCallbackToModal(null);
 
         return [email, password]
     }
