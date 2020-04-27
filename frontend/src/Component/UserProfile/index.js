@@ -16,8 +16,8 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
 
     const auth = useAuth();
     const [email, setEmail] = useState(emailInStore);
-    const [displayName, setDisplayName] = useState( (displayNameInStore || ''));
-    const [photoURL, setPhotoURL] = useState( (photoURLInStore || ''));
+    const [displayName, setDisplayName] = useState( (displayNameInStore || '') );
+    const [photoURL, setPhotoURL] = useState( (photoURLInStore || '') );
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [checkMeOut, setCheckMeOut] = useState(false);
