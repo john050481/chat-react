@@ -40,7 +40,7 @@ function NavBarRoot(props) {
                 <Row>
                     <Col>
                         <div className="navbar-root-profile-img mr-2">
-                            {props.photoURL ? <img data-component='UserProfile' src={props.photoURL} /> : <FaUserAlt />}
+                            {props.photoURL ? <img data-component='UserProfile' src={props.photoURL} /> : <FaUserAlt data-component='UserProfile'/>}
                         </div>
                         <Button variant="outline-light" data-component='About' title="about"><FaInfo /></Button>
                     </Col>

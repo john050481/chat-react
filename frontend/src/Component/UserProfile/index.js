@@ -10,6 +10,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import ReauthenticateWithCredential from './ReauthenticateWithCredential';
+import {FaUserAlt} from "react-icons/fa";
 
 function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInStore}) {
     console.log("render UserProfile");
@@ -128,13 +129,19 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
             <Container className='user-profile-photo-container'>
                 <Row>
                     <Col xs={6} md={4}>
-                        <Image className='user-profile-photo' src={photoURLInStore ? photoURLInStore : "/defaulAvatar.png"} rounded />
+                        <div className="user-profile-photo round">
+                            {photoURLInStore ? <img src={photoURLInStore ? photoURLInStore : "/defaulAvatar.png"} /> : <FaUserAlt />}
+                        </div>
                     </Col>
                     <Col xs={6} md={4}>
-                        <Image className='user-profile-photo' src={photoURLInStore ? photoURLInStore : "/defaulAvatar.png"} roundedCircle />
+                        <div className="user-profile-photo square">
+                            {photoURLInStore ? <img src={photoURLInStore ? photoURLInStore : "/defaulAvatar.png"} /> : <FaUserAlt />}
+                        </div>
                     </Col>
                     <Col xs={6} md={4}>
-                        <Image className='user-profile-photo photo_4x3' src={photoURLInStore ? photoURLInStore : "/defaulAvatar.png"} thumbnail />
+                        <div className="user-profile-photo rectangle_4x3">
+                            {photoURLInStore ? <img src={photoURLInStore ? photoURLInStore : "/defaulAvatar.png"} /> : <FaUserAlt />}
+                        </div>
                     </Col>
                 </Row>
             </Container>
