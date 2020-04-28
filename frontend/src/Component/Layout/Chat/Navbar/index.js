@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import {FaSearch, FaCog, FaUserAlt} from "react-icons/fa";
+import {FaSearch, FaCog, FaWhatsapp} from "react-icons/fa";
 import FakeSearchMessage from '../../../FakeComponent/FakeSearchMessage'
 import {showLayout} from "../../../../redux/actions";
 import {connect} from "react-redux";
@@ -39,10 +39,10 @@ function NavBarRoot(props) {
                         <Button
                             variant="outline-success"
                             data-component='ChatInfo'
-                            title="user profile"
+                            title="chat info"
                             disabled={!props.chatInfo}
                         >
-                            <FaUserAlt />
+                            <FaWhatsapp />
                         </Button>
                     </Col>
                 </Row>

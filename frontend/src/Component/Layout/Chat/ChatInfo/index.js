@@ -9,7 +9,7 @@ function ChatInfo({chatInfo}) {
     return (
         chatInfo &&
         <div className='chat-info-block'>
-            <h1>Chat/contact info</h1>
+            <h1>Chat / contact info</h1>
 
             <Form className='chat-info-form'>
                 <Form.Row>
