@@ -8,7 +8,8 @@
 }
 
 .alert-component{
-    animation: blinking 3s infinite;
+    border-width: 2px;
+    animation: blinking 1s infinite;
 }
 @keyframes blinking {
     0%{border-color: inherit;}
