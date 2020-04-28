@@ -39,7 +39,7 @@ function NavBarRoot(props) {
                         <Button
                             variant="outline-success"
                             data-component='ChatInfo'
-                            title="chat info"
+                            title={!props.chatInfo ? "chat info: выберите чат!" : "chat info" }
                             disabled={!props.chatInfo}
                         >
                             <FaWhatsapp />

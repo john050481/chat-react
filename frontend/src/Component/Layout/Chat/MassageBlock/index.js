@@ -17,7 +17,7 @@ function MessageBlock(props) {
     return (
         <main className="content message-block-wrapper" onClick={handleClick} >
             <div className='content message-block-scroll'>
-                <div id='message-block' className='content message-block p-2'>
+                <div id='message-block' className='content message-block p-1'>
                     {
                         props.messages.map( message =>
                             <ChatMessage

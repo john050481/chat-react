@@ -3,7 +3,7 @@
 }
 
 .chat.active{
-    background: #969497;
+    background: hsla(257, 100%, 86%, 0.85);
 }
 
 .chat.active.card {
@@ -13,7 +13,7 @@
 }
 
 .chat:hover:not(.active) {
-    background: #e3e3e3;
+    background: hsla(259, 100%, 95%, 0.85);
 }
 
 .chat-header {
