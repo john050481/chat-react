@@ -37,7 +37,7 @@ function MessageBlock(props) {
                                 key={message.id}
                                 message={message}
                                 citation={message.id % 3 ? '{bla bla bla citation}' : ''}
-                                owner={message.id % 2 ? '{Any user}' : ''}/>
+                                owner={message.id % 2 ? ( props.chats.length ? props.chats.find( chat => chat.id === message.userId ) : '' ) : ''}/>
                           )
                     }
                 </div>
@@ -56,7 +56,8 @@ function MessageBlock(props) {
 const mapStateToProps = store => {
     return {
         messages: store.chat.messages,
-        requestChatId: store.chat.requestChatId
+        requestChatId: store.chat.requestChatId,
+        chats: store.chat.chats
     }
 }
 const mapDispatchToProps = {

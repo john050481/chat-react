@@ -10,7 +10,7 @@ export default function ChatMessage(props) {
                 owner &&
                 <Toast.Header closeButton={false}>
                     <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
-                    <strong className="mr-auto">{owner}</strong>
+                    <strong className="mr-auto">{owner ? owner.name : '' }</strong>
                     <small className='ml-3'>{'{2020-04-25}'}</small>
                 </Toast.Header>
             }
