@@ -20,7 +20,11 @@ function MessageBlock(props) {
                 <div id='message-block' className='content message-block p-2'>
                     {
                         props.messages.map( message =>
-                            <ChatMessage key={message.id} message={message} citation={'bla bla bla citation'} owner={'Any user'}/>
+                            <ChatMessage
+                                key={message.id}
+                                message={message}
+                                citation={message.id % 3 ? 'bla bla bla citation' : ''}
+                                owner={message.id % 2 ? 'Any user' : ''}/>
                         )
                     }
                 </div>

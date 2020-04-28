@@ -17,10 +17,9 @@ export default function ChatMessage(props) {
             <Toast.Body>
                 {
                     citation &&
-                    <>
+                    <div className='chat-message--citation m-1 p-2'>
                         <small><i>{citation}</i></small>
-                        <hr />
-                    </>
+                    </div>
                 }
                 <p data-message={true}>{message.body}</p>
             </Toast.Body>

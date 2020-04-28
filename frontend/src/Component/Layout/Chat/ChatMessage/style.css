@@ -1,5 +1,5 @@
 .chat-message {
-    max-width: 100%;
+    max-width: 80%;
     border-radius: 0.5rem;
 }
 
@@ -17,14 +17,14 @@ p[data-message] {
     cursor: pointer;
 }
 
-.chat-message hr {
-    margin-top: 0;
-    margin-bottom: 0;
-;
-}
-
 .chat-message--time {
     position: absolute;
     bottom: 2px;
     right: 5px;
+}
+
+.chat-message--citation {
+    color: #4e4e4e;
+    background-color: #ededed;
+    border-radius: 5px;
 }
