@@ -8,16 +8,16 @@
 }
 
 .alert-danger {
-    border-width: 2px;
+    border-width: 3px;
     animation: blinking 1s infinite;
 }
 @keyframes blinking {
     0%{border-color: inherit;}
-    50%{border-color: #ffffff;}
+    50%{border-color: #ff0000;}
     100%{border-color: inherit;}
 }
 @-webkit-keyframes blinking {
     0%{border-color: inherit;}
-    50%{border-color: #ffffff;}
+    50%{border-color: #ff0000;}
     100%{border-color: inherit;}
 }
