@@ -64,7 +64,6 @@ button:focus {
 }
 
 .message-wrap {
-    align-self: flex-end;
     margin: 3px;
     padding: 3px;
     border-radius: 5px;
@@ -72,15 +71,17 @@ button:focus {
     word-break: break-all;
 }
 .left-color {
-    background-color: #d4b7f0;
+    background-color: #efdeff;
 }
 .right-color {
-    background-color: #78f16e;
+    background-color: #d3ffd1;
 }
 .left-message {
-    text-align: left
+    align-self: flex-start;
+    text-align: left;
 }
 .right-message {
+    align-self: flex-end;
     text-align: right
 }
 .center-message {
