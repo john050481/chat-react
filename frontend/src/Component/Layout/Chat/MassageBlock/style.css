@@ -1,5 +1,6 @@
 .message-block-wrapper {
     height: calc(100vh - 220px);
+    padding-bottom: 5px;
 }
 
 .message-block-scroll {
