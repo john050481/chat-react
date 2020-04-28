@@ -28,18 +28,7 @@
     vertical-align: middle;
 }
 
-.user-profile-photo img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    cursor: pointer;
-}
-/* УБРАТЬ !!!!!!!!!!!! ПОВТОР!!!!!!!!! */
-.user-profile-photo svg {
+.user-profile-photo img, .user-profile-photo svg {
     position: absolute;
     top: 50%;
     left: 50%;

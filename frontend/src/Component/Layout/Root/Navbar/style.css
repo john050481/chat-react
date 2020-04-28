@@ -11,19 +11,7 @@
     vertical-align: middle;
 }
 
-.navbar-root-profile-img img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 50%;
-    cursor: pointer;
-}
-/* УБРАТЬ !!!!!!!!!!!! ПОВТОР!!!!!!!!! */
-.navbar-root-profile-img svg {
+.navbar-root-profile-img img, .navbar-root-profile-img svg {
     position: absolute;
     top: 50%;
     left: 50%;
