@@ -23,8 +23,8 @@ function MessageBlock(props) {
                             <ChatMessage
                                 key={message.id}
                                 message={message}
-                                citation={message.id % 3 ? 'bla bla bla citation' : ''}
-                                owner={message.id % 2 ? 'Any user' : ''}/>
+                                citation={message.id % 3 ? '{bla bla bla citation}' : ''}
+                                owner={message.id % 2 ? '{Any user}' : ''}/>
                         )
                     }
                 </div>

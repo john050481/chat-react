@@ -11,7 +11,7 @@ export default function ChatMessage(props) {
                 <Toast.Header closeButton={false}>
                     <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
                     <strong className="mr-auto">{owner}</strong>
-                    <small className='ml-3'>2020-04-25</small>
+                    <small className='ml-3'>{'{2020-04-25}'}</small>
                 </Toast.Header>
             }
             <Toast.Body>
@@ -23,7 +23,7 @@ export default function ChatMessage(props) {
                 }
                 <p data-message={true}>{message.body}</p>
             </Toast.Body>
-            <small className='chat-message--time'>11 mins ago</small>
+            <small className='chat-message--time'>{'{11 mins ago}'}</small>
         </Toast>
     )
 }
