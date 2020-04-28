@@ -73,6 +73,7 @@ export default function EmojisComponent(props) {
             <Emojies
                 emojisInState={emojisInState}
                 handlerClickOnEmoji={handlerClickOnEmoji}
+                isLoading={isLoading}
             />
         </div>
     )
