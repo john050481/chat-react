@@ -8,13 +8,14 @@ import {
 const init = {
     messages: [],
     chatInfo: null,
-    chats: []
+    chats: [],
+    requestChatId: null
 }
 
 export default function (state = init, action) {
     switch (action.type) {
         case REQUEST_CHATID:
-            return state //{ ...state, chatId: action.payload }
+            return { ...state, requestChatId: action.payload }
         case FETCHED_CHATID:
             return { ...state, chatInfo: action.payload}
         case FETCHED_MESSAGES:

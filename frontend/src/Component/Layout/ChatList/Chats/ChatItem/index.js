@@ -37,7 +37,8 @@ function ChatItem({chat, isSmall, requestChatId, loader, chatInfo}) {
 const mapStateToProps = store => {
     return {
         chatInfo: store.chat.chatInfo,
-        loader: store.app.loader.visible
+        loader: store.app.loader.visible,
+        requestChatId: store.chat.requestChatId
     }
 }
 
