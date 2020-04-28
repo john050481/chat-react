@@ -39,8 +39,8 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
 
     async function requestCredentialFromUser() {
         const {email, password} = await new Promise( (response, reject) => {
-            setCallbackToModal((prev) => response);
-            setOpenModal(true);
+            setCallbackToModal((prev) => response); //callback = Promise-response from modal window
+            setOpenModal(true); //open modal
         });
         setCallbackToModal(null);
 
