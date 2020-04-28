@@ -22,3 +22,8 @@ p[data-message] {
 ;
 }
 
+.chat-message--time {
+    position: absolute;
+    bottom: 2px;
+    right: 5px;
+}
