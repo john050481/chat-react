@@ -39,15 +39,6 @@ function NavBarRoot(props) {
                     </Col>
                 </Row>
             </Container>
-{/*
-            <Button variant="outline-primary">Pr</Button>{' '}
-            <Button variant="outline-secondary">Se</Button>{' '}
-            <Button variant="outline-success">Su</Button>{' '}
-            <Button variant="outline-warning">Wa</Button>{' '}
-            <Button variant="outline-danger">Da</Button>{' '}
-            <Button variant="outline-info">In</Button>{' '}
-            <Button variant="outline-light">Li</Button>{' '}
-*/}
             <Button variant="outline-primary" data-component='FakeSearchMessage' title="search message"><FaSearch /></Button>
             <Button variant="outline-dark" data-component='FakeSettings' title="FakeSettings"><FaCog /></Button>
         </div>
