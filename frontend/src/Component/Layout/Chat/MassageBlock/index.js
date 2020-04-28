@@ -17,10 +17,10 @@ function MessageBlock(props) {
     return (
         <main className="content message-block-wrapper" onClick={handleClick} >
             <div className='content message-block-scroll'>
-                <div id='message-block' className='content message-block pl-2 pr-2'>
+                <div id='message-block' className='content message-block p-2'>
                     {
                         props.messages.map( message =>
-                            <ChatMessage key={message.id} message={message} citation={'bla bla'} owner={'John'}/>
+                            <ChatMessage key={message.id} message={message} citation={'bla bla bla citation'} owner={'Any user'}/>
                         )
                     }
                 </div>

@@ -18,7 +18,7 @@ export default function ChatMessage(props) {
                 {
                     citation &&
                     <>
-                        <small>{citation}</small>
+                        <small><i>{citation}</i></small>
                         <hr />
                     </>
                 }
