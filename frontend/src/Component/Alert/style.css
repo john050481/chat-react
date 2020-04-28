@@ -7,7 +7,7 @@
     margin-bottom: 0px;
 }
 
-.alert-component{
+.alert-danger {
     border-width: 2px;
     animation: blinking 1s infinite;
 }
