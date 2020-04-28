@@ -1,0 +1,24 @@
+.chat-message {
+    border-radius: 0.5rem;
+}
+
+.chat-message.notMy {
+    align-self: flex-start;
+    background-color: hsla(257, 100%, 86%, 0.85);
+}
+
+.chat-message.my {
+    align-self: flex-end;
+    background-color: hsla(113, 100%, 89%, 0.85);
+}
+
+p[data-message] {
+    cursor: pointer;
+}
+
+.chat-message hr {
+    margin-top: 0;
+    margin-bottom: 0;
+;
+}
+

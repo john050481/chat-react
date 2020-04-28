@@ -32,7 +32,8 @@ function MessageSender(props) {
         return enterField;
     }
     function scrollDownMessageContainer() {
-        let messageContainer = document.getElementById('message-block')//!!!querySelector('main.content');
+        //let messageContainer = document.getElementById('message-block')
+        let messageContainer = document.querySelector('.message-block-scroll');
         messageContainer.scrollTop = messageContainer.scrollHeight
     };
 
@@ -60,7 +61,6 @@ function MessageSender(props) {
         message.setAttribute('data-message', true)
         message.innerText = target.innerText;
         if (citation) message.prepend(citation);
-//!!!        document.querySelector('main.content').append(message);
         document.getElementById('message-block').append(message);
         target.innerText = '';
         scrollDownMessageContainer();
