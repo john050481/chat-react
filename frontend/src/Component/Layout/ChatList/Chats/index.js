@@ -22,10 +22,10 @@ function Chats({isSmall, chats, chatInfo, requestChat, requestChatId}) {
         <div className='chats' onClick={handleClick}>
             {   (!chats.length)
                 ? <Container className='App-spinner-container'>
-                    <Spinner className='App-spinner' animation="grow" variant="info" />
+                      <Spinner className='App-spinner' animation="grow" variant="info" />
                   </Container>
                 : chats.map(chat =>
-                    <ChatItem key={chat.id} chat={chat} isSmall={isSmall} />
+                      <ChatItem key={chat.id} chat={chat} isSmall={isSmall} />
                   )
             }
         </div>

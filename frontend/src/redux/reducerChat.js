@@ -15,7 +15,7 @@ const init = {
 export default function (state = init, action) {
     switch (action.type) {
         case REQUEST_CHATID:
-            return { ...state, requestChatId: action.payload }
+            return { ...state, requestChatId: action.payload, messages: [] }
         case FETCHED_CHATID:
             return { ...state, chatInfo: action.payload}
         case FETCHED_MESSAGES:
