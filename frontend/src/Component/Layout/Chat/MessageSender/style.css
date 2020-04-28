@@ -64,7 +64,7 @@ button:focus {
 }
 
 .message-wrap {
-    margin: 3px;
+    margin-bottom: 5px;
     padding: 3px;
     border-radius: 5px;
     cursor: pointer;
