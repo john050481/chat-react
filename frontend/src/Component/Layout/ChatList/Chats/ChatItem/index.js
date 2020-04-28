@@ -5,7 +5,9 @@ import Loader from "../../../../Loader";
 import {FaUserCircle} from "react-icons/fa";
 import {connect} from "react-redux";
 
-function ChatItem({chat, isSmall, loader, chatId}) {
+function ChatItem({chat, isSmall, requestChatId, loader, chatInfo}) {
+    const chatId = chatInfo ? chatInfo.id : null;
+
     return (
         <div data-chatid={chat.id}>
             <Card className={ 'chat' + (chatId === chat.id ? ' active' : '') }>
@@ -13,7 +15,7 @@ function ChatItem({chat, isSmall, loader, chatId}) {
                 <Card.Body className='pl-2'>
                     <blockquote className="blockquote mb-0">
                         <div className='chat-header'>
-                            {loader && chatId === chat.id
+                            {loader && requestChatId === chat.id
                                 ? <Loader />
                                 : <FaUserCircle title={chat.name} className='mr-2' size='2em'/>
                             }
@@ -34,7 +36,7 @@ function ChatItem({chat, isSmall, loader, chatId}) {
 
 const mapStateToProps = store => {
     return {
-        chatId: store.chat.chatId,
+        chatInfo: store.chat.chatInfo,
         loader: store.app.loader.visible
     }
 }
