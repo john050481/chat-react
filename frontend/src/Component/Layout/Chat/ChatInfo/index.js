@@ -13,43 +13,61 @@ function ChatInfo({chatInfo}) {
 
             <Form className='chat-info-form'>
                 <Form.Row>
-                    <Form.Group as={Col} controlId="formGridEmail">
+                    <Form.Group as={Col}>
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="text" value={chatInfo.name} disabled/>
+                    </Form.Group>
+                </Form.Row>
+
+                <Form.Row>
+                    <Form.Group as={Col}>
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control type="text" value={chatInfo.username} disabled/>
+                    </Form.Group>
+                </Form.Row>
+
+                <hr />
+
+                <Form.Row>
+                    <Form.Group as={Col}>
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" value={chatInfo.email} disabled/>
+                        <Form.Control type="email" value={chatInfo.email} disabled/>
                     </Form.Group>
                 </Form.Row>
 
                 <Form.Row>
-                    <Form.Group as={Col} controlId="formGridPhone">
+                    <Form.Group as={Col}>
                         <Form.Label>Phone</Form.Label>
-                        <Form.Control type="text" placeholder="Phone" value={chatInfo.phone} disabled/>
+                        <Form.Control type="text" value={chatInfo.phone} disabled/>
                     </Form.Group>
                 </Form.Row>
 
                 <Form.Row>
-                    <Form.Group as={Col} controlId="formGridWebsite">
+                    <Form.Group as={Col}>
                         <Form.Label>Website</Form.Label>
-                        <Form.Control type="text" placeholder="Website" value={chatInfo.website} disabled/>
+                        <Form.Control type="text" value={chatInfo.website} disabled/>
                     </Form.Group>
                 </Form.Row>
 
-                <Form.Group controlId="formGridAddress1">
+                <hr />
+
+                <Form.Group>
                     <Form.Label>Address</Form.Label>
-                    <Form.Control placeholder="1234 Main St" value={chatInfo.address.street} disabled/>
+                    <Form.Control value={chatInfo.address.street} disabled/>
                 </Form.Group>
 
-                <Form.Group controlId="formGridAddress2">
+                <Form.Group>
                     <Form.Label>Address 2</Form.Label>
-                    <Form.Control placeholder="Apartment, studio, or floor" value={chatInfo.address.suite} disabled/>
+                    <Form.Control value={chatInfo.address.suite} disabled/>
                 </Form.Group>
 
                 <Form.Row>
-                    <Form.Group as={Col} controlId="formGridCity">
+                    <Form.Group as={Col}>
                         <Form.Label>City</Form.Label>
                         <Form.Control value={chatInfo.address.city} disabled/>
                     </Form.Group>
 
-                    <Form.Group as={Col} controlId="formGridState">
+                    <Form.Group as={Col}>
                         <Form.Label>State</Form.Label>
                         <Form.Control as="select" value="Choose..." disabled>
                             <option>Choose...</option>
@@ -57,7 +75,7 @@ function ChatInfo({chatInfo}) {
                         </Form.Control>
                     </Form.Group>
 
-                    <Form.Group as={Col} controlId="formGridZip">
+                    <Form.Group as={Col}>
                         <Form.Label>Zip</Form.Label>
                         <Form.Control value={chatInfo.address.zipcode} disabled/>
                     </Form.Group>
@@ -67,12 +85,16 @@ function ChatInfo({chatInfo}) {
                     <Form.Check type="checkbox" label="Check me out" disabled/>
                 </Form.Group>
 
+                <hr />
+
                 <Form.Row>
-                    <Form.Group as={Col} controlId="formGridCompany">
+                    <Form.Group as={Col}>
                         <Form.Label>Company</Form.Label>
-                        <Form.Control type="text" placeholder="Company" value={chatInfo.company.name} disabled/>
+                        <Form.Control type="text" value={chatInfo.company.name} disabled/>
                     </Form.Group>
                 </Form.Row>
+
+                <hr />
 
                 <Button variant="primary" disabled>
                     Submit
