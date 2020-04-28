@@ -20,17 +20,19 @@ export default class EmojiList extends React.Component {
     render() {
         console.log('Render Emojis');
         return (
-            this.props.isLoading
-            ? <Container className='App-spinner-container message-block-spinner'>
-                  <Spinner className='App-spinner' animation="grow" variant="info" />
-              </Container>
-            : <div className='emojisBlock'
-                  onClick={(e) => {this.props.handlerClickOnEmoji(e)}}>
-                  {this.props.emojisInState.map(item =>
-                      <span key={item.character}>
-                          {item.character}
-                      </span>)}
-              </div>
+            <div className='emojisBlock'
+                onClick={(e) => {this.props.handlerClickOnEmoji(e)}}
+            >
+                { this.props.isLoading
+                  ? <Container className='App-spinner-container message-block-spinner'>
+                        <Spinner className='App-spinner' animation="grow" variant="info" />
+                    </Container>
+                  : this.props.emojisInState.map(item =>
+                    <span key={item.character}>
+                        {item.character}
+                    </span>)
+                }
+            </div>
         )
     }
 }
