@@ -8,14 +8,14 @@ import FakeSettings from '../../../FakeComponent/FakeSettings';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import FakeProfile from "../../../FakeComponent/FakeProfile";
+import ChatInfo from "../ChatInfo";
 import './style.css'
 
 function NavBarRoot(props) {
     console.log('Render NavBarMain')
 
     const components = {
-        FakeProfile: <FakeProfile />,
+        ChatInfo: <ChatInfo />,
         FakeSearchMessage: <FakeSearchMessage />,
         FakeSettings: <FakeSettings />
     }
@@ -24,8 +24,9 @@ function NavBarRoot(props) {
         e.preventDefault();
         let elem = e.target.closest('[data-component]')
         if (!elem) return;
+        let disabled = elem.disabled;
         let component = elem.dataset.component;
-        if (!component) return;
+        if (!component || disabled) return;
         props.setRender( (prev) => () => components[component] );
         props.showLayout({region: props.region});
     }
@@ -35,7 +36,14 @@ function NavBarRoot(props) {
             <Container>
                 <Row>
                     <Col>
-                        <Button variant="outline-success" data-component='FakeProfile' title="user profile"><FaUserAlt /></Button>
+                        <Button
+                            variant="outline-success"
+                            data-component='ChatInfo'
+                            title="user profile"
+                            disabled={!props.chatInfo}
+                        >
+                            <FaUserAlt />
+                        </Button>
                     </Col>
                 </Row>
             </Container>
@@ -47,6 +55,7 @@ function NavBarRoot(props) {
 
 const mapStateToProps = store => {
     return {
+        chatInfo: store.chat.chatInfo
     }
 }
 const mapDispatchToProps = {
