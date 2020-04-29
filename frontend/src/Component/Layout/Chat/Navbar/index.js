@@ -32,24 +32,18 @@ function NavBarRoot(props) {
     }
 
     return (
-        <div className="navbarmain-block" onClick={handleClick}>
-            <Container>
-                <Row>
-                    <Col>
-                        <Button
-                            variant="outline-success"
-                            data-component='ChatInfo'
-                            title={!props.chatInfo ? "chat info: выберите чат!" : "chat info" }
-                            disabled={!props.chatInfo}
-                        >
-                            <FaWhatsapp />
-                        </Button>
-                    </Col>
-                </Row>
-            </Container>
-            <Button variant="outline-primary" data-component='FakeSearchMessage' title="search message"><FaSearch /></Button>
-            <Button variant="outline-dark" data-component='FakeSettings' title="FakeSettings"><FaCog /></Button>
-        </div>
+            props.chatInfo &&
+                <div className="navbarmain-block" onClick={handleClick}>
+                    <Container>
+                        <Row>
+                            <Col>
+                                <Button variant="outline-success" data-component='ChatInfo' title="chat info"><FaWhatsapp /></Button>
+                            </Col>
+                        </Row>
+                    </Container>
+                    <Button variant="outline-primary" data-component='FakeSearchMessage' title="search message"><FaSearch /></Button>
+                    <Button variant="outline-dark" data-component='FakeSettings' title="FakeSettings"><FaCog /></Button>
+                </div>
     )
 }
 
