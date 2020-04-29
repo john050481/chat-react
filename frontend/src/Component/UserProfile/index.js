@@ -8,7 +8,6 @@ import {showAlert} from "../../redux/actions";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Image from "react-bootstrap/Image";
 import ReauthenticateWithCredential from './ReauthenticateWithCredential';
 import {FaUserAlt} from "react-icons/fa";
 
@@ -120,7 +119,6 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
                 console.log('Error reauthenticate:', error)
             });
     }
-
 
     return (
         <div className='user-profile-block'>
