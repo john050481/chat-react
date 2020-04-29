@@ -3,8 +3,7 @@ import React, {useEffect, useRef} from 'react'
 import Citation from '../Citation'
 import {connect} from "react-redux";
 import ChatMessage from '../ChatMessage'
-import Spinner from "react-bootstrap/Spinner";
-import Container from "react-bootstrap/Container";
+import SpinnerApp from "../../../Spinner";
 
 function MessageBlock(props) {
     console.log('Render MessageBlock');
@@ -29,9 +28,7 @@ function MessageBlock(props) {
             <div ref={messageBlockScroll} className='content message-block-scroll'>
                 <div id='message-block' className='content message-block p-1'>
                     {   (!props.messages.length && props.requestChatId)
-                        ? <Container className='App-spinner-container message-block-spinner'>
-                              <Spinner className='App-spinner' animation="grow" variant="info" />
-                          </Container>
+                        ? <SpinnerApp />
                         : props.messages.map( message =>
                             <ChatMessage
                                 key={message.id}

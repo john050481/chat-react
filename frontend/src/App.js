@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
-import Container from "react-bootstrap/Container";
-import Spinner from "react-bootstrap/Spinner";
+import SpinnerApp from "./Component/Spinner";
 
 import React, {useEffect} from 'react'
 
@@ -29,9 +28,7 @@ function App({userLogin, userLogout}) {
     }, [auth])
 
     return ( auth.user === null
-            ? <Container className='App-spinner-container'>
-                  <Spinner className='App-spinner' animation="grow" variant="info" />
-              </Container>
+            ? <SpinnerApp />
             : <Switch>
                   <Route exact path="/chat" component={HOCRequireAuth(RootLayout, '/auth')} />
                   <Route exact path="/about" component={About} />

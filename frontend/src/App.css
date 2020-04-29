@@ -46,14 +46,3 @@
   padding: .2em .3em;
   border-radius: .2em;
 }
-
-.App-spinner-container {
-  display: flex;
-  justify-content: center;
-  padding-top: 100px;
-}
-
-.App-spinner {
-  width: 8rem;
-  height: 8rem;
-}

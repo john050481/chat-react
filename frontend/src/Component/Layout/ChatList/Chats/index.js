@@ -2,8 +2,7 @@ import React, {useState} from "react";
 import './style.css';
 import {connect} from "react-redux";
 import {requestChat} from "../../../../redux/actions";
-import Spinner from "react-bootstrap/Spinner";
-import Container from "react-bootstrap/Container";
+import SpinnerApp from "../../../Spinner";
 import ChatItem from './ChatItem';
 
 function Chats({isSmall, chats, chatInfo, requestChat, requestChatId}) {
@@ -21,9 +20,7 @@ function Chats({isSmall, chats, chatInfo, requestChat, requestChatId}) {
     return (
         <div className='chats' onClick={handleClick}>
             {   (!chats.length)
-                ? <Container className='App-spinner-container'>
-                      <Spinner className='App-spinner' animation="grow" variant="info" />
-                  </Container>
+                ? <SpinnerApp />
                 : chats.map(chat =>
                       <ChatItem key={chat.id} chat={chat} isSmall={isSmall} />
                   )

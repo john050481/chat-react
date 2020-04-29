@@ -1,7 +1,6 @@
 import React from 'react'
 import './style.css'
-import Spinner from "react-bootstrap/Spinner";
-import Container from "react-bootstrap/Container";
+import SpinnerApp from "../../../../Spinner";
 
 export default class EmojiList extends React.Component {
     constructor(props) {
@@ -24,9 +23,7 @@ export default class EmojiList extends React.Component {
                 onClick={(e) => {this.props.handlerClickOnEmoji(e)}}
             >
                 { this.props.isLoading
-                  ? <Container className='App-spinner-container message-block-spinner'>
-                        <Spinner className='App-spinner' animation="grow" variant="info" />
-                    </Container>
+                  ? <SpinnerApp />
                   : this.props.emojisInState.map(item =>
                     <span key={item.character}>
                         {item.character}
