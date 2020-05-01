@@ -69,6 +69,8 @@ function handlerDb2(auth, users) {
             console.log(querySnapshot.id, chat);
         })
 
+        // https://firebase.google.com/docs/firestore/data-model
+        // var messageRef = db.collection('rooms').doc('roomA').collection('messages').doc('message1');
         user.chats[0].collection("messages").get().then( querySnapshot => {
             querySnapshot.forEach(function(doc) {
                 // doc.data() is never undefined for query doc snapshots
@@ -96,10 +98,10 @@ function Db(props) {
     return (
         <>
             <button onClick={handleClick}>
-                @@@@@@@@@@@@@@@@@@@
+                Test DB 1
             </button>
             <button onClick={handleClick2}>
-                ###################
+                Test DB 2
             </button>
         </>
     )
