@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import {FaSearch, FaCog, FaWhatsapp} from "react-icons/fa";
+import {FaSearch, FaCog, FaWhatsapp, FaTrash} from "react-icons/fa";
 import FakeSearchMessage from '../../../FakeComponent/FakeSearchMessage'
 import {showLayout} from "../../../../redux/actions";
 import {connect} from "react-redux";
@@ -43,6 +43,7 @@ function NavBarRoot(props) {
                     </Container>
                     <Button variant="outline-primary" data-component='FakeSearchMessage' title="search message"><FaSearch /></Button>
                     <Button variant="outline-dark" data-component='FakeSettings' title="FakeSettings"><FaCog /></Button>
+                    <Button variant="outline-secondary" data-component='' title="Delete chat"><FaTrash /></Button>
                 </div>
     )
 }
