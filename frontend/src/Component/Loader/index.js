@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 
-function LoaderApp(props) {
+function LoaderApp({visible, options, ...props}) {
     return (
         <React.Fragment>
-            {props.visible
-             ? <Spinner animation="border" {...props.options} />
+            {visible
+             ? <Spinner animation="border" {...options} {...props} />
              : null}
         </React.Fragment>
     )

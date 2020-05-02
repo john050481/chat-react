@@ -16,7 +16,7 @@ function ChatItem({chat, isSmall, requestChatId, loader, chatInfo}) {
                     <blockquote className="blockquote mb-0">
                         <div className='chat-header'>
                             {loader && requestChatId === chat.id
-                                ? <Loader />
+                                ? <Loader className='mr-2' />
                                 : <FaUserCircle title={chat.name} className='mr-2' size='2em'/>
                             }
 

@@ -63,26 +63,28 @@ function handlerDb2(auth, users) {
     const db = auth.firebase.firestore();
     console.log(auth);
 
-    db.collection("users").doc("Chaim_McDermott@dana.io").get()
+    db.collection("users").where("email","==","Chaim_McDermott@dana.io").get()
         .then((querySnapshot) => {
-            let user = querySnapshot.data();
+            querySnapshot.forEach((doc) => {
+                let user = doc.data();
 
-            user.chats[0].get().then( querySnapshot => {
-                let chat = querySnapshot.data();
-                console.log(querySnapshot.id, chat);
-            })
+                user.chats[0].get().then( querySnapshot => {
+                    let chat = querySnapshot.data();
+                    console.log(querySnapshot.id, chat);
+                })
 
-            // https://firebase.google.com/docs/firestore/data-model
-            // var messageRef = db.collection('rooms').doc('roomA').collection('messages').doc('message1');
-            user.chats[0].collection("messages").get().then( querySnapshot => {
-                querySnapshot.forEach(function(doc) {
-                    // doc.data() is never undefined for query doc snapshots
-                    console.log(doc.id, " => ", doc.data());
-                    doc.data().from.get().then(querySnapshot => {
-                        console.log(querySnapshot.data())
-                    })
-                });
-            })
+                // https://firebase.google.com/docs/firestore/data-model
+                // var messageRef = db.collection('rooms').doc('roomA').collection('messages').doc('message1');
+                user.chats[0].collection("messages").get().then( querySnapshot => {
+                    querySnapshot.forEach(function(doc) {
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log(doc.id, " => ", doc.data());
+                        doc.data().from.get().then(querySnapshot => {
+                            console.log(querySnapshot.data())
+                        })
+                    });
+                })
+            });
         })
         .catch(e => console.log(e));
 }
