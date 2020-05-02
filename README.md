@@ -3,8 +3,30 @@
 [http://94.232.8.10:9300](http://94.232.8.10:9300/)
 (backend еще не работает, оспользую заглушки из внешнего, открытого, API, см.ниже)
 # Getting started
+## 1)
 ```bash
 git clone https://github.com/john050481/chat-react.git
+```
+## 2)
+Все подробности тут: https://firebase.google.com/docs/web/setup?authuser=0#add-sdks-initialize
+- Должен быть проект на firebase (https://console.firebase.google.com/)
+- Положить в папку файл: frontend/src/config/config.js
+- Содержание:
+```js
+export default {
+    firebaseConfig: {
+        apiKey: "...",
+        authDomain: "...",
+        databaseURL: "...",
+        projectId: "...",
+        storageBucket: "...",
+        messagingSenderId: "...",
+        appId: "..."
+    }
+}
+```
+## 3)
+```bash
 cd chat-react/frontend
 npm i
 npm start
