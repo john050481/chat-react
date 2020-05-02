@@ -49,7 +49,8 @@ function handlerDb(auth, users) {
 
     // Add a new document in collection "users"
     users.forEach( user => {
-        db.collection("users").doc(user.email).set({...user}, { merge: true })
+        /*db.collection("users").doc(user.email).set({...user}, { merge: true })*/
+        db.collection("users").doc().set({...user}, { merge: true })
             .then(function() {
                 console.log("Document successfully written!");
             })
@@ -67,6 +68,7 @@ function handlerDb2(auth, users) {
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 let user = doc.data();
+                console.log('user email === ', doc.id, user.email, user.chats);
 
                 user.chats[0].get().then( querySnapshot => {
                     let chat = querySnapshot.data();
@@ -89,16 +91,37 @@ function handlerDb2(auth, users) {
         .catch(e => console.log(e));
 }
 
+function handlerDb3(auth) {
+    const db = auth.firebase.firestore();
+    var batch = db.batch();
+    console.log(auth);
+
+    db.collection("users").get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                console.log(doc);
+                doc.ref.delete().then(function() {
+                    console.log("Document successfully deleted!");
+                }).catch(function(error) {
+                    console.error("Error removing document: ", error);
+                });
+
+            });
+        })
+        .catch(e => console.log(e));
+}
+
 function Db(props) {
     const auth = useAuth()
 
     function handleClick(e) {
-        console.log(props.chats);
         handlerDb(auth, props.chats)
     }
     function handleClick2(e) {
-        console.log(props.chats);
         handlerDb2(auth, props.chats)
+    }
+    function handleClick3(e) {
+        handlerDb3(auth)
     }
 
     return (
@@ -108,6 +131,9 @@ function Db(props) {
             </button>
             <button onClick={handleClick2}>
                 Test DB 2
+            </button>
+            <button onClick={handleClick3}>
+                Delete Users
             </button>
         </>
     )
