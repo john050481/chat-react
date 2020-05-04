@@ -64,7 +64,7 @@ function handlerDb2(auth, users) {
     const db = auth.firebase.firestore();
     console.log(auth);
 
-    db.collection("users").where("email","==","Chaim_McDermott@dana.io").get()
+    db.collection("users").where("email","==","example@example.ru").get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 let user = doc.data();
