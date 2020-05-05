@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import {useAuth} from "./useAuth";
 import usersModel from '../model/users';
-import roomMessages from '../model/roomMessages';
+import roomMessagesModel from '../model/roomMessages';
 
 export function useChatFirebase() {
     const auth = useAuth();
@@ -99,7 +99,7 @@ export function useChatFirebase() {
         /* так можно добавить сразу и коллекцию "messages" и новый док с сообщением
         await db.collection('room-messages').doc(roomId)
             .collection('messages').add({
-                ...roomMessages,
+                ...roomMessagesModel,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
         */
