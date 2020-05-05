@@ -90,21 +90,21 @@ export function useChatFirebase() {
     function updateMessage() {}
     function deleteMessage() {}
 
-    async function createRoom(roomName, roomType, callback) {
-        const roomId = await db.collection('room-users').add({})
-        .then( docRef => docRef.id );
+    function createRoom(roomName, roomType, callback) {
+        let batch = db.batch(); //выполняет multiple write operations as a single
 
-        await db.collection('room-messages').doc(roomId).set({});
+        // docRefRoomUsers - это просто ссылка, она ничего не записывает в базу
+        // она нужна чтоб получить "roomId", чтоб потом его записать в три коллекции
+        // т.е. roomId - одинаковый для "room-users", "room-messages", "room-metadata"
+        const docRefRoomUsers = db.collection('room-users').doc();
+        const roomId = docRefRoomUsers.id;
+        batch.set(docRefRoomUsers, {});
 
-        /* так можно добавить сразу и коллекцию "messages" и новый док с сообщением
-        await db.collection('room-messages').doc(roomId)
-            .collection('messages').add({
-                ...roomMessagesModel,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-        */
+        const docRefRoomMessages = db.collection('room-messages').doc(roomId);
+        batch.set(docRefRoomMessages, {});
 
-        await db.collection('room-metadata').doc(roomId).set({
+        const docRefRoomMetadata = db.collection('room-metadata').doc(roomId);
+        batch.set(docRefRoomMetadata, {
             createdAt: firebase.firestore.FieldValue.serverTimestamp(), // The time at which the room was created.
             createdByUserId: userId, // The id of the user that created the room.
             id: roomId, // The id of the room.
@@ -112,8 +112,11 @@ export function useChatFirebase() {
             type: roomType // The type of room, public or private.
         });
 
-        callback && callback(roomId);
-        return roomId;
+        return batch.commit()
+        .then(function () {
+            callback && callback(roomId);
+            return roomId;
+        });
     }//*********
     function getRoom(roomId, callback) {
         db.collection('room-metadata').doc(roomId).get()
