@@ -30,6 +30,9 @@ export default function (props) {
     function handlercreateRoom(e) {
         chatDb.createRoom('roomCreate', 'private', console.log);
     }//*********
+    function handlergetRoom(e) {
+        chatDb.getRoom('room1', console.log);
+    }//*********
     async function handlerDeleteChatFromUserProfile(e) {
         let userData = await chatDb.getUserData(chatDb.user);
         chatDb.deleteChatFromUserProfile(userData.chats[2]);
@@ -57,6 +60,7 @@ export default function (props) {
             <hr />
             <button onClick={handlergetGetChatMessages} className={'btn btn-outline-success'}>get chat messages</button>
             <button onClick={handlercreateRoom} className={'btn btn-outline-success'}>create room</button>
+            <button onClick={handlergetRoom} className={'btn btn-outline-success'}>get metadata room</button>
             <button onClick={handlerDeleteChatFromUserProfile}>delete chat from user profile</button>
             <button onClick={handlerUpdateChat}>update chat</button>
             <button onClick={handlerDeleteChat}>delete chat</button>

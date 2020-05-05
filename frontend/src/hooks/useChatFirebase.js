@@ -90,7 +90,7 @@ export function useChatFirebase() {
     function updateMessage() {}
     function deleteMessage() {}
 
-    async function createRoom(roomName, roomType, callback/*(roomId)*/) {
+    async function createRoom(roomName, roomType, callback) {
         const roomId = await db.collection('room-users').add({})
         .then( docRef => docRef.id );
 
@@ -114,6 +114,13 @@ export function useChatFirebase() {
 
         callback && callback(roomId);
         return roomId;
+    }//*********
+    function getRoom(roomId, callback) {
+        db.collection('room-metadata').doc(roomId).get()
+        .then( doc => {
+            callback && callback(doc.data());
+            return doc.data();
+        })
     }//*********
     function updateRoom(roomRef, data) {
         return roomRef.set({...data}, { merge: true })
@@ -151,21 +158,27 @@ export function useChatFirebase() {
     return {
         userId,
         subscribers, /////////////////////////////
+
         createUser,
         updateUser,
         deleteUser,
+
         subscribeRoom,
         unsubscribeRoom,
         unsubscribeAllRooms,
+
         sendMessage,
         updateMessage,
         deleteMessage,
+
         createRoom,
+        getRoom,
         updateRoom,
         deleteRoom,
         getRoomMessages,
         addRoomInUserProfile,
         deleteRoomFromUserProfile,
+
         getUserData,
         getUserRef
     };
