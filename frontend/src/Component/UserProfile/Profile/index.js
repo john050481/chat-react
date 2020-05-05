@@ -1,38 +1,32 @@
 import React from 'react';
 import DB from ".././db";
-import {useChatDb} from "../../../hooks/useChatDb";
+import {useChatFirebase} from "../../../hooks/useChatFirebase";
 
 export default function (props) {
-    const chatDb = useChatDb();
+    const chatDb = useChatFirebase();
 
     async function handlerGetInfo(e) {
-        console.log(chatDb, await chatDb.getUserData(chatDb.user));
-    }
+        console.log(chatDb, await chatDb.getUserData(chatDb.userId));
+    }//*********
     function handlerCreate(e) {
-        chatDb.createUser('example@example.ru')
-            .then( createdUser => console.log('Создан пользователь = ', createdUser))
+        chatDb.createUser('example@example.ru', 'example@example.ru', console.log)
+            .then( res => console.log('Создан пользователь = ', res))
             .catch( e => console.log(e));
-    }
+    }//*********
     function handlerUpdate(e) {
-        chatDb.updateUser( { name: 'name', address: {city: 'blg'} } )
+        chatDb.updateUser( chatDb.userId,{ name: 'name', address: {city: 'blg'} }, console.log )
             .then( () => console.log('Обновлен пользователь'))
             .catch( e => console.log(e));
-    }
+    }//*********
     function handlerDelete(e) {
-        chatDb.deleteUser()
+        chatDb.deleteUser(chatDb.userId, console.log)
             .then( () => console.log('Удален пользователь'))
             .catch( e => console.log(e));
-    }
+    }//*********
     async function handlergetGetChatMessages(e) {
-        let userData = await chatDb.getUserData(chatDb.user);
-        let messages = await chatDb.getChatMessages(userData.chats[0]);
+        let messages = await chatDb.getRoomMessages('room1');
         console.log(messages);
-
-        for (const message of messages) {
-            let userFrom = await chatDb.getUserData(message.from);
-            console.log('userFrom = ', userFrom)
-        }
-    }
+    }//*********
     async function handlerDeleteChatFromUserProfile(e) {
         let userData = await chatDb.getUserData(chatDb.user);
         chatDb.deleteChatFromUserProfile(userData.chats[2]);
@@ -53,12 +47,12 @@ export default function (props) {
             Profile
             <DB />
             <hr />
-            <button onClick={handlerGetInfo}>get info</button>
-            <button onClick={handlerCreate}>create user</button>
-            <button onClick={handlerUpdate}>updete user</button>
-            <button onClick={handlerDelete}>delete user</button>
+            <button onClick={handlerGetInfo} className={'btn btn-outline-success'}>get info</button>
+            <button onClick={handlerCreate} className={'btn btn-outline-success'}>create user</button>
+            <button onClick={handlerUpdate} className={'btn btn-outline-success'}>updete user</button>
+            <button onClick={handlerDelete} className={'btn btn-outline-success'}>delete user</button>
             <hr />
-            <button onClick={handlergetGetChatMessages}>get chat messages</button>
+            <button onClick={handlergetGetChatMessages} className={'btn btn-outline-success'}>get chat messages</button>
             <button onClick={handlerDeleteChatFromUserProfile}>delete chat from user profile</button>
             <button onClick={handlerUpdateChat}>update chat</button>
             <button onClick={handlerDeleteChat}>delete chat</button>

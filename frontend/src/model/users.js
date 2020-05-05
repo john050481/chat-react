@@ -1,10 +1,18 @@
+/*
+https://firechat.firebaseapp.com/docs/
+on Firebase: users/<user-id>
+*/
 export default {
-    name: "", //"Leanne Graham",
+    id: "", // The id of the user.
+    name: "", // The display name of the user.
+    invites: [], // A list of invites the user has received.
+    muted: [], //  list of user ids currently muted by the user.
+    rooms: [], // A list of currently active rooms, used for sessioning.
+
     username: "", //"Bret",
     email: "", //"Sincere@april.biz",
     phone: "", //"1-770-736-8031 x56442",
     website: "", //"hildegard.org",
-    chats: [], //array of chatRef,
     address: {
         street: "", //"Kulas Light",
         suite: "", //"Apt. 556",
