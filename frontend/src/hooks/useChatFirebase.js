@@ -2,10 +2,12 @@
 import React, { useState, useEffect } from "react";
 import {useAuth} from "./useAuth";
 import usersModel from '../model/users';
+import roomMessages from '../model/roomMessages';
 
 export function useChatFirebase() {
     const auth = useAuth();
     const db = auth.firebase.firestore();
+    const firebase = auth.firebase;
     const [userId, setUserId] = useState(null);
     const [subscribers, setSubscribers] = useState([]);
 
@@ -88,7 +90,31 @@ export function useChatFirebase() {
     function updateMessage() {}
     function deleteMessage() {}
 
-    function createRoom(roomName, roomType, callback/*(roomId)*/) {}
+    async function createRoom(roomName, roomType, callback/*(roomId)*/) {
+        const roomId = await db.collection('room-users').add({})
+        .then( docRef => docRef.id );
+
+        await db.collection('room-messages').doc(roomId).set({});
+
+        /* так можно добавить сразу и коллекцию "messages" и новый док с сообщением
+        await db.collection('room-messages').doc(roomId)
+            .collection('messages').add({
+                ...roomMessages,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        */
+
+        await db.collection('room-metadata').doc(roomId).set({
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(), // The time at which the room was created.
+            createdByUserId: userId, // The id of the user that created the room.
+            id: roomId, // The id of the room.
+            name: roomName, // The public display name of the room.
+            type: roomType // The type of room, public or private.
+        });
+
+        callback && callback(roomId);
+        return roomId;
+    }//*********
     function updateRoom(roomRef, data) {
         return roomRef.set({...data}, { merge: true })
     }
@@ -116,7 +142,7 @@ export function useChatFirebase() {
     }
 
     function getUserData(userId) {
-        return db.collection('/users').doc(userId).get().then( (doc) => doc.data() )
+        return db.collection('users').doc(userId).get().then( (doc) => doc.data() )
     }//*********
     function getUserRef(userId) {
         return db.collection('/users').doc(userId)

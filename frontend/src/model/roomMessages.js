@@ -6,5 +6,5 @@ export default {
     userId: "", // The id of the user that sent the message.
     name: "", // The name of the user that sent the message.
     message: "", // The content of the message.
-    timestamp: Date.now() // The time at which the message was sent.
+    timestamp: "" // The time at which the message was sent. // firebase.firestore.FieldValue.serverTimestamp()
 }
