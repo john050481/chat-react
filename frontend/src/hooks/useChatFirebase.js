@@ -118,7 +118,7 @@ export function useChatFirebase() {
             return roomId;
         });
     }//*********
-    function getRoom(roomId, callback) {
+    function getRoomMetadata(roomId, callback) {
         db.collection('room-metadata').doc(roomId).get()
         .then( doc => {
             callback && callback(doc.data());
@@ -200,7 +200,7 @@ export function useChatFirebase() {
         deleteMessage,
 
         createRoom,
-        getRoom,
+        getRoomMetadata,
         updateRoom,
         deleteRoom,
         getRoomMessages,
