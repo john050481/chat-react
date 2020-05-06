@@ -37,6 +37,7 @@ export default function (props) {
     function handlerenterRoom(e) {
         chatDb.enterRoom('room1').then( () => console.log('Enterd Room!!') );
     }//*********
+    function handlerleaveRoom(e) {}
     async function handlerupdateRoomMetadata(e) {
         chatDb.updateRoomMetadata('room1', 'new name room #1', 'public', console.log)
         .then( () => console.log('Room обновлена!'))
@@ -57,11 +58,15 @@ export default function (props) {
             <button onClick={handlerDelete} className={'btn btn-outline-success'}>delete user</button>
             <hr />
             <button onClick={handlergetGetRoomMessages} className={'btn btn-outline-success'}>get room messages</button>
-            <button onClick={handlercreateRoom} className={'btn btn-outline-success'}>create room</button>
             <button onClick={handlergetRoomMetadata} className={'btn btn-outline-success'}>get metadata room</button>
-            <button onClick={handlerenterRoom} className={'btn btn-outline-success'}>enter room</button>
-            <button onClick={handlerupdateRoomMetadata} className={'btn btn-outline-success'}>update room metadata</button>
+            <br/>
+            <button onClick={handlercreateRoom} className={'btn btn-outline-success'}>create room</button>
             <button onClick={handlerDeleteRoom} className={'btn btn-outline-danger'}>delete room</button>
+            <br/>
+            <button onClick={handlerenterRoom} className={'btn btn-outline-success'}>enter room</button>
+            <button onClick={handlerleaveRoom} >leave room</button>
+            <br/>
+            <button onClick={handlerupdateRoomMetadata} className={'btn btn-outline-success'}>update room metadata</button>
         </div>
     )
 }

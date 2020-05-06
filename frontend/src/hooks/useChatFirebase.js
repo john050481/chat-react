@@ -180,10 +180,12 @@ export function useChatFirebase() {
         return batch.commit();
     }//*********
     async function leaveRoom(roomRef) {
+        /*
         let userData = await this.user.get().then( querySnapshot => querySnapshot.data() );
         let filteredRooms = userData.rooms.filter( item => item.id !== roomRef.id);
         updateUser.call({user}, {rooms: filteredRooms});
         unsubscribeRoom(roomRef);
+        */
     }
 
     function getUserData(userId) {
