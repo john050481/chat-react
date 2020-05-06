@@ -23,7 +23,7 @@ export default function (props) {
             .then( () => console.log('Удален пользователь'))
             .catch( e => console.log(e));
     }//*********
-    async function handlergetGetChatMessages(e) {
+    async function handlergetGetRoomMessages(e) {
         let messages = await chatDb.getRoomMessages('room1');
         console.log(messages);
     }//*********
@@ -50,14 +50,14 @@ export default function (props) {
     return (
         <div>
             Profile
-            <DB />
+            <DB />{/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/}
             <hr />
             <button onClick={handlerGetInfo} className={'btn btn-outline-success'}>get info</button>
             <button onClick={handlerCreate} className={'btn btn-outline-success'}>create user</button>
             <button onClick={handlerUpdate} className={'btn btn-outline-success'}>updete user</button>
             <button onClick={handlerDelete} className={'btn btn-outline-success'}>delete user</button>
             <hr />
-            <button onClick={handlergetGetChatMessages} className={'btn btn-outline-success'}>get chat messages</button>
+            <button onClick={handlergetGetRoomMessages} className={'btn btn-outline-success'}>get room messages</button>
             <button onClick={handlercreateRoom} className={'btn btn-outline-success'}>create room</button>
             <button onClick={handlergetRoom} className={'btn btn-outline-success'}>get metadata room</button>
             <button onClick={handlerDeleteChatFromUserProfile}>delete chat from user profile</button>
