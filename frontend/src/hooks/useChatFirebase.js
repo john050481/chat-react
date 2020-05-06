@@ -125,15 +125,40 @@ export function useChatFirebase() {
             return doc.data();
         })
     }//*********
-    function updateRoom(roomRef, data) {
-        return roomRef.set({...data}, { merge: true })
-    }
-    async function deleteRoom(roomRef) {
-        await roomRef.collection("messages").get().then( querySnapshot => {
-            querySnapshot.forEach( doc => doc.ref.delete().then(() => true) )
-        } );
-        return roomRef.delete().then(() => true)
-    }
+    function updateRoom(roomId, roomName, roomType, callback) {
+        let newData = Object.assign({name: roomName}, roomType ? {type: roomType} : {});
+        return db.collection('room-metadata').doc(roomId).set(newData, { merge: true })
+            .then(function () {
+                callback && callback(true);
+                return true;
+            });
+    }//*********
+    async function deleteRoom(roomId, callback) {
+        let batch = db.batch(); //выполняет multiple write operations as a single
+
+        const docRefRoomUsers = db.collection('room-users').doc(roomId);
+        batch.delete(docRefRoomUsers);
+        //сначала удалить все доки из коллекции users; batch поддерживает 500 операций!!!!!!!!!!!!!!!!!!!!!!!
+            await docRefRoomUsers.collection('users').get().then( querySnapshot => {
+                querySnapshot.forEach( doc => doc.ref.delete() )
+            } );
+
+        const docRefRoomMessages = db.collection('room-messages').doc(roomId);
+        batch.delete(docRefRoomMessages);
+        //сначала удалить все доки из коллекции messages; batch поддерживает 500 операций!!!!!!!!!!!!!!!!!!!!!!!
+            await docRefRoomMessages.collection('messages').get().then( querySnapshot => {
+                querySnapshot.forEach( doc => doc.ref.delete() )
+            } );
+
+        const docRefRoomMetadata = db.collection('room-metadata').doc(roomId);
+        batch.delete(docRefRoomMetadata);
+
+        return batch.commit()
+            .then(function () {
+                callback && callback(true);
+                return true;
+            });
+    }//!!!!!!!!!!!!!!!!!!! ПРОБЛЕМА !!!!!!!!!!!!!!!!!!!
     function getRoomMessages(roomId) {
         return db.collection("room-messages").doc(roomId).collection("messages").get().then( querySnapshot => {
             let messages = [];
@@ -160,7 +185,7 @@ export function useChatFirebase() {
 
     return {
         userId,
-        subscribers, /////////////////////////////
+        subscribers, //!!!!!!!!!!!!!!!!!!! УБРАТЬ !!!!!!!!!!!!!!!!!!!
 
         createUser,
         updateUser,
