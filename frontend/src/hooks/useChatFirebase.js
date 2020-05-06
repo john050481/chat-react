@@ -86,9 +86,9 @@ export function useChatFirebase() {
         setSubscribers( []);
     }//*********
 
-    function sendMessage() {}
-    function updateMessage() {}
-    function deleteMessage() {}
+    function sendMessage(/*roomId, messageContent, messageType='default', callback*/) {}
+    function updateMessage(/*roomId, messageId*/) {}
+    function deleteMessage(/*roomId, messageId*/) {}
 
     function createRoom(roomName, roomType, callback) {
         let batch = db.batch(); //выполняет multiple write operations as a single
@@ -168,8 +168,18 @@ export function useChatFirebase() {
             return messages;
         });
     }//*********
-    function addRoomInUserProfile() {}
-    async function deleteRoomFromUserProfile(roomRef) {
+    function enterRoom(roomId) {
+        let batch = db.batch(); //выполняет multiple write operations as a single
+
+        const docRefRoomUsers = db.collection('room-users').doc(roomId).collection('users').doc(this.userId);
+        batch.set(docRefRoomUsers, {id: this.userId});
+
+        const docRefUsers = db.collection('users').doc(this.userId);
+        batch.update(docRefUsers, {rooms: firebase.firestore.FieldValue.arrayUnion(roomId)});
+
+        return batch.commit();
+    }//*********
+    async function leaveRoom(roomRef) {
         let userData = await this.user.get().then( querySnapshot => querySnapshot.data() );
         let filteredRooms = userData.rooms.filter( item => item.id !== roomRef.id);
         updateUser.call({user}, {rooms: filteredRooms});
@@ -204,8 +214,8 @@ export function useChatFirebase() {
         updateRoomMetadata,
         deleteRoom,
         getRoomMessages,
-        addRoomInUserProfile,
-        deleteRoomFromUserProfile,
+        enterRoom,
+        leaveRoom,
 
         getUserData,
         getUserRef
