@@ -42,10 +42,10 @@ export default function (props) {
         chatDb.updateRoom('room1', 'new name room #1', 'public', console.log)
         .then( () => console.log('Room обновлена!'))
         .catch( e => console.log(e))
-    }
+    }//*********
     async function handlerDeleteRoom(e) {
         chatDb.deleteRoom('JI5A3fqPTNkYNbfIobYG', console.log);
-    }
+    }//!!!!!!!!! ПРОБЛЕМА, см. "useChatFirebase"
 
     return (
         <div>
