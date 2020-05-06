@@ -125,7 +125,7 @@ export function useChatFirebase() {
             return doc.data();
         })
     }//*********
-    function updateRoom(roomId, roomName, roomType, callback) {
+    function updateRoomMetadata(roomId, roomName, roomType, callback) {
         let newData = Object.assign({name: roomName}, roomType ? {type: roomType} : {});
         return db.collection('room-metadata').doc(roomId).set(newData, { merge: true })
             .then(function () {
@@ -201,7 +201,7 @@ export function useChatFirebase() {
 
         createRoom,
         getRoomMetadata,
-        updateRoom,
+        updateRoomMetadata,
         deleteRoom,
         getRoomMessages,
         addRoomInUserProfile,

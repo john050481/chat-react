@@ -38,8 +38,8 @@ export default function (props) {
         let userData = await chatDb.getUserData(chatDb.user);
         chatDb.deleteChatFromUserProfile(userData.chats[2]);
     }
-    async function handlerUpdateRoom(e) {
-        chatDb.updateRoom('room1', 'new name room #1', 'public', console.log)
+    async function handlerupdateRoomMetadata(e) {
+        chatDb.updateRoomMetadata('room1', 'new name room #1', 'public', console.log)
         .then( () => console.log('Room обновлена!'))
         .catch( e => console.log(e))
     }//*********
@@ -61,7 +61,7 @@ export default function (props) {
             <button onClick={handlercreateRoom} className={'btn btn-outline-success'}>create room</button>
             <button onClick={handlergetRoomMetadata} className={'btn btn-outline-success'}>get metadata room</button>
             <button onClick={handlerDeleteChatFromUserProfile}>delete chat from user profile</button>
-            <button onClick={handlerUpdateRoom} className={'btn btn-outline-success'}>update room</button>
+            <button onClick={handlerupdateRoomMetadata} className={'btn btn-outline-success'}>update room metadata</button>
             <button onClick={handlerDeleteRoom} className={'btn btn-outline-danger'}>delete room</button>
         </div>
     )
