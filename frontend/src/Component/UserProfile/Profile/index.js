@@ -35,9 +35,11 @@ export default function (props) {
         chatDb.getRoomMetadata('room1', console.log);
     }//*********
     function handlerenterRoom(e) {
-        chatDb.enterRoom('room1').then( () => console.log('Enterd Room!!') );
+        chatDb.enterRoom('room1').then( () => console.log('Enterd Room1!!') );
     }//*********
-    function handlerleaveRoom(e) {}
+    function handlerleaveRoom(e) {
+        chatDb.leaveRoom('room1').then( () => console.log('Deleted Room1!!') );
+    }//*********
     async function handlerupdateRoomMetadata(e) {
         chatDb.updateRoomMetadata('room1', 'new name room #1', 'public', console.log)
         .then( () => console.log('Room обновлена!'))
@@ -64,7 +66,7 @@ export default function (props) {
             <button onClick={handlerDeleteRoom} className={'btn btn-outline-danger'}>delete room</button>
             <br/>
             <button onClick={handlerenterRoom} className={'btn btn-outline-success'}>enter room</button>
-            <button onClick={handlerleaveRoom} >leave room</button>
+            <button onClick={handlerleaveRoom} className={'btn btn-outline-success'}>leave room</button>
             <br/>
             <button onClick={handlerupdateRoomMetadata} className={'btn btn-outline-success'}>update room metadata</button>
         </div>

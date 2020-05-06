@@ -179,14 +179,17 @@ export function useChatFirebase() {
 
         return batch.commit();
     }//*********
-    async function leaveRoom(roomRef) {
-        /*
-        let userData = await this.user.get().then( querySnapshot => querySnapshot.data() );
-        let filteredRooms = userData.rooms.filter( item => item.id !== roomRef.id);
-        updateUser.call({user}, {rooms: filteredRooms});
-        unsubscribeRoom(roomRef);
-        */
-    }
+    function leaveRoom(roomId) {
+        let batch = db.batch(); //выполняет multiple write operations as a single
+
+        const docRefRoomUsers = db.collection('room-users').doc(roomId).collection('users').doc(this.userId);
+        batch.delete(docRefRoomUsers);
+
+        const docRefUsers = db.collection('users').doc(this.userId);
+        batch.update(docRefUsers, {rooms: firebase.firestore.FieldValue.arrayRemove(roomId)});
+
+        return batch.commit();
+    }//*********
 
     function getUserData(userId) {
         return db.collection('users').doc(userId).get().then( (doc) => doc.data() )
