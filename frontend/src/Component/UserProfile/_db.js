@@ -111,7 +111,7 @@ function handlerDb3(auth) {
         .catch(e => console.log(e));
 }
 
-function Db(props) {
+function _db(props) {
     const auth = useAuth()
 
     function handleClick(e) {
@@ -149,4 +149,4 @@ const mapDispatchToProps = {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Db)
+export default connect(mapStateToProps, mapDispatchToProps)(_db)

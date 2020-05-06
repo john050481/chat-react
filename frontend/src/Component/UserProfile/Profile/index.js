@@ -1,5 +1,5 @@
 import React from 'react';
-import DB from ".././db";
+import DB from ".././_db";
 import {useChatFirebase} from "../../../hooks/useChatFirebase";
 
 export default function (props) {

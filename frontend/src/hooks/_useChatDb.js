@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import {useAuth} from "./useAuth";
 import userModel from '../model/user';
 
-export function useChatDb() {
+export function _useChatDb() {
     const auth = useAuth();
     const db = auth.firebase.firestore();
     const [user, setUser] = useState(null);
