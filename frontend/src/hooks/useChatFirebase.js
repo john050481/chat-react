@@ -180,7 +180,7 @@ export function useChatFirebase() {
         const docRefRoomMetadata = db.collection('room-metadata').doc(roomId);
         batch.set(docRefRoomMetadata, {
             createdAt: firebase.firestore.FieldValue.serverTimestamp(), // The time at which the room was created.
-            createdByUserId: userId, // The id of the user that created the room.
+            createdByUserId: this.userId, // The id of the user that created the room.
             id: roomId, // The id of the room.
             name: roomName, // The public display name of the room.
             type: roomType // The type of room, public or private.
