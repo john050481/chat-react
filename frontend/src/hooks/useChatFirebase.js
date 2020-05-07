@@ -1,5 +1,5 @@
 // Hook (useChatFirebase.js)
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import {useAuth} from "./useAuth";
 import usersModel from '../model/users';
 import roomMessagesModel from '../model/roomMessages';
@@ -9,8 +9,52 @@ export function useChatFirebase() {
     const db = auth.firebase.firestore();
     const firebase = auth.firebase;
     const [userId, setUserId] = useState(null);
+    const [userData, setUserData] = useState(null);
     const [subscribers, setSubscribers] = useState([]);
 
+    //---------------------------------------------------------------
+    useEffect( () => {
+        console.log('1111111111111111111', userId, userData);
+        if (!auth.user) return;
+
+        let unsubscribeUser = db.collection("users").doc(auth.user.uid)
+            .onSnapshot(function(DocumentReferenceUser) {
+                console.log('1111111111111111111_11111111111111111111');
+
+                if (!DocumentReferenceUser.exists) {
+                    createUser(auth.user.uid, auth.user.email/*, (userId) => setUserId(userId)*/);
+                    return;
+                }
+
+                setUserId(DocumentReferenceUser.id);
+                setUserData(DocumentReferenceUser.data());
+            });
+
+        return () => unsubscribeUser();
+
+    },  [auth/*, userId, userData*/] );
+    //---------------------------------------------------------------
+    useEffect( () => {
+        console.log('2222222222222222', subscribers);
+        if (!userData) return;
+
+        subscribers.forEach( item => {
+            console.log('33333333333333333_333333333333', item);
+            item.unsubscribe()
+        } );
+        setSubscribers([]);
+        console.log('2222222222222222_234242423', subscribers);
+
+        userData.rooms.forEach( roomId => {
+            console.log('2222222222222222_subscribe: ', roomId);
+            subscribeRoom(roomId)
+        } );
+
+//        return () => unsubscribeAllRooms();
+
+    }, [userData] );
+    //---------------------------------------------------------------
+/*
     useEffect(
         () => {
             if (!auth.user) return;
@@ -36,7 +80,7 @@ export function useChatFirebase() {
         },
         [auth]
     );
-
+*/
     function createUser(userId, email, callback) {
         return db.collection("users").doc(userId).set({ ...usersModel, id: userId, email })
             .then( () => {
@@ -83,10 +127,14 @@ export function useChatFirebase() {
         unsubscribe.unsubscribe();
         setSubscribers( prev => prev.filter( item => item.roomId != roomId) );
     }//*********
-    function unsubscribeAllRooms() {
-        subscribers.forEach( item => item.unsubscribe() );
+    const unsubscribeAllRooms = useCallback( () => {
+        console.log('33333333333333333', subscribers);
+        subscribers.forEach( item => {
+            console.log('33333333333333333_333333333333', item);
+            item.unsubscribe()
+        } );
         setSubscribers( []);
-    }//*********
+    }, [subscribers])//*********
 
     function sendMessage(roomId, messageContent, messageType='default', callback) {
         db.collection('room-messages').doc(roomId).collection('messages').add({
@@ -226,6 +274,7 @@ export function useChatFirebase() {
 
     return {
         userId,
+        userData,
         subscribers, //!!!!!!!!!!!!!!!!!!! УБРАТЬ !!!!!!!!!!!!!!!!!!!
 
         createUser,
