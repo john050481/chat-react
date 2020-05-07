@@ -5,6 +5,8 @@ export default function (props) {
     const chatDb = useChatFirebase();
     const roomIdElem = document.getElementById('roomIdElem');
     const userIdElem = document.getElementById('userIdElem');
+    const messageIdElem = document.getElementById('messageIdElem');
+    const messageElem = document.getElementById('messageElem');
 
     async function handlerGetInfo(e) {
         console.log(chatDb, await chatDb.getUserData(userIdElem.value ? userIdElem.value : chatDb.userId));
@@ -50,6 +52,16 @@ export default function (props) {
         chatDb.deleteRoom(roomIdElem.value, console.log);
     }//!!!!!!!!! ПРОБЛЕМА, см. "useChatFirebase"
 
+    function handlerSendMessage(e) {
+        chatDb.sendMessage(roomIdElem.value, messageElem.value, 'default', console.log)
+    }//*********
+    function handlerUpdateMessage() {
+        chatDb.updateMessage(roomIdElem.value, messageIdElem.value, messageElem.value, console.log)
+    }//*********
+    function handlerDeleteMessage(e) {
+        chatDb.deleteMessage(roomIdElem.value, messageIdElem.value, console.log)
+    }//*********
+
     return (
         <div>
             <h1>Здесь будет профиль!!!</h1>
@@ -74,6 +86,14 @@ export default function (props) {
             <br/>
             <button onClick={handlerenterRoom} className={'btn btn-outline-success'}>enter room</button>
             <button onClick={handlerleaveRoom} className={'btn btn-outline-success'}>leave room</button>
+            <hr />
+            <label>message id: <input id={'messageIdElem'} /></label>
+            <br />
+            <label>message: <input id={'messageElem'} /></label>
+            <br />
+            <button onClick={handlerSendMessage} className={'btn btn-outline-success'}>send message</button>
+            <button onClick={handlerUpdateMessage} className={'btn btn-outline-success'}>update message</button>
+            <button onClick={handlerDeleteMessage} className={'btn btn-outline-success'}>delete message</button>
         </div>
     )
 }

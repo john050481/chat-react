@@ -86,9 +86,33 @@ export function useChatFirebase() {
         setSubscribers( []);
     }//*********
 
-    function sendMessage(/*roomId, messageContent, messageType='default', callback*/) {}
-    function updateMessage(/*roomId, messageId*/) {}
-    function deleteMessage(/*roomId, messageId*/) {}
+    function sendMessage(roomId, messageContent, messageType='default', callback) {
+        db.collection('room-messages').doc(roomId).collection('messages').add({
+            ...roomMessagesModel,
+            userId: this.userId,
+            name: "!!!Any name!!!",
+            message: messageContent,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+            .then( (docRef) => {
+                callback && callback(docRef);
+                return docRef;
+            })
+    }//*********
+    function updateMessage(roomId, messageId, data, callback) {
+        return db.collection('room-messages').doc(roomId).collection('messages').doc(messageId).set({message: data}, {merge: true})
+            .then( () => {
+                callback && callback(messageId)
+                return true;
+            })
+    }//*********
+    function deleteMessage(roomId, messageId, callback) {
+        db.collection('room-messages').doc(roomId).collection('messages').doc(messageId).delete()
+            .then( () => {
+                callback && callback(messageId)
+                return true;
+            })
+    }//*********
 
     function createRoom(roomName, roomType, callback) {
         let batch = db.batch(); //выполняет multiple write operations as a single
