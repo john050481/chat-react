@@ -1,5 +1,4 @@
 import React from 'react';
-import DB from ".././_db";
 import {useChatFirebase} from "../../../hooks/useChatFirebase";
 
 export default function (props) {
@@ -53,9 +52,9 @@ export default function (props) {
 
     return (
         <div>
-            Profile
-            <DB />{/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/}
+            <h1>Здесь будет профиль!!!</h1>
             <hr />
+            <h1>ТЕСТ БАЗЫ ДАННЫХ:</h1>
             <label>user id: <input id={'userIdElem'} /></label>
             <br />
             <button onClick={handlerGetInfo} className={'btn btn-outline-success'}>get info</button>
