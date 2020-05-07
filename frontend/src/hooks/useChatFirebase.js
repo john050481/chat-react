@@ -60,8 +60,10 @@ export function useChatFirebase() {
     }//*********
 
     function subscribeRoom(roomId) {
+        let firstRun = true;
         let unsubscribe = db.collection("room-messages").doc(roomId).collection("messages").onSnapshot(function (snapshot){
-            console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId} ---`);
+            console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId} --- first run: ${firstRun} ---`);
+            if (firstRun) firstRun = false;
             snapshot.docChanges().forEach(function(change) {
                 if (change.type === "added") {
                     console.log("New message: ", change.doc.data(), change.doc);
