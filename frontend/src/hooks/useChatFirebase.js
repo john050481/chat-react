@@ -35,18 +35,18 @@ export function useChatFirebase() {
     },  [auth/*, userId, userData*/] );
     //---------------------------------------------------------------
     useEffect( () => {
-        console.log('2222222222222222', subscribers);
+        console.log('2222222222222222_START', subscribers);
         if (!userData) return;
 
         subscribers.forEach( item => {
-            console.log('33333333333333333_333333333333', item);
+            console.log('2222222222222222_UN_SUBSCRIBE---', item);
             item.unsubscribe()
         } );
         setSubscribers([]);
-        console.log('2222222222222222_234242423', subscribers);
+        console.log('2222222222222222_AFTER_UN_SUBSCRIBE', subscribers);
 
         userData.rooms.forEach( roomId => {
-            console.log('2222222222222222_subscribe: ', roomId);
+            console.log('2222222222222222_SUBSCRIBE+++: ', roomId);
             subscribeRoom(roomId)
         } );
 
