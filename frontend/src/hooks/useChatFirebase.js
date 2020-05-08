@@ -123,17 +123,17 @@ export function useChatFirebase() {
     function subscribeRoom(roomId) {
         let firstRun = true;
         let unsubscribe = db.collection("room-messages").doc(roomId).collection("messages").onSnapshot(function (snapshot){
-            console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId} --- first run: ${firstRun} ---`);
+            console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId} --- firstRun: ${firstRun} ---`);
             if (firstRun) firstRun = false;
             snapshot.docChanges().forEach(function(change) {
                 if (change.type === "added") {
-                    console.log("New message: ", change.doc.data(), change.doc);
+                    console.log("added! ", "id: ", change.doc.id, "data: ", change.doc.data());
                 }
                 if (change.type === "modified") {
-                    console.log("Modified message: ", change.doc.data(), change.doc);
+                    console.log("modified! ", "id: ", change.doc.id, "data: ", change.doc.data());
                 }
                 if (change.type === "removed") {
-                    console.log("Removed message: ", change.doc.data(), change.doc);
+                    console.log("removed! ", "id: ", change.doc.id, "data: ", change.doc.data());
                 }
             });
         });
