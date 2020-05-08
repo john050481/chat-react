@@ -127,13 +127,13 @@ export function useChatFirebase() {
             if (firstRun) firstRun = false;
             snapshot.docChanges().forEach(function(change) {
                 if (change.type === "added") {
-                    console.log("added! ", "id: ", change.doc.id, "data: ", change.doc.data());
+                    console.log("added! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
                 }
                 if (change.type === "modified") {
-                    console.log("modified! ", "id: ", change.doc.id, "data: ", change.doc.data());
+                    console.log("modified! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
                 }
                 if (change.type === "removed") {
-                    console.log("removed! ", "id: ", change.doc.id, "data: ", change.doc.data());
+                    console.log("removed! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
                 }
             });
         });
