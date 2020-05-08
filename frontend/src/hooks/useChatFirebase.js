@@ -12,6 +12,8 @@ export function useChatFirebase() {
     const [userData, setUserData] = useState(null);
     const [subscribers, setSubscribers] = useState([]);
 
+    console.log('Render useChatFirebase');
+
     //---------------------------------------------------------------
     useEffect( () => {
         console.log('1111111111111111111', userId, userData);
