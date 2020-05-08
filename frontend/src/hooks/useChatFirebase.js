@@ -19,7 +19,7 @@ export function useChatFirebase() {
 
         let unsubscribeUser = db.collection("users").doc(auth.user.uid)
             .onSnapshot(function(DocumentReferenceUser) {
-                console.log('1111111111111111111_11111111111111111111');
+                console.log('1111111111111111111_11111111111111111111', userId, userData);
 
                 if (!DocumentReferenceUser.exists) {
                     createUser(auth.user.uid, auth.user.email/*, (userId) => setUserId(userId)*/);
@@ -35,24 +35,39 @@ export function useChatFirebase() {
     },  [auth/*, userId, userData*/] );
     //---------------------------------------------------------------
     useEffect( () => {
-        console.log('2222222222222222_START', subscribers);
+        console.log('2222222222222222_START', subscribers, userData);
         if (!userData) return;
 
-        subscribers.forEach( item => {
-            console.log('2222222222222222_UN_SUBSCRIBE---', item);
-            item.unsubscribe()
-        } );
+        // subscribers.forEach( item => {
+        //     console.log('2222222222222222_UN_SUBSCRIBE---', item);
+        //     item.unsubscribe()
+        // } );
         setSubscribers([]);
-        console.log('2222222222222222_AFTER_UN_SUBSCRIBE', subscribers);
+        //console.log('2222222222222222_AFTER_UN_SUBSCRIBE', subscribers);
 
         userData.rooms.forEach( roomId => {
             console.log('2222222222222222_SUBSCRIBE+++: ', roomId);
             subscribeRoom(roomId)
         } );
 
-//        return () => unsubscribeAllRooms();
+        return () => {
+            console.log('2222222222222222_END: ', subscribers, userData);
+            //unsubscribeAllRooms();
+        }
 
     }, [userData] );
+    //---------------------------------------------------------------
+    useEffect( () => {
+        console.log('3333333333333333_START', subscribers);
+        return () => {
+            console.log('3333333333333333_END', subscribers);
+            subscribers.forEach( item => {
+                console.log('3333333333333333_UN_SUBSCRIBE---', item);
+                item.unsubscribe()
+            } );
+            //setSubscribers([]);
+        }
+    }, [subscribers]);
     //---------------------------------------------------------------
 /*
     useEffect(
