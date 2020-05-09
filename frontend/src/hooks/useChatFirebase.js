@@ -8,6 +8,10 @@ export function useChatFirebase() {
     const auth = useAuth();
     const db = auth.firebase.firestore();
     const firebase = auth.firebase;
+
+    let chatSubscribers = {};
+    const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-remove', 'room-invite', 'room-invite-response'];
+
     const [userId, setUserId] = useState(null);
     const [userData, setUserData] = useState(null);
 
@@ -236,9 +240,36 @@ export function useChatFirebase() {
         return db.collection('/users').doc(userId)
     }//*********
 
+    function on(event, callback) {
+        /* смотри выше: const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-remove', 'room-invite', 'room-invite-response'];
+        user-update - Invoked when the user's metadata changes.
+        room-enter - Invoked when the user successfully enters a room.
+        room-exit - Invoked when the user exists a room.
+        message-add - Invoked when a new message is received.
+        message-remove - Invoked when a message is deleted.
+        room-invite - Invoked when a new room invite is received.
+        room-invite-response - Invoked when a response to a previous invite is received.
+        */
+        if (!events.find( item => item === event ) ) return false;
+
+        console.log("###1 chatSubscribers === ", chatSubscribers);
+        let eventListeners = chatSubscribers[event] || [];
+        console.log("###2 eventListeners === ", eventListeners);
+
+        if ( eventListeners.find( item => {
+            console.log("###3 item === callback, item, callback === ", item === callback, item, callback);
+            return item === callback;
+        }) ) return false;
+
+        console.log("###4", eventListeners);
+        eventListeners.push(callback);
+        chatSubscribers[event] = eventListeners;
+    }
+
     return {
         userId,
         userData,
+        chatSubscribers,
 
         createUser,
         updateUser,
@@ -259,6 +290,8 @@ export function useChatFirebase() {
         leaveRoom,
 
         getUserData,
-        getUserRef
+        getUserRef,
+
+        on
     };
 }

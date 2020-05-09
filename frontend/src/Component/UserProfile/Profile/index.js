@@ -7,6 +7,8 @@ export default function (props) {
     const userIdElem = document.getElementById('userIdElem');
     const messageIdElem = document.getElementById('messageIdElem');
     const messageElem = document.getElementById('messageElem');
+    const eventNameElem = document.getElementById('eventNameElem');
+    const noop = () => {};
 
     async function handlerGetInfo(e) {
         console.log(chatDb, await chatDb.getUserData(userIdElem.value ? userIdElem.value : chatDb.userId));
@@ -61,6 +63,15 @@ export default function (props) {
     function handlerDeleteMessage(e) {
         chatDb.deleteMessage(roomIdElem.value, messageIdElem.value, console.log)
     }//*********
+    function handlerOn(e) {
+        let eventListeners = chatDb.chatSubscribers[eventNameElem.value] || [];
+        if ( eventListeners.find( item => {
+            console.log("###!!! item === callback, item, callback === ", item === noop, item, noop);
+            return item === noop;
+        }) );
+
+        chatDb.on(eventNameElem.value, noop);
+    }
 
     return (
         <div>
@@ -94,6 +105,10 @@ export default function (props) {
             <button onClick={handlerSendMessage} className={'btn btn-outline-success'}>send message</button>
             <button onClick={handlerUpdateMessage} className={'btn btn-outline-success'}>update message</button>
             <button onClick={handlerDeleteMessage} className={'btn btn-outline-success'}>delete message</button>
+            <hr />
+            <label>event name: <input id={'eventNameElem'} /></label>
+            <br />
+            <button onClick={handlerOn} /*className={'btn btn-outline-success'}*/>on</button>
         </div>
     )
 }
