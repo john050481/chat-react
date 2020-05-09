@@ -64,12 +64,6 @@ export default function (props) {
         chatDb.deleteMessage(roomIdElem.value, messageIdElem.value, console.log)
     }//*********
     function handlerOn(e) {
-        let eventListeners = chatDb.chatSubscribers[eventNameElem.value] || [];
-        if ( eventListeners.find( item => {
-            console.log("###!!! item === callback, item, callback === ", item === noop, item, noop);
-            return item === noop;
-        }) );
-
         chatDb.on(eventNameElem.value, noop);
     }
 

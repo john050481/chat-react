@@ -259,11 +259,14 @@ export function useChatFirebase() {
         if ( eventListeners.find( item => {
             console.log("###3 item === callback, item, callback === ", item === callback, item, callback);
             return item === callback;
-        }) ) return false;
+        }) ) return true;
 
         console.log("###4", eventListeners);
         eventListeners.push(callback);
         chatSubscribers[event] = eventListeners;
+    }
+    function onRemove(event, callback) {
+
     }
 
     return {
@@ -292,6 +295,7 @@ export function useChatFirebase() {
         getUserData,
         getUserRef,
 
-        on
+        on,
+        onRemove
     };
 }
