@@ -260,7 +260,7 @@ export function useChatFirebase() {
         eventListeners.push(callback);
         chatSubscribers[event] = eventListeners;
         return true;
-    }
+    }//*********
     function onRemove(event, callback) {
         if (!events.find( item => item === event ) ) return false;
 
@@ -272,7 +272,7 @@ export function useChatFirebase() {
         if (!chatSubscribers[event].length) delete chatSubscribers[event];
 
         return true;
-    }
+    }//*********
     function dispatchEvent(event) {
         if (!events.find( item => item === event ) ) return false;
 
@@ -280,7 +280,7 @@ export function useChatFirebase() {
 
         eventListeners.forEach(callback => callback({event, detail}));
         return true;
-    }
+    }//*********
 
     return {
         userId,
