@@ -66,6 +66,7 @@ export default function (props) {
     }//*********
     function handlerOn(e) {
         chatDb.addEventListener(eventNameElem.value, noop);
+        chatDb.addEventListener(eventNameElem.value, (event) => console.log(event));
     }//*********
     function handlerOnRemove(e) {
         chatDb.removeEventListener(eventNameElem.value, noop);
