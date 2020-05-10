@@ -273,7 +273,7 @@ export function useChatFirebase() {
 
         return true;
     }//*********
-    function dispatchEvent(event) {
+    function dispatchEvent({event, detail}) {
         if (!events.find( item => item === event ) ) return false;
 
         let eventListeners = chatEventListeners[event] || [];

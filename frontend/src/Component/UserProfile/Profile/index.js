@@ -70,7 +70,7 @@ export default function (props) {
         chatDb.removeEventListener(eventNameElem.value, noop);
     }//*********
     function handlerDispatchEvent(e) {
-        chatDb.dispatchEvent(eventNameElem.value);
+        chatDb.dispatchEvent({event: eventNameElem.value, detail: `any detail: ${eventNameElem.value}`});
     }//*********
 
     return (
