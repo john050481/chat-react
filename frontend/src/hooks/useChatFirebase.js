@@ -1,10 +1,21 @@
 // Hook (useChatFirebase.js)
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef, createContext, useContext} from "react";
 import {useAuth} from "./useAuth";
 import usersModel from '../model/users';
 import roomMessagesModel from '../model/roomMessages';
 
-export function useChatFirebase() {
+const chatContext = createContext();
+
+export function ProvideChat({ children }) {
+    const chat = useProvideChat();
+    return <chatContext.Provider value={chat}>{children}</chatContext.Provider>;
+}
+
+export const useChat = () => {
+    return useContext(chatContext);
+};
+
+export function useProvideChat() {
     const auth = useAuth();
     const db = auth.firebase.firestore();
     const firebase = auth.firebase;

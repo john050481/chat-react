@@ -1,17 +1,21 @@
-import React, {useRef} from 'react';
-import {useChatFirebase} from "../../../hooks/useChatFirebase";
+import React, {useEffect, useRef} from 'react';
+import {useChat} from "../../../hooks/useChatFirebase"
 
 export default function (props) {
     console.log('Render Profile');
 
-    const chatDb = useChatFirebase();
-    const roomIdElem = document.getElementById('roomIdElem');
-    const userIdElem = document.getElementById('userIdElem');
-    const messageIdElem = document.getElementById('messageIdElem');
-    const messageElem = document.getElementById('messageElem');
-    const eventNameElem = document.getElementById('eventNameElem');
-    const userEmailElem = document.getElementById('userEmailElem');
+    const chatDb = useChat();
+
     const noop = useRef( (event) => console.log('EVENT: ', event) );
+
+    useEffect( () => {
+        const roomIdElem = document.getElementById('roomIdElem');
+        const userIdElem = document.getElementById('userIdElem');
+        const messageIdElem = document.getElementById('messageIdElem');
+        const messageElem = document.getElementById('messageElem');
+        const eventNameElem = document.getElementById('eventNameElem');
+        const userEmailElem = document.getElementById('userEmailElem');
+    }, []);
 
     async function handlerGetInfo(e) {
         console.log(chatDb, await chatDb.getUserData(userIdElem.value ? userIdElem.value : chatDb.userId));

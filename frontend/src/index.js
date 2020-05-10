@@ -13,6 +13,8 @@ import {myMiddleware} from './redux/middleware'
 import mySagas from './redux/sagas';
 //---------------------------------AUTH---------------------------------------
 import { ProvideAuth } from "./hooks/useAuth";
+//---------------------------------CHAT---------------------------------------
+import { ProvideChat } from "./hooks/useChatFirebase";
 //---------------------------------ROUTE--------------------------------------
 import {BrowserRouter} from "react-router-dom";
 //----------------------------------------------------------------------------
@@ -31,10 +33,12 @@ sagaMiddleware.run(mySagas);
 
 ReactDOM.render(
     <ProvideAuth>
-        <Provider store={store}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </Provider>
+        <ProvideChat>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </Provider>
+        </ProvideChat>
     </ProvideAuth>, document.getElementById('app')
 );
