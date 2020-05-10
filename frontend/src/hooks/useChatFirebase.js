@@ -241,7 +241,7 @@ export function useChatFirebase() {
         return db.collection('/users').doc(userId)
     }//*********
 
-    function on(event, callback) {
+    function addEventListener(event, callback) {
         /* смотри выше: const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-remove', 'room-invite', 'room-invite-response'];
         user-update - Invoked when the user's metadata changes.
         room-enter - Invoked when the user successfully enters a room.
@@ -261,7 +261,7 @@ export function useChatFirebase() {
         chatEventListeners[event] = eventListeners;
         return true;
     }//*********
-    function onRemove(event, callback) {
+    function removeEventListener(event, callback) {
         if (!events.find( item => item === event ) ) return false;
 
         let eventListeners = chatEventListeners[event];
@@ -308,8 +308,8 @@ export function useChatFirebase() {
         getUserData,
         getUserRef,
 
-        on,
-        onRemove,
+        addEventListener,
+        removeEventListener,
         dispatchEvent
     };
 }

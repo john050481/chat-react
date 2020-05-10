@@ -64,10 +64,10 @@ export default function (props) {
         chatDb.deleteMessage(roomIdElem.value, messageIdElem.value, console.log)
     }//*********
     function handlerOn(e) {
-        chatDb.on(eventNameElem.value, noop);
+        chatDb.addEventListener(eventNameElem.value, noop);
     }//*********
     function handlerOnRemove(e) {
-        chatDb.onRemove(eventNameElem.value, noop);
+        chatDb.removeEventListener(eventNameElem.value, noop);
     }//*********
     function handlerDispatchEvent(e) {
         chatDb.dispatchEvent(eventNameElem.value);
