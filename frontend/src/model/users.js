@@ -9,6 +9,8 @@ export default {
     muted: [], //  list of user ids currently muted by the user.
     rooms: [], // A list of currently active rooms, used for sessioning.
 
+    contacts: [], // Array of users ID
+
     username: "", //"Bret",
     email: "", //"Sincere@april.biz",
     phone: "", //"1-770-736-8031 x56442",
