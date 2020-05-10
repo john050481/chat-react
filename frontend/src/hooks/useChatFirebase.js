@@ -10,7 +10,6 @@ export function useChatFirebase() {
     const firebase = auth.firebase;
 
     let chatEventListeners = {};
-    let detail = null;
     const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-remove', 'room-invite', 'room-invite-response'];
 
     const [userId, setUserId] = useState(null);
