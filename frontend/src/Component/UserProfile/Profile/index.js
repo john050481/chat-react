@@ -47,14 +47,15 @@ export default function (props) {
         const result = chatDb.createRoom('roomCreate', 'private', console.log);
         console.log('result = ', await result);
     }//*********
-    function handlergetRoomMetadata(e) {
-        chatDb.getRoomMetadata(roomIdElem.value, console.log);
+    async function handlergetRoomMetadata(e) {
+        let meta = await chatDb.getRoomMetadata(roomIdElem.value);
+        console.log(meta);
     }//*********
     function handlerenterRoom(e) {
-        chatDb.enterRoom(roomIdElem.value).then( () => console.log(`Enterd ${roomIdElem.value}`) );
+        chatDb.enterRoom(roomIdElem.value, console.log).then( () => console.log(`Enterd ${roomIdElem.value}`) );
     }//*********
     function handlerleaveRoom(e) {
-        chatDb.leaveRoom(roomIdElem.value).then( () => console.log(`Deleted ${roomIdElem.value}!!`) );
+        chatDb.leaveRoom(roomIdElem.value, console.log).then( () => console.log(`Deleted ${roomIdElem.value}!!`) );
     }//*********
     async function handlerupdateRoomMetadata(e) {
         chatDb.updateRoomMetadata(roomIdElem.value, `new name room`, 'public', console.log)

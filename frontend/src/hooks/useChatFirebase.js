@@ -184,12 +184,8 @@ function useProvideChat() {
             return roomId;
         });
     }//*********
-    function getRoomMetadata(roomId, callback) {
-        db.collection('room-metadata').doc(roomId).get()
-        .then( doc => {
-            callback && callback(doc.data());
-            return doc.data();
-        })
+    function getRoomMetadata(roomId) {
+        return db.collection('room-metadata').doc(roomId).get().then( (doc) => doc.data() )
     }//*********
     function updateRoomMetadata(roomId, roomName, roomType, callback) {
         let newData = Object.assign({name: roomName}, roomType ? {type: roomType} : {});
@@ -234,7 +230,7 @@ function useProvideChat() {
             return messages;
         });
     }//*********
-    function enterRoom(roomId) {
+    function enterRoom(roomId, callback) {
         let batch = db.batch(); //выполняет multiple write operations as a single
 
         const docRefRoomUsers = db.collection('room-users').doc(roomId).collection('users').doc(this.userId);
@@ -246,9 +242,10 @@ function useProvideChat() {
         return batch.commit()
             .then( () => {
                 dispatchEvent( { event: 'room-enter', detail: {roomId} } );
+                callback && callback(true);
             });
     }//*********
-    function leaveRoom(roomId) {
+    function leaveRoom(roomId, callback) {
         let batch = db.batch(); //выполняет multiple write operations as a single
 
         const docRefRoomUsers = db.collection('room-users').doc(roomId).collection('users').doc(this.userId);
@@ -260,6 +257,7 @@ function useProvideChat() {
         return batch.commit()
             .then( () => {
                 dispatchEvent( { event: 'room-exit', detail: {roomId} } );
+                callback && callback(true);
             });
     }//*********
     function getRoomUsers(roomId) {
