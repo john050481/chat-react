@@ -9,7 +9,7 @@ export function useChatFirebase() {
     const db = auth.firebase.firestore();
     const firebase = auth.firebase;
 
-    let chatSubscribers = {};
+    let chatEventListeners = {};
     let detail = null;
     const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-remove', 'room-invite', 'room-invite-response'];
 
@@ -28,7 +28,7 @@ export function useChatFirebase() {
                 console.log('1111111111111111111_11111111111111111111', userId, userData);
 
                 if (!DocumentReferenceUser.exists) {
-                    createUser(auth.user.uid, auth.user.email/*, (userId) => setUserId(userId)*/);
+                    _createUser(auth.user.uid, auth.user.email/*, (userId) => setUserId(userId)*/);
                     return;
                 }
 
@@ -47,7 +47,7 @@ export function useChatFirebase() {
         if (!userData) return;
 
         userData.rooms.forEach( roomId => {
-            const unsubscribe = subscribeRoomMessages(roomId);
+            const unsubscribe = _subscribeRoomMessages(roomId);
             console.log('2222222222222222_SUBSCRIBE+++: ', roomId, unsubscribe);
             subscribers.push({roomId, unsubscribe});
         } );
@@ -63,7 +63,7 @@ export function useChatFirebase() {
     }, [userData] );
     //---------------------------------------------------------------
 
-    function createUser(userId, email, callback) {
+    function _createUser(userId, email, callback) {
         return db.collection("users").doc(userId).set({ ...usersModel, id: userId, email })
             .then( () => {
                 callback && callback(userId)
@@ -77,7 +77,7 @@ export function useChatFirebase() {
                 return userId;
             })
     }//*********
-    function deleteUser(userId, callback) {
+    function _deleteUser(userId, callback) {
         return getUserRef(userId).delete()
             .then(function() {
                 callback && callback(userId);
@@ -85,7 +85,7 @@ export function useChatFirebase() {
             })
     }//*********
 
-    function subscribeRoomMessages(roomId) {
+    function _subscribeRoomMessages(roomId) {
         let firstRun = true;
         let unsubscribe = db.collection("room-messages").doc(roomId).collection("messages").onSnapshot(function (snapshot){
             console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId} --- firstRun: ${firstRun} ---`);
@@ -253,30 +253,30 @@ export function useChatFirebase() {
         */
         if (!events.find( item => item === event ) ) return false;
 
-        let eventListeners = chatSubscribers[event] || [];
+        let eventListeners = chatEventListeners[event] || [];
 
         if ( eventListeners.find(item => item === callback) ) return true;
 
         eventListeners.push(callback);
-        chatSubscribers[event] = eventListeners;
+        chatEventListeners[event] = eventListeners;
         return true;
     }//*********
     function onRemove(event, callback) {
         if (!events.find( item => item === event ) ) return false;
 
-        let eventListeners = chatSubscribers[event];
+        let eventListeners = chatEventListeners[event];
         if (!eventListeners) return false;
 
-        chatSubscribers[event] = eventListeners.filter(item => item !== callback);
+        chatEventListeners[event] = eventListeners.filter(item => item !== callback);
 
-        if (!chatSubscribers[event].length) delete chatSubscribers[event];
+        if (!chatEventListeners[event].length) delete chatEventListeners[event];
 
         return true;
     }//*********
     function dispatchEvent(event) {
         if (!events.find( item => item === event ) ) return false;
 
-        let eventListeners = chatSubscribers[event] || [];
+        let eventListeners = chatEventListeners[event] || [];
 
         eventListeners.forEach(callback => callback({event, detail}));
         return true;
@@ -285,13 +285,13 @@ export function useChatFirebase() {
     return {
         userId,
         userData,
-        chatSubscribers,
+        chatEventListeners,
 
-        createUser,
+        _createUser,
         updateUser,
-        deleteUser,
+        _deleteUser,
 
-        subscribeRoomMessages,
+        _subscribeRoomMessages,
 
         sendMessage,
         updateMessage,

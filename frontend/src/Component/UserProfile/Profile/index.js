@@ -14,7 +14,7 @@ export default function (props) {
         console.log(chatDb, await chatDb.getUserData(userIdElem.value ? userIdElem.value : chatDb.userId));
     }//*********
     function handlerCreate(e) {
-        chatDb.createUser(userIdElem.value ? userIdElem.value : 'example@example.ru', 'example@example.ru', console.log)
+        chatDb._createUser(userIdElem.value ? userIdElem.value : 'example@example.ru', 'example@example.ru', console.log)
             .then( res => console.log(`Создан пользователь = ${userIdElem.value ? userIdElem.value : 'example@example.ru'}`, res))
             .catch( e => console.log(e));
     }//*********
@@ -24,7 +24,7 @@ export default function (props) {
             .catch( e => console.log(e));
     }//*********
     function handlerDelete(e) {
-        chatDb.deleteUser(userIdElem.value ? userIdElem.value : chatDb.userId, console.log)
+        chatDb._deleteUser(userIdElem.value ? userIdElem.value : chatDb.userId, console.log)
             .then( () => console.log(`Удален пользователь ${userIdElem.value ? userIdElem.value : chatDb.userId}`))
             .catch( e => console.log(e));
     }//*********
