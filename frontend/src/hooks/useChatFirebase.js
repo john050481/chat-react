@@ -10,6 +10,7 @@ export function useChatFirebase() {
     const firebase = auth.firebase;
 
     let chatSubscribers = {};
+    let detail = null;
     const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-remove', 'room-invite', 'room-invite-response'];
 
     const [userId, setUserId] = useState(null);
@@ -277,7 +278,7 @@ export function useChatFirebase() {
 
         let eventListeners = chatSubscribers[event] || [];
 
-        eventListeners.forEach(callback => callback(event));
+        eventListeners.forEach(callback => callback({event, detail}));
         return true;
     }
 
