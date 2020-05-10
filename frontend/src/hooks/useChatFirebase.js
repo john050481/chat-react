@@ -36,7 +36,7 @@ export function useChatFirebase() {
                 setUserData(DocumentReferenceUser.data());
             });
 
-        return () => unsubscribeUser();
+        return unsubscribeUser;
 
     },  [auth/*, userId, userData*/] );
     //---------------------------------------------------------------
