@@ -183,7 +183,7 @@ export function useChatFirebase() {
                 return true;
             });
     }//*********
-    async function deleteRoom(roomId, callback) {
+    async function _deleteRoom(roomId, callback) {
         let batch = db.batch(); //выполняет multiple write operations as a single
 
         const docRefRoomUsers = db.collection('room-users').doc(roomId);
@@ -320,7 +320,7 @@ export function useChatFirebase() {
         createRoom,
         getRoomMetadata,
         updateRoomMetadata,
-        deleteRoom,
+        _deleteRoom,
         getRoomMessages,
         enterRoom,
         leaveRoom,

@@ -52,7 +52,7 @@ export default function (props) {
         .catch( e => console.log(e))
     }//*********
     async function handlerDeleteRoom(e) {
-        chatDb.deleteRoom(roomIdElem.value, console.log);
+        chatDb._deleteRoom(roomIdElem.value, console.log);
     }//!!!!!!!!! ПРОБЛЕМА, см. "useChatFirebase"
 
     function handlerSendMessage(e) {
