@@ -8,6 +8,7 @@ export default function (props) {
     const messageIdElem = document.getElementById('messageIdElem');
     const messageElem = document.getElementById('messageElem');
     const eventNameElem = document.getElementById('eventNameElem');
+    const userEmailElem = document.getElementById('userEmailElem');
     const noop = (event) => console.log(event);
 
     async function handlerGetInfo(e) {
@@ -72,6 +73,9 @@ export default function (props) {
     function handlerDispatchEvent(e) {
         chatDb.dispatchEvent({event: eventNameElem.value, detail: `any detail: ${eventNameElem.value}`});
     }//*********
+    async function handlerSearchUserEmail(e) {
+        console.log( await chatDb.searchUserEmail(userEmailElem.value) );
+    }
 
     return (
         <div>
@@ -111,6 +115,10 @@ export default function (props) {
             <button onClick={handlerOn} className={'btn btn-outline-success'}>on</button>
             <button onClick={handlerOnRemove} className={'btn btn-outline-success'}>on remove</button>
             <button onClick={handlerDispatchEvent} className={'btn btn-outline-success'}>dispatch event</button>
+            <hr />
+            <label>user email: <input id={'userEmailElem'} /></label>
+            <br />
+            <button onClick={handlerSearchUserEmail} className={'btn btn-outline-success'}>search user email</button>
         </div>
     )
 }

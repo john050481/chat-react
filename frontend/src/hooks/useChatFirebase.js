@@ -289,6 +289,19 @@ export function useChatFirebase() {
         return true;
     }//*********
 
+    function searchUserEmail(searchString) {
+        let searchedArray = [];
+        return db.collection('users').where("email","==", searchString)
+            .get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    // doc.data() is never undefined for query doc snapshots
+                    searchedArray.push({id: doc.id, data: doc.data()});
+                });
+                return searchedArray;
+            })
+    }
+
     return {
         userId,
         userData,
@@ -317,6 +330,8 @@ export function useChatFirebase() {
 
         addEventListener,
         removeEventListener,
-        dispatchEvent
+        dispatchEvent,
+
+        searchUserEmail
     };
 }
