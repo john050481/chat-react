@@ -52,8 +52,6 @@ export function useChatFirebase() {
         if (!userData) return;
 
         userData.rooms.forEach( roomId => {
-            dispatchEvent( { event: 'room-enter', detail: {roomId} } );
-
             const unsubscribe = _subscribeRoomMessages(roomId);
             console.log('2222222222222222_SUBSCRIBE+++: ', roomId, unsubscribe);
             subscribers.push({roomId, unsubscribe});
@@ -62,8 +60,6 @@ export function useChatFirebase() {
         return () => {
             console.log('2222222222222222_END: ', subscribers, userData);
             subscribers.forEach( item => {
-                dispatchEvent( { event: 'room-exit', detail: {roomId: item.roomId} } );
-
                 console.log('2222222222222222_UN_SUBSCRIBE---', item);
                 item.unsubscribe()
             } );
@@ -236,7 +232,10 @@ export function useChatFirebase() {
         const docRefUsers = db.collection('users').doc(this.userId);
         batch.update(docRefUsers, {rooms: firebase.firestore.FieldValue.arrayUnion(roomId)});
 
-        return batch.commit();
+        return batch.commit()
+            .then( () => {
+                dispatchEvent( { event: 'room-enter', detail: {roomId} } );
+            });
     }//*********
     function leaveRoom(roomId) {
         let batch = db.batch(); //выполняет multiple write operations as a single
@@ -247,7 +246,10 @@ export function useChatFirebase() {
         const docRefUsers = db.collection('users').doc(this.userId);
         batch.update(docRefUsers, {rooms: firebase.firestore.FieldValue.arrayRemove(roomId)});
 
-        return batch.commit();
+        return batch.commit()
+            .then( () => {
+                dispatchEvent( { event: 'room-exit', detail: {roomId} } );
+            });
     }//*********
 
     function getUserData(userId) {
