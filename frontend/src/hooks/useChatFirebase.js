@@ -259,11 +259,11 @@ export function useChatFirebase() {
         room-invite - Invoked when a new room invite is received.
         room-invite-response - Invoked when a response to a previous invite is received.
         */
-        if (!events.find( item => item === event ) ) return false;
+        if (!events.find( item => item === event ) ) return false; //нет такого события
 
-        let eventListeners = chatEventListeners.current[event] || [];
+        let eventListeners = chatEventListeners.current[event] || []; //извлекаем список callback-ов по переданному событию
 
-        if ( eventListeners.find(item => item === callback) ) return true;
+        if ( eventListeners.find(item => item === callback) ) return true; //данный callback уже есть в списке
 
         eventListeners.push(callback);
         chatEventListeners.current[event] = eventListeners;
@@ -273,7 +273,7 @@ export function useChatFirebase() {
         if (!events.find( item => item === event ) ) return false;
 
         let eventListeners = chatEventListeners.current[event];
-        if (!eventListeners) return false;
+        if (!eventListeners) return false; //нечего удалять
 
         chatEventListeners.current[event] = eventListeners.filter(item => item !== callback);
 
