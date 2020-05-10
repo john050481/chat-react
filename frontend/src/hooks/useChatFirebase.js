@@ -21,7 +21,11 @@ export function useChatFirebase() {
     //---------------------------------------------------------------
     useEffect( () => {
         console.log('1111111111111111111', userId, userData);
-        if (!auth.user) return;
+        if (!auth.user) {
+            setUserId(null);
+            setUserData(null);
+            return;
+        }
 
         let unsubscribeUser = db.collection("users").doc(auth.user.uid)
             .onSnapshot(function(DocumentReferenceUser) {
@@ -38,7 +42,7 @@ export function useChatFirebase() {
 
         return unsubscribeUser;
 
-    },  [auth/*, userId, userData*/] );
+    },  [auth] );
     //---------------------------------------------------------------
     useEffect( () => {
         const subscribers = [];
