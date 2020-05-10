@@ -1,5 +1,5 @@
 // Hook (useChatFirebase.js)
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {useAuth} from "./useAuth";
 import usersModel from '../model/users';
 import roomMessagesModel from '../model/roomMessages';
@@ -9,7 +9,7 @@ export function useChatFirebase() {
     const db = auth.firebase.firestore();
     const firebase = auth.firebase;
 
-    let chatEventListeners = {};
+    const chatEventListeners = useRef({});
     const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-remove', 'room-invite', 'room-invite-response'];
 
     const [userId, setUserId] = useState(null);
@@ -37,6 +37,7 @@ export function useChatFirebase() {
 
                 setUserId(DocumentReferenceUser.id);
                 setUserData(DocumentReferenceUser.data());
+                dispatchEvent({event: 'user-update', detail: DocumentReferenceUser.data()});
             });
 
         return unsubscribeUser;
@@ -260,30 +261,30 @@ export function useChatFirebase() {
         */
         if (!events.find( item => item === event ) ) return false;
 
-        let eventListeners = chatEventListeners[event] || [];
+        let eventListeners = chatEventListeners.current[event] || [];
 
         if ( eventListeners.find(item => item === callback) ) return true;
 
         eventListeners.push(callback);
-        chatEventListeners[event] = eventListeners;
+        chatEventListeners.current[event] = eventListeners;
         return true;
     }//*********
     function removeEventListener(event, callback) {
         if (!events.find( item => item === event ) ) return false;
 
-        let eventListeners = chatEventListeners[event];
+        let eventListeners = chatEventListeners.current[event];
         if (!eventListeners) return false;
 
-        chatEventListeners[event] = eventListeners.filter(item => item !== callback);
+        chatEventListeners.current[event] = eventListeners.filter(item => item !== callback);
 
-        if (!chatEventListeners[event].length) delete chatEventListeners[event];
+        if (!chatEventListeners.current[event].length) delete chatEventListeners.current[event];
 
         return true;
     }//*********
     function dispatchEvent({event, detail}) {
         if (!events.find( item => item === event ) ) return false;
 
-        let eventListeners = chatEventListeners[event] || [];
+        let eventListeners = chatEventListeners.current[event] || [];
 
         eventListeners.forEach(callback => callback({event, detail}));
         return true;

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {useChatFirebase} from "../../../hooks/useChatFirebase";
 
 export default function (props) {
+    console.log('Render Profile');
+
     const chatDb = useChatFirebase();
     const roomIdElem = document.getElementById('roomIdElem');
     const userIdElem = document.getElementById('userIdElem');
@@ -9,7 +11,7 @@ export default function (props) {
     const messageElem = document.getElementById('messageElem');
     const eventNameElem = document.getElementById('eventNameElem');
     const userEmailElem = document.getElementById('userEmailElem');
-    const noop = (event) => console.log(event);
+    const noop = useRef( (event) => console.log('EVENT: ', event) );
 
     async function handlerGetInfo(e) {
         console.log(chatDb, await chatDb.getUserData(userIdElem.value ? userIdElem.value : chatDb.userId));
@@ -65,11 +67,11 @@ export default function (props) {
         chatDb.deleteMessage(roomIdElem.value, messageIdElem.value, console.log)
     }//*********
     function handlerOn(e) {
-        chatDb.addEventListener(eventNameElem.value, noop);
-        chatDb.addEventListener(eventNameElem.value, (event) => console.log(event));
+        chatDb.addEventListener(eventNameElem.value, noop.current);
+        chatDb.addEventListener(eventNameElem.value, (event) => console.log("EVENT: ", event));
     }//*********
     function handlerOnRemove(e) {
-        chatDb.removeEventListener(eventNameElem.value, noop);
+        chatDb.removeEventListener(eventNameElem.value, noop.current);
     }//*********
     function handlerDispatchEvent(e) {
         chatDb.dispatchEvent({event: eventNameElem.value, detail: `any detail: ${eventNameElem.value}`});
