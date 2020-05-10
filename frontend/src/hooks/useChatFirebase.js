@@ -300,7 +300,7 @@ export function useChatFirebase() {
                 });
                 return searchedArray;
             })
-    }
+    }//*********
 
     return {
         userId,

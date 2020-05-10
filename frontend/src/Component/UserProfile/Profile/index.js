@@ -76,7 +76,7 @@ export default function (props) {
     }//*********
     async function handlerSearchUserEmail(e) {
         console.log( await chatDb.searchUserEmail(userEmailElem.value) );
-    }
+    }//*********
 
     return (
         <div>
