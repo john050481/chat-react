@@ -37,7 +37,6 @@ export function useChatFirebase() {
 
                 setUserId(DocumentReferenceUser.id);
                 setUserData(DocumentReferenceUser.data());
-                dispatchEvent({event: 'user-update', detail: DocumentReferenceUser.data()});
             });
 
         return unsubscribeUser;
@@ -45,12 +44,16 @@ export function useChatFirebase() {
     },  [auth] );
     //---------------------------------------------------------------
     useEffect( () => {
+        dispatchEvent( { event: 'user-update', detail: {userData} } );
+
         const subscribers = [];
         console.log('2222222222222222_START', subscribers, userData);
 
         if (!userData) return;
 
         userData.rooms.forEach( roomId => {
+            dispatchEvent( { event: 'room-enter', detail: {roomId} } );
+
             const unsubscribe = _subscribeRoomMessages(roomId);
             console.log('2222222222222222_SUBSCRIBE+++: ', roomId, unsubscribe);
             subscribers.push({roomId, unsubscribe});
@@ -59,6 +62,8 @@ export function useChatFirebase() {
         return () => {
             console.log('2222222222222222_END: ', subscribers, userData);
             subscribers.forEach( item => {
+                dispatchEvent( { event: 'room-exit', detail: {roomId: item.roomId} } );
+
                 console.log('2222222222222222_UN_SUBSCRIBE---', item);
                 item.unsubscribe()
             } );
@@ -99,14 +104,17 @@ export function useChatFirebase() {
 
             if (firstRun) firstRun = false;
             snapshot.docChanges().forEach(function(change) {
+                console.log('path array === ', change.doc.ref.path.split('/'));
                 if (change.type === "added") {
                     console.log("added! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
+                    dispatchEvent( {event: 'message-add', detail: {id: change.doc.id, message: change.doc.data(), path: change.doc.ref.path} } );
                 }
                 if (change.type === "modified") {
                     console.log("modified! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
                 }
                 if (change.type === "removed") {
                     console.log("removed! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
+                    dispatchEvent( {event: 'message-remove', detail: {id: change.doc.id, message: change.doc.data(), path: change.doc.ref.path} } );
                 }
             });
         });
@@ -281,12 +289,14 @@ export function useChatFirebase() {
 
         return true;
     }//*********
-    function dispatchEvent({event, detail}) {
+    function dispatchEvent(eventObj) {
+        const {event} = eventObj;
+
         if (!events.find( item => item === event ) ) return false;
 
         let eventListeners = chatEventListeners.current[event] || [];
 
-        eventListeners.forEach(callback => callback({event, detail}));
+        eventListeners.forEach(callback => callback(eventObj));
         return true;
     }//*********
 
