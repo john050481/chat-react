@@ -92,6 +92,10 @@ export function useChatFirebase() {
         let firstRun = true;
         let unsubscribe = db.collection("room-messages").doc(roomId).collection("messages").onSnapshot(function (snapshot){
             console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId} --- firstRun: ${firstRun} ---`);
+
+            let source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
+            console.log('source = ', source);
+
             if (firstRun) firstRun = false;
             snapshot.docChanges().forEach(function(change) {
                 if (change.type === "added") {
