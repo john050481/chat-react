@@ -1,5 +1,5 @@
 // Hook (useChatFirebase.js)
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect} from "react";
 import {useAuth} from "./useAuth";
 import usersModel from '../model/users';
 import roomMessagesModel from '../model/roomMessages';
