@@ -39,6 +39,10 @@ export default function (props) {
         let messages = await chatDb.getRoomMessages(roomIdElem.value);
         console.log(messages);
     }//*********
+    async function handlergetRoomUsers(e) {
+        let users = await chatDb.getRoomUsers(roomIdElem.value);
+        console.log('room users = ', users);
+    }//*********
     async function handlercreateRoom(e) {
         const result = chatDb.createRoom('roomCreate', 'private', console.log);
         console.log('result = ', await result);
@@ -99,6 +103,7 @@ export default function (props) {
             <label>room id: <input id={'roomIdElem'} /></label>
             <br />
             <button onClick={handlergetGetRoomMessages} className={'btn btn-outline-success'}>get room messages</button>
+            <button onClick={handlergetRoomUsers} className={'btn btn-outline-success'}>get room users</button>
             <br/>
             <button onClick={handlergetRoomMetadata} className={'btn btn-outline-success'}>get metadata room</button>
             <button onClick={handlerupdateRoomMetadata} className={'btn btn-outline-success'}>update room metadata</button>

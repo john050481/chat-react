@@ -229,7 +229,7 @@ function useProvideChat() {
         return db.collection("room-messages").doc(roomId).collection("messages").get().then( querySnapshot => {
             let messages = [];
             querySnapshot.forEach(function(doc) {
-                messages.push(doc.data());
+                messages.push({...doc.data(), id: doc.id});
             });
             return messages;
         });
@@ -261,6 +261,15 @@ function useProvideChat() {
             .then( () => {
                 dispatchEvent( { event: 'room-exit', detail: {roomId} } );
             });
+    }//*********
+    function getRoomUsers(roomId) {
+        return db.collection('room-users').doc(roomId).collection('users').get().then( querySnapshot => {
+           let users = [];
+            querySnapshot.forEach(function(doc) {
+                users.push({...doc.data(), id: doc.id});
+            });
+            return users;
+        });
     }//*********
 
     function getUserData(userId) {
@@ -348,6 +357,7 @@ function useProvideChat() {
         getRoomMessages,
         enterRoom,
         leaveRoom,
+        getRoomUsers,
 
         getUserData,
         getUserRef,
