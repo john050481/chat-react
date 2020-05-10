@@ -15,7 +15,7 @@ export const useChat = () => {
     return useContext(chatContext);
 };
 
-export function useProvideChat() {
+function useProvideChat() {
     const auth = useAuth();
     const db = auth.firebase.firestore();
     const firebase = auth.firebase;
