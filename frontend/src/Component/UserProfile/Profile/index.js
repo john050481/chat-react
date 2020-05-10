@@ -8,7 +8,7 @@ export default function (props) {
     const messageIdElem = document.getElementById('messageIdElem');
     const messageElem = document.getElementById('messageElem');
     const eventNameElem = document.getElementById('eventNameElem');
-    const noop = () => {};
+    const noop = (event) => console.log(event);
 
     async function handlerGetInfo(e) {
         console.log(chatDb, await chatDb.getUserData(userIdElem.value ? userIdElem.value : chatDb.userId));
@@ -65,7 +65,13 @@ export default function (props) {
     }//*********
     function handlerOn(e) {
         chatDb.on(eventNameElem.value, noop);
-    }
+    }//*********
+    function handlerOnRemove(e) {
+        chatDb.onRemove(eventNameElem.value, noop);
+    }//*********
+    function handlerDispatchEvent(e) {
+        chatDb.dispatchEvent(eventNameElem.value);
+    }//*********
 
     return (
         <div>
@@ -102,7 +108,9 @@ export default function (props) {
             <hr />
             <label>event name: <input id={'eventNameElem'} /></label>
             <br />
-            <button onClick={handlerOn} /*className={'btn btn-outline-success'}*/>on</button>
+            <button onClick={handlerOn} className={'btn btn-outline-success'}>on</button>
+            <button onClick={handlerOnRemove} className={'btn btn-outline-success'}>on remove</button>
+            <button onClick={handlerDispatchEvent} className={'btn btn-outline-success'}>dispatch event</button>
         </div>
     )
 }

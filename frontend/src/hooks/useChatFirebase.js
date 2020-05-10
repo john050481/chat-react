@@ -252,21 +252,33 @@ export function useChatFirebase() {
         */
         if (!events.find( item => item === event ) ) return false;
 
-        console.log("###1 chatSubscribers === ", chatSubscribers);
         let eventListeners = chatSubscribers[event] || [];
-        console.log("###2 eventListeners === ", eventListeners);
 
-        if ( eventListeners.find( item => {
-            console.log("###3 item === callback, item, callback === ", item === callback, item, callback);
-            return item === callback;
-        }) ) return true;
+        if ( eventListeners.find(item => item === callback) ) return true;
 
-        console.log("###4", eventListeners);
         eventListeners.push(callback);
         chatSubscribers[event] = eventListeners;
+        return true;
     }
     function onRemove(event, callback) {
+        if (!events.find( item => item === event ) ) return false;
 
+        let eventListeners = chatSubscribers[event];
+        if (!eventListeners) return false;
+
+        chatSubscribers[event] = eventListeners.filter(item => item !== callback);
+
+        if (!chatSubscribers[event].length) delete chatSubscribers[event];
+
+        return true;
+    }
+    function dispatchEvent(event) {
+        if (!events.find( item => item === event ) ) return false;
+
+        let eventListeners = chatSubscribers[event] || [];
+
+        eventListeners.forEach(callback => callback(event));
+        return true;
     }
 
     return {
@@ -296,6 +308,7 @@ export function useChatFirebase() {
         getUserRef,
 
         on,
-        onRemove
+        onRemove,
+        dispatchEvent
     };
 }
