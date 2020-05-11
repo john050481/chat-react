@@ -88,7 +88,7 @@ function useProvideChat() {
                 callback && callback(newId)
                 return newId;
             })
-    }//*********this
+    }//*********null
     function updateUser(userId, data, callback) {
         const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
 
