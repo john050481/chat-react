@@ -18,20 +18,24 @@ export default function (props) {
     }, []);
 
     async function handlerGetInfo(e) {
-        console.log(chatDb, await chatDb.getUserData(userIdElem.value ? userIdElem.value : chatDb.userId));
+        console.log('chatDb === ', chatDb);
+        console.log('getUserData input.value === ', await chatDb.getUserData(userIdElem.value));
+        console.log('getUserData this === ', await chatDb.getUserData());
+        console.log('getUserRef input.value === ', await chatDb.getUserRef(userIdElem.value));
+        console.log('getUserRef this ===', await chatDb.getUserRef());
     }//*********
     function handlerCreate(e) {
-        chatDb._createUser(userIdElem.value ? userIdElem.value : 'example@example.ru', 'example@example.ru', console.log)
+        chatDb._createUser(userIdElem.value, {email: 'example@example.ru'}, console.log)
             .then( res => console.log(`Создан пользователь = ${userIdElem.value ? userIdElem.value : 'example@example.ru'}`, res))
             .catch( e => console.log(e));
     }//*********
     function handlerUpdate(e) {
-        chatDb.updateUser( userIdElem.value ? userIdElem.value : chatDb.userId,{ name: 'name', address: {city: 'blg'} }, console.log )
+        chatDb.updateUser( userIdElem.value, { name: 'name', address: {city: 'blg'} }, console.log )
             .then( () => console.log(`Обновлен пользователь ${userIdElem.value ? userIdElem.value : chatDb.userId}`))
             .catch( e => console.log(e));
     }//*********
     function handlerDelete(e) {
-        chatDb._deleteUser(userIdElem.value ? userIdElem.value : chatDb.userId, console.log)
+        chatDb._deleteUser(userIdElem.value, console.log)
             .then( () => console.log(`Удален пользователь ${userIdElem.value ? userIdElem.value : chatDb.userId}`))
             .catch( e => console.log(e));
     }//*********

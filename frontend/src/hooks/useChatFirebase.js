@@ -42,7 +42,7 @@ function useProvideChat() {
                 console.log('1111111111111111111_11111111111111111111', userId, userData);
 
                 if (!DocumentReferenceUser.exists) {
-                    _createUser(auth.user.uid, auth.user.email/*, (userId) => setUserId(userId)*/);
+                    _createUser(auth.user.uid, {email: auth.user.email}/*, (userId) => setUserId(userId)*/);
                     return;
                 }
 
@@ -79,27 +79,34 @@ function useProvideChat() {
     }, [userData] );
     //---------------------------------------------------------------
 
-    function _createUser(userId, email, callback) {
-        return db.collection("users").doc(userId).set({ ...usersModel, id: userId, email })
+    function _createUser(userId, data, callback) {
+        const newDocRef = userId ? db.collection("users").doc(userId) : db.collection("users").doc()
+        const newId = newDocRef.id;
+
+        return newDocRef.set({ ...usersModel, ...data, id: newId })
             .then( () => {
-                callback && callback(userId)
-                return userId;
+                callback && callback(newId)
+                return newId;
             })
-    }//*********
+    }//*********this
     function updateUser(userId, data, callback) {
-        return getUserRef(userId).set({...data}, { merge: true })
+        const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
+
+        return getUserRef(curUserId).set({...data}, { merge: true })
             .then( () => {
-                callback && callback(userId)
-                return userId;
+                callback && callback(curUserId)
+                return curUserId;
             })
-    }//*********
+    }//*********this
     function _deleteUser(userId, callback) {
-        return getUserRef(userId).delete()
+        const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
+
+        return getUserRef(curUserId).delete()
             .then(function() {
-                callback && callback(userId);
-                return userId;
+                callback && callback(curUserId);
+                return curUserId;
             })
-    }//*********
+    }//*********this
 
     function _subscribeRoomMessages(roomId) {
         let firstRun = true;
@@ -271,11 +278,13 @@ function useProvideChat() {
     }//*********
 
     function getUserData(userId) {
-        return db.collection('users').doc(userId).get().then( (doc) => doc.data() )
-    }//*********
+        const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
+        return db.collection('users').doc(curUserId).get().then( (doc) => doc.data() )
+    }//*********this
     function getUserRef(userId) {
-        return db.collection('/users').doc(userId)
-    }//*********
+        const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
+        return db.collection('/users').doc(curUserId)
+    }//*********this
 
     function addEventListener(event, callback) {
         /* смотри выше: const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-remove', 'room-invite', 'room-invite-response'];
