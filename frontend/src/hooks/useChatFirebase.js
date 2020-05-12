@@ -194,6 +194,21 @@ function useProvideChat() {
     function getRoomMetadata(roomId) {
         return db.collection('room-metadata').doc(roomId).get().then( (doc) => doc.data() )
     }//*********
+    async function getUserRoomsMetadata(userId) {
+        const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
+        const curUserData = await getUserData(curUserId);
+
+        if (!curUserData) return false;
+
+        return db.collection("room-metadata").where("id", "in", [...curUserData.rooms])
+            .get()
+            .then( querySnapshot => {
+                    const roomsMetadata = [];
+                    querySnapshot.forEach(doc => roomsMetadata.push({roomId: doc.id, data: doc.data()}) );
+                    return roomsMetadata;
+                }
+            )
+    }//*********
     function updateRoomMetadata(roomId, roomName, roomType, callback) {
         let newData = Object.assign({name: roomName}, roomType ? {type: roomType} : {});
         return db.collection('room-metadata').doc(roomId).set(newData, { merge: true })
@@ -359,6 +374,7 @@ function useProvideChat() {
 
         createRoom,
         getRoomMetadata,
+        getUserRoomsMetadata,
         updateRoomMetadata,
         _deleteRoom,
         getRoomMessages,

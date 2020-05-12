@@ -8,5 +8,6 @@ export default {
     createdByUserId: "", // The id of the user that created the room.
     id: "", // The id of the room.
     name: "", // The public display name of the room.
-    type: "private" // The type of room, public or private.
+    type: "private", // The type of room, public or private.
+    lastActivity: "", // The time at last activity. // firebase.firestore.FieldValue.serverTimestamp()
 }

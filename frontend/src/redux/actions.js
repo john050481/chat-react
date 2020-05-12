@@ -1,11 +1,15 @@
 import {
     SHOW_LAYOUT,
-    HIDE_ALERT,
-    HIDE_LOADER,
+
     SHOW_ALERT,
+    HIDE_ALERT,
+
     SHOW_LOADER,
+    HIDE_LOADER,
+
     REQUEST_CHATID,
     REQUEST_CHATS,
+
     USER_LOGIN,
     USER_LOGOUT
 } from './types'
@@ -15,9 +19,11 @@ import changeFavicon from '../common/changeFavicon'
 let timerIdAlert = null;
 
 //___REQUEST_CHATS/CONTACTS_ALL___
-export function requestChats() {
+export function requestChats(args1 = null, args2 = null) {
     return {
-        type: REQUEST_CHATS
+        type: REQUEST_CHATS,
+        args1,
+        args2
     }
 }
 

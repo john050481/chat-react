@@ -39,6 +39,14 @@ export default function (props) {
             .then( () => console.log(`Удален пользователь ${userIdElem.value ? userIdElem.value : chatDb.userId}`))
             .catch( e => console.log(e));
     }//*********
+    async function handlerGetUserRoomsMetadata(e) {
+        try {
+            let meta = await chatDb.getUserRoomsMetadata(userIdElem.value);
+            console.log('handlerGetUserRoomsMetadata === ', meta);
+        } catch (e) {
+            console.log('ERR === ', e)
+        }
+    }
     async function handlergetGetRoomMessages(e) {
         let messages = await chatDb.getRoomMessages(roomIdElem.value);
         console.log(messages);
@@ -104,6 +112,7 @@ export default function (props) {
             <button onClick={handlerCreate} className={'btn btn-outline-success'}>create user</button>
             <button onClick={handlerUpdate} className={'btn btn-outline-success'}>updete user</button>
             <button onClick={handlerDelete} className={'btn btn-outline-success'}>delete user</button>
+            <button onClick={handlerGetUserRoomsMetadata} className={'btn btn-outline-success'}>get user rooms metadata</button>
             <hr />
             <label>room id: <input id={'roomIdElem'} /></label>
             <br />

@@ -11,6 +11,8 @@ export default {
 
     contacts: [], // Array of users ID
 
+    lastActivity: "", // The time at last activity. // firebase.firestore.FieldValue.serverTimestamp()
+
     username: "", //"Bret",
     email: "", //"Sincere@april.biz",
     phone: "", //"1-770-736-8031 x56442",

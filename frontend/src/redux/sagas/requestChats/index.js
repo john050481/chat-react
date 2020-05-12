@@ -3,10 +3,12 @@ import {REQUEST_CHATS, FETCHED_CHATS} from '../../types';
 import {showLoader, hideLoader, showAlert} from '../../actions';
 
 //---REGUEST ALL CHATS---
-export default function* sagaWatcherRequestChats() {
-    yield takeEvery(REQUEST_CHATS, sagaWorkerRequestChats);
+export default function* sagaWatcherRequestChats(...args) {
+    console.log('########################### sagaWorkerRequestChats 111 === ', args);
+    yield takeEvery(REQUEST_CHATS, sagaWorkerRequestChats, ...args);
 }
-function* sagaWorkerRequestChats() {
+function* sagaWorkerRequestChats(...args) {
+    console.log('########################### sagaWorkerRequestChats === 222 ', args);
     const url = `https://jsonplaceholder.typicode.com/users`;
 
     try {
