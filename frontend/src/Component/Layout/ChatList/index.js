@@ -35,19 +35,25 @@ function ChatList({requestChats}) {
 
     useEffect( () => {
         requestChats('ARGS1', 'ARGS2'); //payload = chatDb.userData.rooms || [] //???
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@ === ', chatDb.userData);
+        if (!chatDb.userId || !chatDb.userData) return;
 
-        function handlerUserUpdate(detail) {
-            console.log('detail in ChatList === ', detail);
-            requestChats('ARGS11', 'ARGS22');
-        }
-        chatDb.addEventListener('user-update', handlerUserUpdate);
+        (async () => {
+            let res = await chatDb.getUserRoomsMetadata();
+            console.log('!!!!!!!!!!1 = = = ', res, [chatDb.userId, chatDb.userData]);
+        })()
 
-        return () => chatDb.removeEventListener('user-update', handlerUserUpdate);
-    }, [])
+    }, [chatDb.userId, chatDb.userData])
 
     useEffect( () => {
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@ === ', chatDb.userData);
-    }, [chatDb.userId, chatDb.userData])
+
+        function handlerEventMessageAdd({detail}) {
+            console.log('detail message ADD  === ', detail);
+        }
+        chatDb.addEventListener('message-add', handlerEventMessageAdd);
+
+        return () => chatDb.removeEventListener('message-add', handlerEventMessageAdd);
+    }, [])
 
     return (
         <div className={"flx sidebar-chats" + ( isSmall ? ' small' : '' )}>

@@ -30,7 +30,6 @@ function useProvideChat() {
 
     //---------------------------------------------------------------
     useEffect( () => {
-        console.log('1111111111111111111', userId, userData);
         if (!auth.user) {
             setUserId(null);
             setUserData(null);
@@ -39,7 +38,6 @@ function useProvideChat() {
 
         let unsubscribeUser = db.collection("users").doc(auth.user.uid)
             .onSnapshot(function(DocumentReferenceUser) {
-                console.log('1111111111111111111_11111111111111111111', userId, userData);
 
                 if (!DocumentReferenceUser.exists) {
                     _createUser(auth.user.uid, {email: auth.user.email}/*, (userId) => setUserId(userId)*/);
@@ -58,23 +56,15 @@ function useProvideChat() {
         dispatchEvent( { event: 'user-update', detail: {userData} } );
 
         const subscribers = [];
-        console.log('2222222222222222_START', subscribers, userData);
 
         if (!userData) return;
 
         userData.rooms.forEach( roomId => {
             const unsubscribe = _subscribeRoomMessages(roomId);
-            console.log('2222222222222222_SUBSCRIBE+++: ', roomId, unsubscribe);
             subscribers.push({roomId, unsubscribe});
         } );
 
-        return () => {
-            console.log('2222222222222222_END: ', subscribers, userData);
-            subscribers.forEach( item => {
-                console.log('2222222222222222_UN_SUBSCRIBE---', item);
-                item.unsubscribe()
-            } );
-        }
+        return () => subscribers.forEach( item => item.unsubscribe() )
 
     }, [userData] );
     //---------------------------------------------------------------
