@@ -128,13 +128,15 @@ function useProvideChat() {
         return unsubscribe;
     }//*********
 
-    function sendMessage(roomId, messageContent, messageType='default', callback) {
+    function sendMessage(roomId, messageContent, messageType='default', forwarded=false, citationId='', callback) {
         db.collection('room-messages').doc(roomId).collection('messages').add({
             ...roomMessagesModel,
             userId: this.userId,
-            name: "!!!Any name!!!",
+            name: this.userData.name,
             message: messageContent,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            forwarded,
+            citationId
         })
             .then( (docRef) => {
                 callback && callback(docRef);

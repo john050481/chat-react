@@ -79,7 +79,7 @@ export default function (props) {
     }//!!!!!!!!! ПРОБЛЕМА, см. "useChatFirebase"
 
     function handlerSendMessage(e) {
-        chatDb.sendMessage(roomIdElem.value, messageElem.value, 'default', console.log)
+            chatDb.sendMessage(roomIdElem.value, messageElem.value, 'default', false, '', console.log)
     }//*********
     function handlerUpdateMessage() {
         chatDb.updateMessage(roomIdElem.value, messageIdElem.value, messageElem.value, console.log)
