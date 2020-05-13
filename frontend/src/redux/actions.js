@@ -109,9 +109,10 @@ export function chatUserExit() {
     }
 }
 //___CITATION___
-export function setCitation(text, author) {
+export function setCitation(id, text, author) {
     return {
         type: CITATION_SET,
+        id,
         text,
         author
     }

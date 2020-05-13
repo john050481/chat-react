@@ -19,6 +19,7 @@ const init = {
     currentRoom: null,
 
     citation: {
+        id: '',
         text: '',
         author: ''
     }
@@ -36,14 +37,14 @@ export default function (state = init, action) {
         case UPDATE_ROOMLIST:
             return {...state, rooms: action.payload}
         case REQUEST_ROOMID:
-            return { ...state, requestRoomId: action.roomId, messages: [], currentRoom: null, citation: {text: '', author: ''} }
+            return { ...state, requestRoomId: action.roomId, messages: [], currentRoom: null, citation: {id: '', text: '', author: ''} }
         case FETCHED_ROOMID:
             return { ...state, currentRoom: action.payload}
 
         case CITATION_SET:
-            return { ...state, citation: {text: action.text, author: action.author} }
+            return { ...state, citation: {id: action.id, text: action.text, author: action.author} }
         case CITATION_CLEAR:
-            return { ...state, citation: {text: '', author: ''} }
+            return { ...state, citation: {id: '', text: '', author: ''} }
 
         default:
             return state

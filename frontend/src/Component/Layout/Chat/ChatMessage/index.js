@@ -25,7 +25,7 @@ function ChatMessage(props) {
                 message.name &&
                 <Toast.Header closeButton={false}>
                     <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
-                    <strong data-author={message.name} className="mr-auto">{message.name}</strong>
+                    <strong className="mr-auto">{message.name}</strong>
                     <small className='ml-3'>
                         {new Date(message.timestamp.seconds*1000).toLocaleDateString()} {' / '}
                         {new Date(message.timestamp.seconds*1000).toLocaleTimeString()}
@@ -39,7 +39,7 @@ function ChatMessage(props) {
                         <small><i>{citationComp.message}</i></small>
                     </div>
                 }
-                <p data-message={true}>{message.message}</p>
+                <p data-message={message.message} data-author={message.name} data-id={message.id}>{message.message}</p>
             </Toast.Body>
             <small className='chat-message--time'>{'{11 mins ago}'}</small>
         </Toast>

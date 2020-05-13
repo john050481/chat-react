@@ -18,12 +18,10 @@ function MessageBlock(props) {
 
     function handleClick(e) {
         let target = e.target;
-        let message = target.closest('[data-message]')
-        if (message) {
-            let chatMessageElem = target.closest('.chat-message');
-            let authorElem = chatMessageElem && chatMessageElem.querySelector('[data-author]');
-            let author = authorElem ? authorElem.dataset.author : '';
-            props.setCitation(message.innerText, author);
+        let messageElem = target.closest('[data-message]')
+        if (messageElem) {
+            const {id, message, author} = messageElem.dataset;
+            props.setCitation(id, message, author);
         }
     }
 
