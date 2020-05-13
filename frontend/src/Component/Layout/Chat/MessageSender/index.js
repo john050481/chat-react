@@ -54,8 +54,10 @@ function MessageSender(props) {
             props.currentRoom.id,
             target.innerText,
             'default', false, props.citation.id
-        )
+        );
 
+        props.clearCitation();
+        /*
         let citationElem = '';
         if (props.citation.text) {
             citationElem = document.createElement("div");
@@ -71,6 +73,7 @@ function MessageSender(props) {
         message.innerText = target.innerText;
         if (citationElem) message.prepend(citationElem);
         document.getElementById('message-block').append(message);
+        */
         target.innerText = '';
         scrollDownMessageContainer();
         setFocusOnEnterField();
