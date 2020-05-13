@@ -36,7 +36,7 @@ function useProvideChat() {
             return;
         }
 
-        let unsubscribeUser = db.collection("users").doc(auth.user.uid)
+        const unsubscribeUser = db.collection("users").doc(auth.user.uid)
             .onSnapshot(function(DocumentReferenceUser) {
 
                 if (!DocumentReferenceUser.exists) {
@@ -100,7 +100,7 @@ function useProvideChat() {
 
     function _subscribeRoomMessages(roomId) {
         let firstRun = true;
-        let unsubscribe = db.collection("room-messages").doc(roomId).collection("messages").onSnapshot(function (snapshot){
+        const unsubscribe = db.collection("room-messages").doc(roomId).collection("messages").onSnapshot(function (snapshot){
             console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId} --- firstRun: ${firstRun} ---`);
 
             let source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
