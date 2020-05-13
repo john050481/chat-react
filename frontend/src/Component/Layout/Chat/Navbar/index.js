@@ -8,14 +8,14 @@ import FakeSettings from '../../../FakeComponent/FakeSettings';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import ChatInfo from "../ChatInfo";
+import RoomInfo from "../RoomInfo";
 import './style.css'
 
 function NavBarRoot(props) {
     console.log('Render NavBarMain')
 
     const components = {
-        ChatInfo: <ChatInfo />,
+        RoomInfo: <RoomInfo />,
         FakeSearchMessage: <FakeSearchMessage />,
         FakeSettings: <FakeSettings />
     }
@@ -32,12 +32,12 @@ function NavBarRoot(props) {
     }
 
     return (
-            props.chatInfo &&
+            props.currentRoom &&
                 <div className="navbarmain-block" onClick={handleClick}>
                     <Container>
                         <Row>
                             <Col>
-                                <Button variant="outline-success" data-component='ChatInfo' title="chat info"><FaWhatsapp /></Button>
+                                <Button variant="outline-success" data-component='RoomInfo' title="room info"><FaWhatsapp /></Button>
                             </Col>
                         </Row>
                     </Container>
@@ -50,7 +50,7 @@ function NavBarRoot(props) {
 
 const mapStateToProps = store => {
     return {
-        chatInfo: store.chat.chatInfo
+        currentRoom: store.chat.currentRoom
     }
 }
 const mapDispatchToProps = {

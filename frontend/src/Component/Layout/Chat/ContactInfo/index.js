@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import {connect} from "react-redux";
 
-function ChatInfo({chatInfo}) {
+function ContactInfo({chatInfo}) {
     return (
         chatInfo &&
         <div className='chat-info-block'>
@@ -112,4 +112,4 @@ const mapStateToProps = store => {
 const mapDispatchToProps = {
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatInfo)
+export default connect(mapStateToProps, mapDispatchToProps)(ContactInfo)

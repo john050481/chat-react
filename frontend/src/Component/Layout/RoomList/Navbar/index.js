@@ -2,16 +2,20 @@ import React, {useRef, useState} from "react";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import './style.css'
-import {requestChats, showLayout} from "../../../../redux/actions";
+import {requestUserRoomsMetadata, showLayout} from "../../../../redux/actions";
 import {connect} from "react-redux";
 import Button from "react-bootstrap/Button";
 import {FaCog, FaRedo, FaArrowLeft, FaArrowRight} from "react-icons/fa";
 import FakeSettings from '../../../FakeComponent/FakeSettings';
 import SearchedChats from './SearchedChats'
 import {useOnClickOutside} from "../../../../hooks/useOnClickOutside";
+import {useChat} from "../../../../hooks/useChatFirebase";
 
 function NavBarSidebar(props) {
     console.log('Render NavBarSidebar');
+
+    const chatDb = useChat();
+
 
     const [isShowSearchedChat, setIsShowSearchedChat] = useState(false);
     const ref = useRef();
@@ -60,9 +64,9 @@ function NavBarSidebar(props) {
                     <Button
                         variant="outline-dark"
                         data-component='Refresh'
-                        title="Refresh chat/contact list"
+                        title="Refresh room/contact list"
                         size="sm"
-                        onClick={(e)=>{props.requestChats()}}
+                        onClick={(e)=>{props.requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() )}}
                     >
                         <FaRedo />
                     </Button>
@@ -89,7 +93,7 @@ const mapStateToProps = store => {
 }
 const mapDispatchToProps = {
     showLayout,
-    requestChats
+    requestUserRoomsMetadata
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBarSidebar)

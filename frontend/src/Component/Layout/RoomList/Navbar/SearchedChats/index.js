@@ -2,9 +2,12 @@ import './style.css'
 import React, {useEffect, useState} from 'react'
 import ListGroup from "react-bootstrap/ListGroup";
 import {connect} from "react-redux";
-import {requestChat} from "../../../../../redux/actions";
+import {requestRoom} from "../../../../../redux/actions";
+import {useChat} from "../../../../../hooks/useChatFirebase";
 
 function SearchedChats(props) {
+
+    const chatDb = useChat();
 
     const [seachedChat, setSearchedChat] = useState([]);
 
@@ -12,9 +15,9 @@ function SearchedChats(props) {
         if (!props.searchValue)
             return setSearchedChat([]);
 
-        if (Array.isArray(props.chats)) {
+        if (Array.isArray(props.rooms)) {
             const searchString = props.searchValue.toLowerCase().trim();
-            const arr = props.chats.filter( item => item.name.toLowerCase().indexOf(searchString) !== -1 );
+            const arr = props.rooms.filter( item => item.data.name.toLowerCase().indexOf(searchString) !== -1 );
             setSearchedChat(arr);
             console.log('arr ===', arr);
         }
@@ -22,15 +25,15 @@ function SearchedChats(props) {
     }, [props.searchValue])
 
     function handlerClick(e) {
-        const chatId = e.target.dataset.id;
-        console.log('e.target.dataset.id = ', chatId);
+        const roomId = e.target.dataset.id;
+        console.log('e.target.dataset.id (roomId) = ', roomId);
 
         //прокручиваем элемент, если он не виден
-        let curElemChatId = document.querySelector(`[data-chatid=\"${chatId}\"]`);
-        if (curElemChatId)
-            curElemChatId.scrollIntoView(); /* elemInWindow(curElemChatId, null, target => target.scrollIntoView() ); */
+        let curElemRoomId = document.querySelector(`[data-roomid=\"${roomId}\"]`);
+        if (curElemRoomId)
+            curElemRoomId.scrollIntoView(); /* elemInWindow(curElemRoomId, null, target => target.scrollIntoView() ); */
 
-        props.requestChat(+chatId);
+        props.requestRoom( roomId, () => chatDb.getRoomMetadata(roomId), () => chatDb.getRoomMessages(roomId) );
         props.setIsShowSearchedChat(false);
     }
 
@@ -40,12 +43,12 @@ function SearchedChats(props) {
                 (seachedChat.length && props.searchValue)
                 ? seachedChat.map( item =>
                       <ListGroup.Item
-                          key={item.id}
+                          key={item.roomId}
                           className='searched-result--item'
-                          data-id={item.id}
+                          data-id={item.roomId}
                           onClick={handlerClick}
                       >
-                          {item.name}
+                          {item.data.name}
                       </ListGroup.Item>
                   )
                 : <ListGroup.Item>Enter search string</ListGroup.Item>
@@ -56,11 +59,11 @@ function SearchedChats(props) {
 
 const mapStateToProps = store => {
     return {
-        chats: store.chat.chats
+        rooms: store.chat.rooms
     }
 }
 const mapDispatchToProps = {
-    requestChat
+    requestRoom
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchedChats)

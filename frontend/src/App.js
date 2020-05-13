@@ -12,12 +12,14 @@ import HOCRequireAuth from './hooks/HOCRequireAuth';
 import AuthForm from './Component/AuthForm'
 import RootLayout from './Component/Layout/Root'
 import About from './Component/About';
-import {userLogin, userLogout} from "./redux/actions";
+import {chatUserEnter, chatUserExit, userLogin, userLogout} from "./redux/actions";
 import {connect} from "react-redux";
+import {useChat} from "./hooks/useChatFirebase";
 
-function App({userLogin, userLogout}) {
+function App({userLogin, userLogout, chatUserEnter, chatUserExit}) {
     console.log('Render APP!');
     const auth = useAuth();
+    const chatDb = useChat();
 
     useEffect( () => {
         if (auth.user) {
@@ -26,6 +28,14 @@ function App({userLogin, userLogout}) {
             userLogout()
         }
     }, [auth])
+
+    useEffect( () => {
+        if (chatDb.userData) {
+            chatUserEnter(chatDb.userData);
+        } else {
+            chatUserExit()
+        }
+    }, [chatDb.userData])
 
     return ( auth.user === null
             ? <SpinnerApp />
@@ -46,6 +56,8 @@ function App({userLogin, userLogout}) {
 
 const mapDispatchToProps = {
     userLogin,
-    userLogout
+    userLogout,
+    chatUserEnter,
+    chatUserExit
 }
 export default connect(null, mapDispatchToProps)(App)

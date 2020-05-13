@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import './style.css'
 
-import Chats from './Chats'
-import NavBarChatList from './Navbar'
+import Rooms from './Rooms'
+import NavBarRoomList from './Navbar'
 
 import Main from '../../Template/Main'
 import Header from '../../Template/Header'
 import Footer from '../../Template/Footer'
 
 import {REGION_SIDEBAR} from '../../../redux/types'
-import {requestChats} from "../../../redux/actions";
+import {requestUserRoomsMetadata} from "../../../redux/actions";
 import {connect} from "react-redux";
 
 import {useDebounce} from '../../../hooks/useDebounce';
@@ -17,8 +17,8 @@ import {useWindowSize} from '../../../hooks/useWindowSize';
 import {useChat} from "../../../hooks/useChatFirebase";
 const MAX_WIDTH = 600;//px
 
-function ChatList({requestChats}) {
-    console.log('Render ChatList')
+function RoomList({requestUserRoomsMetadata}) {
+    console.log('Render RoomList')
 
     const chatDb = useChat();
 
@@ -33,20 +33,15 @@ function ChatList({requestChats}) {
     const region = REGION_SIDEBAR;
     let [render, setRender] = useState(()=>()=>{});
 
+    //заполнение roomlist
     useEffect( () => {
-        requestChats('ARGS1', 'ARGS2'); //payload = chatDb.userData.rooms || [] //???
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@ === ', chatDb.userData);
         if (!chatDb.userData) return;
 
-        (async () => {
-            let res = await chatDb.getUserRoomsMetadata();
-            console.log('!!!!!!!!!!1 = = = ', res, chatDb.userData);
-        })()
-
+        requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() );
     }, [chatDb.userData])
 
+    //подписка на новые сообщения
     useEffect( () => {
-
         const handlerEventMessageAdd = ({detail}) => console.log('detail message ADD  === ', detail);
         chatDb.addEventListener('message-add', handlerEventMessageAdd);
 
@@ -54,14 +49,14 @@ function ChatList({requestChats}) {
     }, [])
 
     return (
-        <div className={"flx sidebar-chats" + ( isSmall ? ' small' : '' )}>
+        <div className={"flx sidebar-rooms" + ( isSmall ? ' small' : '' )}>
             <Header style={{background: '#D3D3D3'}}>
-                <NavBarChatList region={region} setRender={setRender} isSmall={isSmall} setIsSmall={setIsSmall}/>
+                <NavBarRoomList region={region} setRender={setRender} isSmall={isSmall} setIsSmall={setIsSmall}/>
             </Header>
 
             <Main region={region} render={render}>
                 <aside className="sidebar">
-                    <Chats isSmall={isSmall}/>
+                    <Rooms isSmall={isSmall}/>
                 </aside>
             </Main>
 
@@ -73,7 +68,7 @@ function ChatList({requestChats}) {
 }
 
 const mapDispatchToProps = {
-    requestChats
+    requestUserRoomsMetadata
 }
 
-export default connect(null, mapDispatchToProps)(ChatList)
+export default connect(null, mapDispatchToProps)(RoomList)

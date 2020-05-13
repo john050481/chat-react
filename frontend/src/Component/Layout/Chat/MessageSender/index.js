@@ -3,7 +3,7 @@ import './style.css'
 import Emoji from '../Emoji'
 import {IoMdSend, IoIosClose} from "react-icons/io";
 import Button from "react-bootstrap/Button";
-import {showAlert} from "../../../../redux/actions";
+import {clearCitation, showAlert} from "../../../../redux/actions";
 import {connect} from "react-redux";
 
 function MessageSender(props) {
@@ -47,20 +47,20 @@ function MessageSender(props) {
         //console.log(target.innerText.codePointAt(0));
         //console.log(String.fromCodePoint(129315, 9995, 128522, 0x1F602))
 
-        let citation = '';
-        if (props.citation) {
-            citation = document.createElement("div");
-            citation.classList.add('citation-item');
-            citation.setAttribute('data-citation', true);
-            citation.innerText = props.citation;
-            props.setCitation('');
+        let citationElem = '';
+        if (props.citation.text) {
+            citationElem = document.createElement("div");
+            citationElem.classList.add('citation-item');
+            citationElem.setAttribute('data-citation', true);
+            citationElem.innerText = props.citation.text;
+            props.clearCitation();
         }
 
         let message = document.createElement("div");
         message.classList.add('message-wrap', 'right-message', 'right-color');
         message.setAttribute('data-message', true)
         message.innerText = target.innerText;
-        if (citation) message.prepend(citation);
+        if (citationElem) message.prepend(citationElem);
         document.getElementById('message-block').append(message);
         target.innerText = '';
         scrollDownMessageContainer();
@@ -130,10 +130,12 @@ function MessageSender(props) {
 
 const mapStateToProps = store => {
     return {
+        citation: store.chat.citation
     }
 }
 const mapDispatchToProps = {
-    showAlert
+    showAlert,
+    clearCitation
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageSender)

@@ -1,4 +1,4 @@
-import {REQUEST_CHATS} from './types'
+import {REQUEST_ROOMID} from './types'
 import {showAlert} from './actions'
 
 export const myMiddleware = store => next => action => {
@@ -6,7 +6,7 @@ export const myMiddleware = store => next => action => {
 //    console.log('next = ', next);
 //    console.log('action = ', action);
 
-    if (action.type === REQUEST_CHATS) {
+    if (action.type === REQUEST_ROOMID) {
 //        if (action.payload[0].title.toLowerCase().includes('fuck'))
 //            return next(showAlert('FUCK!!!'));
     }

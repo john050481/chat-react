@@ -5,27 +5,28 @@ import Loader from "../../../../Loader";
 import {FaUserCircle} from "react-icons/fa";
 import {connect} from "react-redux";
 
-function ChatItem({chat, isSmall, requestChatId, loader, chatInfo}) {
-    const chatId = chatInfo ? chatInfo.id : null;
+function RoomItem({room, isSmall, requestRoomId, loader, currentRoom}) {
+    const roomId = currentRoom ? currentRoom.id : null;
 
     return (
-        <div data-chatid={chat.id}>
-            <Card className={ 'chat' + (chatId === chat.id ? ' active' : '') }>
+        <div data-roomid={room.roomId}>
+            <Card className={ 'chat' + (roomId === room.roomId ? ' active' : '') }>
                 {/*<Card.Header>Quote</Card.Header>*/}
                 <Card.Body className='pl-2'>
                     <blockquote className="blockquote mb-0">
                         <div className='chat-header'>
-                            {loader && requestChatId === chat.id
+                            {loader && requestRoomId === room.roomId
                                 ? <Loader className='mr-2' />
-                                : <FaUserCircle title={chat.name} className='mr-2' size='2em'/>
+                                : <FaUserCircle title={room.data.name} className='mr-2' size='2em'/>
                             }
 
                             <span className={'chat__name'} hidden={isSmall}>
-                                        {chat.name}
+                                        {room.data.name}
                                       </span>
                         </div>
-                        <footer className="blockquote-footer" hidden={isSmall}>
-                            {chat.phone}
+                        <footer className="blockquote-footer text-align-end" hidden={isSmall}>
+                            {new Date(room.data.lastActivity.seconds*1000).toLocaleDateString()} {' / '}
+                            {new Date(room.data.lastActivity.seconds*1000).toLocaleTimeString()}
                         </footer>
                     </blockquote>
                 </Card.Body>
@@ -36,10 +37,11 @@ function ChatItem({chat, isSmall, requestChatId, loader, chatInfo}) {
 
 const mapStateToProps = store => {
     return {
-        chatInfo: store.chat.chatInfo,
         loader: store.app.loader.visible,
-        requestChatId: store.chat.requestChatId
+        currentRoom: store.chat.currentRoom,
+        requestRoomId: store.chat.requestRoomId
+
     }
 }
 
-export default connect(mapStateToProps, null)(ChatItem)
+export default connect(mapStateToProps, null)(RoomItem)

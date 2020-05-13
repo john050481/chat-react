@@ -5,7 +5,7 @@ import Main from '../../Template/Main'
 import Header from '../../Template/Header'
 import Footer from '../../Template/Footer'
 
-import ChatList from '../ChatList'
+import RoomList from '../RoomList'
 import Chat from '../Chat'
 import Alert from '../../Alert'
 import Loader from '../../Loader'
@@ -26,7 +26,7 @@ export default function (props) {
 
             <Main region={region} render={render}>
                 <Chat />
-                <ChatList />
+                <RoomList />
             </Main>
 
             <Footer>

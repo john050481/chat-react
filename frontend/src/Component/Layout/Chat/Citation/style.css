@@ -10,7 +10,7 @@
 }
 
 .citation-component::before {
-    content: '{ИМЯ ЦИТИРУЕМОГО}';
+    content: '';
     top: -10px;
     left: 10px;
     color: #000000;

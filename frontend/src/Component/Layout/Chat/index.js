@@ -16,8 +16,6 @@ export default function () {
     const region = REGION_MAIN;
     let [render, setRender] = useState(()=>()=>{});
 
-    const [citation, setCitation] = useState('');
-
     return (
         <div className="content">
             <Header style={{background: '#f6f6f6'}}>
@@ -25,11 +23,11 @@ export default function () {
             </Header>
 
             <Main region={region} render={render}>
-                <MessageBlock citation={citation} setCitation={setCitation} />
+                <MessageBlock />
             </Main>
 
             <Footer style={{background: '#f6f6f6'}}>
-                <MessageSender citation={citation} setCitation={setCitation} />
+                <MessageSender />
             </Footer>
         </div>
     )

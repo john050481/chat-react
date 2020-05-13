@@ -4,6 +4,7 @@ import Citation from '../Citation'
 import {connect} from "react-redux";
 import ChatMessage from '../ChatMessage'
 import SpinnerApp from "../../../Spinner";
+import {setCitation} from "../../../../redux/actions";
 
 function MessageBlock(props) {
     console.log('Render MessageBlock');
@@ -19,7 +20,10 @@ function MessageBlock(props) {
         let target = e.target;
         let message = target.closest('[data-message]')
         if (message) {
-            props.setCitation(message.innerText)
+            let chatMessageElem = target.closest('.chat-message');
+            let authorElem = chatMessageElem && chatMessageElem.querySelector('[data-author]');
+            let author = authorElem ? authorElem.dataset.author : '';
+            props.setCitation(message.innerText, author);
         }
     }
 
@@ -27,22 +31,21 @@ function MessageBlock(props) {
         <main className="content message-block-wrapper" onClick={handleClick} >
             <div ref={messageBlockScroll} className='content message-block-scroll'>
                 <div id='message-block' className='content message-block p-1'>
-                    {   (!props.messages.length && props.requestChatId)
+                    {   (!props.messages.length && props.requestRoomId)
                         ? <SpinnerApp />
                         : props.messages.map( message =>
                             <ChatMessage
                                 key={message.id}
                                 message={message}
-                                citation={message.id % 3 ? '{bla bla bla citation}' : ''}
-                                owner={message.id % 2 ? ( props.chats.length ? props.chats.find( chat => chat.id === message.userId ) : '' ) : ''}/>
+                            />
                           )
                     }
                 </div>
             </div>
             {
-                props.citation
+                props.citation.text
                     ? <div className='message-block-citation'>
-                        <Citation text={props.citation} closeHandler={()=>props.setCitation('')}/>
+                        <Citation />
                       </div>
                     : null
             }
@@ -52,12 +55,13 @@ function MessageBlock(props) {
 
 const mapStateToProps = store => {
     return {
+        citation: store.chat.citation,
         messages: store.chat.messages,
-        requestChatId: store.chat.requestChatId,
-        chats: store.chat.chats
+        requestRoomId: store.chat.requestRoomId
     }
 }
 const mapDispatchToProps = {
+    setCitation
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageBlock)

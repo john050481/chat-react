@@ -7,33 +7,22 @@ import {
     SHOW_LOADER,
     HIDE_LOADER,
 
-    REQUEST_CHATID,
-    REQUEST_CHATS,
-
     USER_LOGIN,
-    USER_LOGOUT
+    USER_LOGOUT,
+
+    REQUEST_USERROOMS,
+    REQUEST_ROOMID,
+
+    CHAT_USER_ENTER,
+    CHAT_USER_EXIT,
+
+    CITATION_SET,
+    CITATION_CLEAR
 } from './types'
 
 import changeFavicon from '../common/changeFavicon'
 
 let timerIdAlert = null;
-
-//___REQUEST_CHATS/CONTACTS_ALL___
-export function requestChats(args1 = null, args2 = null) {
-    return {
-        type: REQUEST_CHATS,
-        args1,
-        args2
-    }
-}
-
-//___REQUEST_CHAT___
-export function requestChat(id) {
-    return {
-        type: REQUEST_CHATID,
-        payload: id
-    }
-}
 
 //___LAYOUT___
 export function showLayout(layout) {
@@ -88,5 +77,47 @@ export function userLogin(user) {
 export function userLogout() {
     return {
         type: USER_LOGOUT,
+    }
+}
+
+//___REQUEST_USERROOMS___
+export function requestUserRoomsMetadata(functionGetUserRoomsMetadataForSaga) {
+    return {
+        type: REQUEST_USERROOMS,
+        functionGetUserRoomsMetadataForSaga
+    }
+}
+//___REQUEST_ROOMID___
+export function requestRoom(roomId, functionGetRoomMetadataForSaga, functionGetRoomMessagesForSaga) {
+    return {
+        type: REQUEST_ROOMID,
+        roomId,
+        functionGetRoomMetadataForSaga,
+        functionGetRoomMessagesForSaga
+    }
+}
+//___CHAT_USER_ENTER___
+export function chatUserEnter(user) {
+    return {
+        type: CHAT_USER_ENTER,
+        payload: user
+    }
+}
+export function chatUserExit() {
+    return {
+        type: CHAT_USER_EXIT,
+    }
+}
+//___CITATION___
+export function setCitation(text, author) {
+    return {
+        type: CITATION_SET,
+        text,
+        author
+    }
+}
+export function clearCitation() {
+    return {
+        type: CITATION_CLEAR
     }
 }

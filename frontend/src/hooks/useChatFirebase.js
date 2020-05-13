@@ -245,6 +245,14 @@ function useProvideChat() {
             return messages;
         });
     }//*********
+    function getRoomMessage(roomId, messageId) {
+        return db.collection("room-messages").doc(roomId).collection("messages").doc(messageId).get().then( doc => {
+            if (doc.exists) {
+                return ({...doc.data(), id: doc.id});
+            }
+            return false;
+        });
+    }//*********
     function enterRoom(roomId, callback) {
         let batch = db.batch(); //выполняет multiple write operations as a single
 
@@ -371,6 +379,7 @@ function useProvideChat() {
         updateRoomMetadata,
         _deleteRoom,
         getRoomMessages,
+        getRoomMessage,
         enterRoom,
         leaveRoom,
         getRoomUsers,

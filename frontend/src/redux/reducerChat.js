@@ -1,27 +1,50 @@
 import {
-    REQUEST_CHATID,
-    FETCHED_CHATID,
     FETCHED_MESSAGES,
-    FETCHED_CHATS
+
+    CHAT_USER_ENTER,
+    CHAT_USER_EXIT,
+    UPDATE_ROOMLIST,
+    REQUEST_ROOMID,
+    FETCHED_ROOMID,
+
+    CITATION_SET,
+    CITATION_CLEAR
 } from './types'
 
 const init = {
+    user: null,
     messages: [],
-    chatInfo: null,
-    chats: [],
-    requestChatId: null
+    rooms: [],
+    requestRoomId: null,
+    currentRoom: null,
+
+    citation: {
+        text: '',
+        author: ''
+    }
 }
 
 export default function (state = init, action) {
     switch (action.type) {
-        case REQUEST_CHATID:
-            return { ...state, requestChatId: action.payload, messages: [], chatInfo: null }
-        case FETCHED_CHATID:
-            return { ...state, chatInfo: action.payload}
+        case CHAT_USER_ENTER:
+            return { ...state, user: action.payload}
+        case CHAT_USER_EXIT:
+            return { ...state, user: null}
+
         case FETCHED_MESSAGES:
             return { ...state, messages: action.payload}
-        case FETCHED_CHATS:
-            return {...state, chats: action.payload}
+        case UPDATE_ROOMLIST:
+            return {...state, rooms: action.payload}
+        case REQUEST_ROOMID:
+            return { ...state, requestRoomId: action.roomId, messages: [], currentRoom: null, citation: {text: '', author: ''} }
+        case FETCHED_ROOMID:
+            return { ...state, currentRoom: action.payload}
+
+        case CITATION_SET:
+            return { ...state, citation: {text: action.text, author: action.author} }
+        case CITATION_CLEAR:
+            return { ...state, citation: {text: '', author: ''} }
+
         default:
             return state
     }
