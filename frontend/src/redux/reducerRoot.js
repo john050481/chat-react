@@ -6,7 +6,7 @@ import {USER_LOGOUT} from './types'
 
 //---НУЖНО ОБНУЛИТЬ СТЕЙТ(при логауте)---
 const appReducer = combineReducers({
-    user: reducerUser,
+    auth: reducerUser,
     app: reducerApp,
     chat: reducerChat
 })

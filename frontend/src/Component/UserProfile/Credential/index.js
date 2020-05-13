@@ -221,9 +221,9 @@ function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInSto
 
 const mapStateToProps = store => {
     return {
-        photoURLInStore: store.user.user.photoURL,
-        emailInStore: store.user.user.email,
-        displayNameInStore: store.user.user.displayName
+        photoURLInStore: store.auth.user.photoURL,
+        emailInStore: store.auth.user.email,
+        displayNameInStore: store.auth.user.displayName
     }
 }
 const mapDispatchToProps = {
