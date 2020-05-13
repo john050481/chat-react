@@ -239,7 +239,7 @@ function useProvideChat() {
             });
     }//!!!!!!!!!!!!!!!!!!! ПРОБЛЕМА !!!!!!!!!!!!!!!!!!!
     function getRoomMessages(roomId) {
-        return db.collection("room-messages").doc(roomId).collection("messages").get().then( querySnapshot => {
+        return db.collection("room-messages").doc(roomId).collection("messages").orderBy("timestamp").get().then( querySnapshot => {
             let messages = [];
             querySnapshot.forEach(function(doc) {
                 messages.push({...doc.data(), id: doc.id});
