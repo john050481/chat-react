@@ -5,8 +5,11 @@ import {IoMdSend, IoIosClose} from "react-icons/io";
 import Button from "react-bootstrap/Button";
 import {clearCitation, showAlert} from "../../../../redux/actions";
 import {connect} from "react-redux";
+import {useChat} from "../../../../hooks/useChatFirebase";
 
 function MessageSender(props) {
+
+    const chatDb = useChat();
 
     const [caretPos, setCaretPos] = useState(null);
     const [useEmojiComponent, setUseEmojiComponent] = useState(false);
@@ -46,6 +49,12 @@ function MessageSender(props) {
         };
         //console.log(target.innerText.codePointAt(0));
         //console.log(String.fromCodePoint(129315, 9995, 128522, 0x1F602))
+
+        chatDb.sendMessage(
+            props.currentRoom.id,
+            target.innerText,
+            'default', false, props.citation.id
+        )
 
         let citationElem = '';
         if (props.citation.text) {
@@ -104,11 +113,11 @@ function MessageSender(props) {
                     </div>
                     <div className='enter-block-wrapper'>
                         {useEmojiComponent ? <Button variant="outline-dark" className="messagesender-button" onClick = {handleClickEmojiIcon}><IoIosClose /></Button> : null}
-                        <Button variant="outline-dark" className="messagesender-button" onClick = {handleClickEmojiIcon}>
+                        <Button variant="outline-dark" className="messagesender-button" disabled={!props.currentRoom} onClick = {handleClickEmojiIcon}>
                             {String.fromCodePoint(129315)}
                         </Button>
                         <div className = 'enter-field'
-                             contentEditable = {true}
+                             contentEditable = {!!props.currentRoom}
                              spellCheck = {true}
                              onKeyUp={(e)=>{
                                  setCaretPos( getCaretPos(document.querySelector('.enter-field')) )
@@ -118,7 +127,7 @@ function MessageSender(props) {
                              }}
                         >
                         </div>
-                        <Button variant="outline-dark" className="messagesender-button" onClick = {handleClickSend}>
+                        <Button variant="outline-dark" className="messagesender-button" disabled={!props.currentRoom} onClick = {handleClickSend}>
                             <IoMdSend />
                         </Button>
                     </div>
@@ -130,6 +139,7 @@ function MessageSender(props) {
 
 const mapStateToProps = store => {
     return {
+        currentRoom: store.chat.currentRoom,
         citation: store.chat.citation
     }
 }
