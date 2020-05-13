@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {useChat} from "../../../../hooks/useChatFirebase";
 
 function ChatMessage(props) {
-    const {user, currentRoom, message} = props;
+    const {user, currentRoom, message, messageBlockScroll} = props;
 
     const [citationComp, setCitationComp] = useState(null);
 
@@ -16,6 +16,8 @@ function ChatMessage(props) {
             (async () => {
                 const citationOnDb = await chatDb.getRoomMessage(currentRoom.id, message.citationId);
                 setCitationComp(citationOnDb);
+                if (!messageBlockScroll.current) return;
+                messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
             })()
     }, [])
 

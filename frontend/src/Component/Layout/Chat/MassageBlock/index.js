@@ -35,6 +35,7 @@ function MessageBlock(props) {
                             <ChatMessage
                                 key={message.id}
                                 message={message}
+                                messageBlockScroll={messageBlockScroll}
                             />
                           )
                     }
