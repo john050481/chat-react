@@ -36,20 +36,18 @@ function ChatList({requestChats}) {
     useEffect( () => {
         requestChats('ARGS1', 'ARGS2'); //payload = chatDb.userData.rooms || [] //???
         console.log('@@@@@@@@@@@@@@@@@@@@@@@ === ', chatDb.userData);
-        if (!chatDb.userId || !chatDb.userData) return;
+        if (!chatDb.userData) return;
 
         (async () => {
             let res = await chatDb.getUserRoomsMetadata();
-            console.log('!!!!!!!!!!1 = = = ', res, [chatDb.userId, chatDb.userData]);
+            console.log('!!!!!!!!!!1 = = = ', res, chatDb.userData);
         })()
 
-    }, [chatDb.userId, chatDb.userData])
+    }, [chatDb.userData])
 
     useEffect( () => {
 
-        function handlerEventMessageAdd({detail}) {
-            console.log('detail message ADD  === ', detail);
-        }
+        const handlerEventMessageAdd = ({detail}) => console.log('detail message ADD  === ', detail);
         chatDb.addEventListener('message-add', handlerEventMessageAdd);
 
         return () => chatDb.removeEventListener('message-add', handlerEventMessageAdd);

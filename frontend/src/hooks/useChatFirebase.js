@@ -106,7 +106,10 @@ function useProvideChat() {
             let source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
             console.log('source = ', source);
 
-            if (firstRun) firstRun = false;
+            if (firstRun) {
+                firstRun = false;
+                return;
+            }
             snapshot.docChanges().forEach(function(change) {
                 console.log('path array === ', change.doc.ref.path.split('/'));
                 if (change.type === "added") {
