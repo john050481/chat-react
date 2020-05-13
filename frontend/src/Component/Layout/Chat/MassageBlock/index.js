@@ -41,11 +41,10 @@ function MessageBlock(props) {
                 </div>
             </div>
             {
-                props.citation.text
-                    ? <div className='message-block-citation'>
-                        <Citation />
-                      </div>
-                    : null
+                props.citation.text &&
+                <div className='message-block-citation'>
+                    <Citation />
+                </div>
             }
         </main>
     )
