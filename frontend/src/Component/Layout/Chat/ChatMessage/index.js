@@ -21,7 +21,7 @@ function ChatMessage(props) {
             })()
     }, [])
 
-    function diffDay(date1ms, date2ms) {
+    function diffDateInDays(date1ms, date2ms) {
         return Math.floor( (date1ms - date2ms)/1000/60/60/24 );
     }
     function formatDate(dateMs) {
@@ -30,7 +30,7 @@ function ChatMessage(props) {
     }
 
     const itsMe = user.id === message.userId;
-    const day = diffDay(Date.now(), message.timestamp.seconds*1000);
+    const daysAgo = diffDateInDays(Date.now(), message.timestamp.seconds*1000);
 
     return (
         <Toast className={'chat-message' + (itsMe ? ' my' : ' notMy')}>
@@ -55,7 +55,7 @@ function ChatMessage(props) {
                 }
                 <p data-message={message.message} data-author={message.name} data-id={message.id}>{message.message}</p>
             </Toast.Body>
-            <small className='chat-message--time'>{day ? `${day} day ago` : 'today'}</small>
+            <small className='chat-message--time'>{daysAgo ? `${daysAgo} days ago` : 'today'}</small>
         </Toast>
     )
 }
