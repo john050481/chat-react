@@ -21,13 +21,17 @@ function ChatMessage(props) {
             })()
     }, [])
 
+    const itsMe = user.id === message.userId;
+
     return (
-        <Toast className={'chat-message' + (message.userId !== user.id ? ' notMy' : ' my')}>
+        <Toast className={'chat-message' + (itsMe ? ' my' : ' notMy')}>
             {
                 message.name &&
                 <Toast.Header closeButton={false}>
                     <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
-                    <strong className="mr-auto">{message.name}</strong>
+                    <strong className="mr-auto">
+                        {itsMe ? "Вы" : message.name }
+                    </strong>
                     <small className='ml-3'>
                         {new Date(message.timestamp.seconds*1000).toLocaleDateString()} {' / '}
                         {new Date(message.timestamp.seconds*1000).toLocaleTimeString()}
