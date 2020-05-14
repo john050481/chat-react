@@ -42,7 +42,7 @@ function RoomList({requestUserRoomsMetadata}) {
 
     //подписка на новые сообщения
     useEffect( () => {
-        const handlerEventMessageAdd = ({detail}) => console.log('detail message ADD  === ', detail);
+        const handlerEventMessageAdd = ({detail}) => console.log('RoomList, detail message ADD  === ', detail);
         chatDb.addEventListener('message-add', handlerEventMessageAdd);
 
         return () => chatDb.removeEventListener('message-add', handlerEventMessageAdd);
