@@ -129,7 +129,7 @@ function useProvideChat() {
     }//*********
 
     function sendMessage(roomId, messageContent, messageType='default', forwarded=false, citationId='', callback) {
-        db.collection('room-messages').doc(roomId).collection('messages').add({
+        return db.collection('room-messages').doc(roomId).collection('messages').add({
             ...roomMessagesModel,
             userId: this.userId,
             name: this.userData.name,
@@ -151,7 +151,7 @@ function useProvideChat() {
             })
     }//*********
     function deleteMessage(roomId, messageId, callback) {
-        db.collection('room-messages').doc(roomId).collection('messages').doc(messageId).delete()
+        return db.collection('room-messages').doc(roomId).collection('messages').doc(messageId).delete()
             .then( () => {
                 callback && callback(messageId)
                 return true;

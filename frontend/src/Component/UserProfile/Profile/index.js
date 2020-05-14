@@ -80,6 +80,8 @@ export default function (props) {
 
     function handlerSendMessage(e) {
             chatDb.sendMessage(roomIdElem.value, messageElem.value, 'default', false, '', console.log)
+                .then( res => console.log('then sendMessage TRUE, res = ', res))
+                .catch( err => console.log('catch sendMessage FALSE, err = ', err))
     }//*********
     function handlerUpdateMessage() {
         chatDb.updateMessage(roomIdElem.value, messageIdElem.value, messageElem.value, console.log)

@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import {clearCitation, showAlert} from "../../../../redux/actions";
 import {connect} from "react-redux";
 import {useChat} from "../../../../hooks/useChatFirebase";
+import getCaretPos from "../../../../common/getCaretPos";
 
 function MessageSender(props) {
 
@@ -15,21 +16,6 @@ function MessageSender(props) {
 
     const [caretPos, setCaretPos] = useState(null);
     const [useEmojiComponent, setUseEmojiComponent] = useState(false);
-
-    function getCaretPos(element) {
-        element.focus();
-        if (document.selection) {
-            var sel = document.selection.createRange();
-            var clone = sel.duplicate();
-            sel.collapse(true);
-            clone.moveToElementText(element);
-            clone.setEndPoint('EndToEnd', sel);
-            return clone.text.length;
-        } else {
-            return window.getSelection().getRangeAt(0).startOffset;
-        }
-        return 0;
-    }
 
     function handleClickSend(e) {
         if (!enterFieldElement.current) return;
@@ -43,12 +29,15 @@ function MessageSender(props) {
         chatDb.sendMessage(
             props.currentRoom.id,
             enterFieldElement.current.innerText,
-            'default', false, props.citation.id,
-            () => {
+            'default', false, props.citation.id
+        )
+            .then( res => {
                 props.clearCitation();
                 enterFieldElement.current.innerText = '';
-            }
-        );
+            })
+            .catch( err =>
+                props.showAlert({text: err.message, options: {variant: 'danger'}})
+            )
 
         enterFieldElement.current.focus();
         setUseEmojiComponent(false);
