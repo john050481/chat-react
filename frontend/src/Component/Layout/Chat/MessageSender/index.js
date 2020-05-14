@@ -56,21 +56,17 @@ function MessageSender(props) {
 
     const callbackFromEmojiComp = useCallback(
         (emoji) => {
-            callbackFromEmojiComp2(emoji)
-        }, [caretPos]
+            if (!enterFieldElement.current) return;
+
+            if (emoji) {
+                let text = enterFieldElement.current.innerText;
+                let beforeCaret = text.slice(0, caretPos);
+                let afterCaret = text.slice(caretPos, text.length);
+                enterFieldElement.current.innerText = beforeCaret + emoji + afterCaret;
+                setCaretPos(caretPos + emoji.length);
+            }
+        }, [caretPos, enterFieldElement]
     );
-
-    function callbackFromEmojiComp2(emoji){
-        if (!enterFieldElement.current) return;
-
-        if (emoji) {
-            let text = enterFieldElement.current.innerText;
-            let beforeCaret = text.slice(0, caretPos);
-            let afterCaret = text.slice(caretPos, text.length);
-            enterFieldElement.current.innerText = beforeCaret + emoji + afterCaret;
-            setCaretPos(caretPos + emoji.length);
-        }
-    }
 
     function handleClickEmojiIcon(e) {
         setUseEmojiComponent(!useEmojiComponent);
@@ -97,10 +93,10 @@ function MessageSender(props) {
                              contentEditable = {!!props.currentRoom}
                              spellCheck = {true}
                              onKeyUp={(e)=>{
-                                 setCaretPos( getCaretPos(document.querySelector('.enter-field')) )
+                                 setCaretPos( getCaretPos(enterFieldElement.current) )
                              }}
                              onClick={(e)=>{
-                                 setCaretPos( getCaretPos(document.querySelector('.enter-field')) )
+                                 setCaretPos( getCaretPos(enterFieldElement.current) )
                              }}
                         >
                         </div>
