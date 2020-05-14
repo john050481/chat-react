@@ -26,11 +26,7 @@ function ChatMessage(props) {
     }
     function formatDate(dateMs) {
         const date = new Date(dateMs);
-
-        const dateStr = date.toLocaleDateString();
-        const timeStr = date.toLocaleTimeString();
-
-        return  `${dateStr} | ${timeStr}`
+        return  `${date.toLocaleDateString()} | ${date.toLocaleTimeString()}`
     }
 
     const itsMe = user.id === message.userId;
