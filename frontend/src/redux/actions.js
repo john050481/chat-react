@@ -31,7 +31,6 @@ export function showLayout(layout) {
         payload: layout
     }
 }
-
 //___LOADER___
 export function showLoader(props = {options: {}}) {
     return {
@@ -44,7 +43,6 @@ export function hideLoader() {
         type: HIDE_LOADER
     }
 }
-
 //___ALERT___
 export function showAlert(props = {text: '', options: {}}) {
     changeFavicon('/favicon-new-message.ico');
@@ -66,7 +64,6 @@ export function hideAlert() {
         type: HIDE_ALERT
     }
 }
-
 //___USER_AUTH___
 export function userLogin(user) {
     return {
@@ -79,7 +76,6 @@ export function userLogout() {
         type: USER_LOGOUT,
     }
 }
-
 //___REQUEST_USERROOMS___
 export function requestUserRoomsMetadata(functionGetUserRoomsMetadataForSaga) {
     return {
