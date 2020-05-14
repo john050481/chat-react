@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react'
+import React, {useState, useCallback, useRef} from 'react'
 import './style.css'
 import Emoji from '../Emoji'
 import {IoMdSend, IoIosClose} from "react-icons/io";
@@ -10,6 +10,8 @@ import {useChat} from "../../../../hooks/useChatFirebase";
 function MessageSender(props) {
 
     const chatDb = useChat();
+
+    let enterFieldElement = useRef(null);
 
     const [caretPos, setCaretPos] = useState(null);
     const [useEmojiComponent, setUseEmojiComponent] = useState(false);
@@ -29,54 +31,26 @@ function MessageSender(props) {
         return 0;
     }
 
-    function setFocusOnEnterField() {
-        let enterField = document.querySelector('.enter-field');
-        enterField.focus();
-        return enterField;
-    }
-    function scrollDownMessageContainer() {
-        //let messageContainer = document.getElementById('message-block')
-        let messageContainer = document.querySelector('.message-block-scroll');
-        messageContainer.scrollTop = messageContainer.scrollHeight
-    };
-
     function handleClickSend(e) {
-        let target = document.querySelector('[contentEditable]');
-        if (!target.innerText) {
+        if (!enterFieldElement.current) return;
+
+        if (!enterFieldElement.current.innerText) {
             props.showAlert({text: 'Введите текст!'})
-            setFocusOnEnterField();
+            enterFieldElement.current.focus();
             return
         };
-        //console.log(target.innerText.codePointAt(0));
-        //console.log(String.fromCodePoint(129315, 9995, 128522, 0x1F602))
 
         chatDb.sendMessage(
             props.currentRoom.id,
-            target.innerText,
-            'default', false, props.citation.id
+            enterFieldElement.current.innerText,
+            'default', false, props.citation.id,
+            () => {
+                props.clearCitation();
+                enterFieldElement.current.innerText = '';
+            }
         );
 
-        props.clearCitation();
-        /*
-        let citationElem = '';
-        if (props.citation.text) {
-            citationElem = document.createElement("div");
-            citationElem.classList.add('citation-item');
-            citationElem.setAttribute('data-citation', true);
-            citationElem.innerText = props.citation.text;
-            props.clearCitation();
-        }
-
-        let message = document.createElement("div");
-        message.classList.add('message-wrap', 'right-message', 'right-color');
-        message.setAttribute('data-message', true)
-        message.innerText = target.innerText;
-        if (citationElem) message.prepend(citationElem);
-        document.getElementById('message-block').append(message);
-        */
-        target.innerText = '';
-        scrollDownMessageContainer();
-        setFocusOnEnterField();
+        enterFieldElement.current.focus();
         setUseEmojiComponent(false);
     }
 
@@ -87,14 +61,13 @@ function MessageSender(props) {
     );
 
     function callbackFromEmojiComp2(emoji){
-        if (emoji) {
-//            let enterField = setFocusOnEnterField();
-            let enterField = document.querySelector('.enter-field');
+        if (!enterFieldElement.current) return;
 
-            let text = enterField.innerText;
+        if (emoji) {
+            let text = enterFieldElement.current.innerText;
             let beforeCaret = text.slice(0, caretPos);
             let afterCaret = text.slice(caretPos, text.length);
-            enterField.innerText = beforeCaret + emoji + afterCaret;
+            enterFieldElement.current.innerText = beforeCaret + emoji + afterCaret;
             setCaretPos(caretPos + emoji.length);
         }
     }
@@ -119,7 +92,8 @@ function MessageSender(props) {
                         <Button variant="outline-dark" className="messagesender-button" disabled={!props.currentRoom} onClick = {handleClickEmojiIcon}>
                             {String.fromCodePoint(129315)}
                         </Button>
-                        <div className = 'enter-field'
+                        <div ref={enterFieldElement}
+                             className = 'enter-field'
                              contentEditable = {!!props.currentRoom}
                              spellCheck = {true}
                              onKeyUp={(e)=>{
