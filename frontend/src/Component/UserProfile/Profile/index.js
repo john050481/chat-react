@@ -1,6 +1,13 @@
 import React, {useEffect, useRef} from 'react';
 import {useChat} from "../../../hooks/useChatFirebase"
 
+let roomIdElem = null;
+let userIdElem = null;
+let messageIdElem = null;
+let messageElem = null;
+let eventNameElem = null;
+let userEmailElem = null;
+
 export default function (props) {
     console.log('Render Profile');
 
@@ -9,12 +16,12 @@ export default function (props) {
     const noop = useRef( (event) => console.log('EVENT: ', event) );
 
     useEffect( () => {
-        const roomIdElem = document.getElementById('roomIdElem');
-        const userIdElem = document.getElementById('userIdElem');
-        const messageIdElem = document.getElementById('messageIdElem');
-        const messageElem = document.getElementById('messageElem');
-        const eventNameElem = document.getElementById('eventNameElem');
-        const userEmailElem = document.getElementById('userEmailElem');
+        roomIdElem = document.getElementById('roomIdElem');
+        userIdElem = document.getElementById('userIdElem');
+        messageIdElem = document.getElementById('messageIdElem');
+        messageElem = document.getElementById('messageElem');
+        eventNameElem = document.getElementById('eventNameElem');
+        userEmailElem = document.getElementById('userEmailElem');
     }, []);
 
     async function handlerGetInfo(e) {
