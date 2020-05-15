@@ -12,7 +12,7 @@ import ReauthenticateWithCredential from './ReauthenticateWithCredential';
 import {FaUserAlt} from "react-icons/fa";
 
 function UserProfile({showAlert, photoURLInStore, emailInStore, displayNameInStore}) {
-    console.log("render UserProfile");
+    console.log("Render UserProfile Credentials");
 
     const auth = useAuth();
     const [email, setEmail] = useState(emailInStore);
