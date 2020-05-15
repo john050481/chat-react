@@ -31,7 +31,7 @@ function MessageSender(props) {
             enterFieldElement.current.innerText,
             'default', false, props.citation.id
         )
-            .then( res => {
+            .then( messageId => {
                 props.clearCitation();
                 enterFieldElement.current.innerText = '';
             })
