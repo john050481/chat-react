@@ -3,6 +3,9 @@ import React, {useState, useEffect, useRef, createContext, useContext} from "rea
 import {useAuth} from "./useAuth";
 import usersModel from '../model/users';
 import roomMessagesModel from '../model/roomMessages';
+import roomMetadataModel from '../model/roomMetadata';
+import diffArrays from "../common/diffArrays";
+import usePrevious from '../hooks/usePrevious';
 
 const chatContext = createContext();
 
@@ -25,6 +28,8 @@ function useProvideChat() {
 
     const [userId, setUserId] = useState(null);
     const [userData, setUserData] = useState(null);
+    const prevUserData = usePrevious(userData);
+    const subscribersUserRooms = useRef([]);
 
     console.log('Render useChatFirebase');
 
@@ -53,20 +58,73 @@ function useProvideChat() {
     },  [auth] );
     //---------------------------------------------------------------
     useEffect( () => {
+        console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+        console.log('prevUserData = ', prevUserData);
+        console.log('userData = ', userData);
+        console.log('subscribersUserRooms = ', [...subscribersUserRooms.current]);
+        if (prevUserData && userData) {
+            console.log('prevUserData === userData = ', prevUserData === userData);
+            console.log('prevUserData.rooms === userData.rooms = ', prevUserData.rooms === userData.rooms);
+
+            console.log('need SUBscribe = ', diffArrays(userData.rooms, prevUserData.rooms));
+            console.log('need UNscribe = ', diffArrays(prevUserData.rooms, userData.rooms));
+        }
+        console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+
+        //!!!!!!!!!!!!!! ПРОДУМАТЬ КАК ПОДПИСАТЬСЯ и ОТПИСАТЬСЯ от комнат!!!!!!!!!!!!!!!!!
+        // см. "need UNscribe" и "need SUBscribe" !!!!!!!!!
+
         dispatchEvent( { event: 'user-update', detail: {userData} } );
 
-        const subscribers = [];
+        subscribersUserRooms.current.length = 0;
 
         if (!userData) return;
 
         userData.rooms.forEach( roomId => {
             const unsubscribe = _subscribeRoomMessages(roomId);
-            subscribers.push({roomId, unsubscribe});
+            subscribersUserRooms.current.push({roomId, unsubscribe});
         } );
 
-        return () => subscribers.forEach( item => item.unsubscribe() )
+        return () => {
+            console.log('-------------------------------------------------------------------------------------');
+            console.log('prevUserData = ', prevUserData);
+            console.log('userData = ', userData);
+            console.log('subscribersUserRooms = ', [...subscribersUserRooms.current]);
+            console.log('-------------------------------------------------------------------------------------');
+            subscribersUserRooms.current.forEach( item => item.unsubscribe() )
+        }
 
     }, [userData] );
+    //---------------------------------------------------------------
+    useEffect( () => {
+        /*
+        Создал этот эффект, т.к. в верхнем эфекте, при отписке (в функции возвращаемой return),
+        желательно НЕ отписываться от всех сабскрайберов, а сравнивать сабскрайберы!
+        Т.е. к каим комнатам подписан в данный момент и к каим должен быть подписан в следующий.
+        А для этого нужно предыдущее, текущее и следующее состояние ("prev", "current", "next")!
+        С "prev" и "current" проблем нет, а с next ЕСТЬ!
+        Поэтому этот хук отписывается от всего, при демонтировании компонента, когда меняется "userId"!
+        А в верхнем эффекте, при монтировании (т.е. когда меняется userData), мы сравниваем массивы "rooms",
+        Т.е. к каким комнатам мы подписаны сейчас (а СЕЙЧАС - это в предыдущем состоянии - prevUserData.rooms),
+        и к каим должны быть подписаны, при текущем состоянии (текущее сосотояние находится в - userData.rooms).
+        Т.е. верхний эффект срабатывает при изменении "userData", и мы должны проверить изменилось ли
+        поле "rooms" в "userData", и если изменения там произошли, то нужно подписаться на добавленную
+        комнату, или отписаться (если комнату удалили).
+        Т.е. "userData" может меняться по куче причин, и нам не обязательно отписывать/подписываться заново,
+        а "userId" меняется если пользователь сменился или вышел, вот тут мы и отписываемся от ВСЕГО!
+        */
+        console.log('*************************************************************************************');
+        console.log('МОНТИРОВАНИЕ!!! = ', );
+        console.log('*************************************************************************************');
+        return () => {
+            console.log('*************************************************************************************');
+            console.log('ОТПИСКА!!! = ', );
+            console.log('subscribersUserRooms = ', [...subscribersUserRooms.current]);
+            console.log('*************************************************************************************');
+            subscribersUserRooms.current.forEach( item => item.unsubscribe() );
+            subscribersUserRooms.current.length = 0;
+        }
+    }, [userId]);
     //---------------------------------------------------------------
 
     function _createUser(userId, data, callback) {
@@ -129,7 +187,11 @@ function useProvideChat() {
     }//*********
 
     function sendMessage(roomId, messageContent, messageType='default', forwarded=false, citationId='', callback) {
-        return db.collection('room-messages').doc(roomId).collection('messages').add({
+        let batch = db.batch(); //выполняет multiple write operations as a single
+
+        const docRefRoomMessages = db.collection('room-messages').doc(roomId).collection('messages').doc();
+        const messageId = docRefRoomMessages.id;
+        batch.set(docRefRoomMessages, {
             ...roomMessagesModel,
             userId: this.userId,
             name: this.userData.name,
@@ -137,11 +199,18 @@ function useProvideChat() {
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             forwarded,
             citationId
-        })
-            .then( (docRef) => {
-                callback && callback(docRef);
-                return docRef;
-            })
+        });
+
+        const docRefRoomMetadata = db.collection('room-metadata').doc(roomId);
+        batch.update(docRefRoomMetadata, {
+            lastActivity: firebase.firestore.FieldValue.serverTimestamp() // The time at which the room was created.
+        });
+
+        return batch.commit()
+            .then(function () {
+                callback && callback(messageId);
+                return messageId;
+            });
     }//*********
     function updateMessage(roomId, messageId, data, callback) {
         return db.collection('room-messages').doc(roomId).collection('messages').doc(messageId).set({message: data}, {merge: true})
@@ -173,6 +242,7 @@ function useProvideChat() {
 
         const docRefRoomMetadata = db.collection('room-metadata').doc(roomId);
         batch.set(docRefRoomMetadata, {
+            ...roomMetadataModel,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(), // The time at which the room was created.
             createdByUserId: this.userId, // The id of the user that created the room.
             id: roomId, // The id of the room.
@@ -181,10 +251,10 @@ function useProvideChat() {
         });
 
         return batch.commit()
-        .then(function () {
-            callback && callback(roomId);
-            return roomId;
-        });
+            .then(function () {
+                callback && callback(roomId);
+                return roomId;
+            });
     }//*********
     function getRoomMetadata(roomId) {
         return db.collection('room-metadata').doc(roomId).get().then( (doc) => doc.data() )
@@ -218,16 +288,16 @@ function useProvideChat() {
         const docRefRoomUsers = db.collection('room-users').doc(roomId);
         batch.delete(docRefRoomUsers);
         //сначала удалить все доки из коллекции users; batch поддерживает 500 операций!!!!!!!!!!!!!!!!!!!!!!!
-            await docRefRoomUsers.collection('users').get().then( querySnapshot => {
-                querySnapshot.forEach( doc => doc.ref.delete() )
-            } );
+        await docRefRoomUsers.collection('users').get().then( querySnapshot => {
+            querySnapshot.forEach( doc => doc.ref.delete() )
+        } );
 
         const docRefRoomMessages = db.collection('room-messages').doc(roomId);
         batch.delete(docRefRoomMessages);
         //сначала удалить все доки из коллекции messages; batch поддерживает 500 операций!!!!!!!!!!!!!!!!!!!!!!!
-            await docRefRoomMessages.collection('messages').get().then( querySnapshot => {
-                querySnapshot.forEach( doc => doc.ref.delete() )
-            } );
+        await docRefRoomMessages.collection('messages').get().then( querySnapshot => {
+            querySnapshot.forEach( doc => doc.ref.delete() )
+        } );
 
         const docRefRoomMetadata = db.collection('room-metadata').doc(roomId);
         batch.delete(docRefRoomMetadata);
@@ -287,7 +357,7 @@ function useProvideChat() {
     }//*********
     function getRoomUsers(roomId) {
         return db.collection('room-users').doc(roomId).collection('users').get().then( querySnapshot => {
-           let users = [];
+            let users = [];
             querySnapshot.forEach(function(doc) {
                 users.push({...doc.data(), id: doc.id});
             });
@@ -364,6 +434,8 @@ function useProvideChat() {
         userId,
         userData,
         chatEventListeners,
+        prevUserData,
+        subscribersUserRooms,
 
         _createUser,
         updateUser,
