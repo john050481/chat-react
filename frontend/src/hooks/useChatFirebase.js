@@ -24,7 +24,15 @@ function useProvideChat() {
     const firebase = auth.firebase;
 
     const chatEventListeners = useRef({});
-    const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-remove', 'room-invite', 'room-invite-response'];
+    const events = [
+        'user-update',
+        'room-enter',
+        'room-exit',
+        'message-add',
+        'message-remove',
+        'room-invite',
+        'room-invite-response'
+    ];
 
     const [userId, setUserId] = useState(null);
     const [userData, setUserData] = useState(null);
