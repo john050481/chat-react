@@ -8,6 +8,8 @@ import {connect} from "react-redux";
 function RoomItem({room, isSmall, requestRoomId, loader, currentRoom}) {
     const roomId = currentRoom ? currentRoom.id : null;
 
+    let seconds = room.data.lastActivity ? room.data.lastActivity.seconds*1000 : Date.now();
+
     return (
         <div data-roomid={room.roomId}>
             <Card className={ 'chat' + (roomId === room.roomId ? ' active' : '') }>
@@ -25,8 +27,8 @@ function RoomItem({room, isSmall, requestRoomId, loader, currentRoom}) {
                                       </span>
                         </div>
                         <footer className="blockquote-footer text-align-end" hidden={isSmall}>
-                            {new Date(room.data.lastActivity.seconds*1000).toLocaleDateString()} {' / '}
-                            {new Date(room.data.lastActivity.seconds*1000).toLocaleTimeString()}
+                            {new Date(seconds).toLocaleDateString()} {' / '}
+                            {new Date(seconds).toLocaleTimeString()}
                         </footer>
                     </blockquote>
                 </Card.Body>

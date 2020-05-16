@@ -29,8 +29,9 @@ function ChatMessage(props) {
         return  `${date.toLocaleDateString()} | ${date.toLocaleTimeString()}`
     }
 
+    let seconds = message.timestamp ? message.timestamp.seconds*1000 : Date.now();
     const itsMe = user.id === message.userId;
-    const daysAgo = diffDateInDays(Date.now(), message.timestamp.seconds*1000);
+    const daysAgo = diffDateInDays(Date.now(), seconds);
 
     return (
         <Toast className={'chat-message' + (itsMe ? ' my' : ' notMy')}>
@@ -42,7 +43,7 @@ function ChatMessage(props) {
                         {itsMe ? "Вы" : message.name }
                     </strong>
                     <small className='ml-3'>
-                        {formatDate(message.timestamp.seconds*1000)}
+                        {formatDate(seconds)}
                     </small>
                 </Toast.Header>
             }
