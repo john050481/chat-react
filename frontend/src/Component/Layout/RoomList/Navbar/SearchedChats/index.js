@@ -2,7 +2,7 @@ import './style.css'
 import React, {useEffect, useState} from 'react'
 import ListGroup from "react-bootstrap/ListGroup";
 import {connect} from "react-redux";
-import {requestRoom} from "../../../../../redux/actions";
+import {requestRoomAndMessages} from "../../../../../redux/actions";
 import {useChat} from "../../../../../hooks/useChatFirebase";
 
 function SearchedChats(props) {
@@ -33,7 +33,7 @@ function SearchedChats(props) {
         if (curElemRoomId)
             curElemRoomId.scrollIntoView(); /* elemInWindow(curElemRoomId, null, target => target.scrollIntoView() ); */
 
-        props.requestRoom( roomId, () => chatDb.getRoomMetadata(roomId), () => chatDb.getRoomMessages(roomId) );
+        props.requestRoomAndMessages( roomId, () => chatDb.getRoomMetadata(roomId), () => chatDb.getRoomMessages(roomId) );
         props.setIsShowSearchedChat(false);
     }
 
@@ -63,7 +63,7 @@ const mapStateToProps = store => {
     }
 }
 const mapDispatchToProps = {
-    requestRoom
+    requestRoomAndMessages
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchedChats)
