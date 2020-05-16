@@ -279,6 +279,8 @@ function useProvideChat() {
 
         if (!curUserData) return false;
 
+        if (!curUserData.rooms.length) return Promise.resolve([])
+
         return db.collection("room-metadata")
             .where("id", "in", [...curUserData.rooms])
             .orderBy("lastActivity", "desc")
