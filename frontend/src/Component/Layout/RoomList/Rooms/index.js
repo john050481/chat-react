@@ -6,7 +6,7 @@ import SpinnerApp from "../../../Spinner";
 import RoomItem from './RoomItem';
 import {useChat} from "../../../../hooks/useChatFirebase";
 
-function Rooms({isSmall, rooms, currentRoom, requestRoomAndMessages}) {
+function Rooms({isSmall, rooms, currentRoomId, requestRoomAndMessages}) {
 
     const chatDb = useChat();
 
@@ -14,7 +14,7 @@ function Rooms({isSmall, rooms, currentRoom, requestRoomAndMessages}) {
         let curElemRoomId = e.target.closest('[data-roomid]');
         if (curElemRoomId) {
             let roomId = curElemRoomId.dataset.roomid;
-            if ( roomId !== (currentRoom ? currentRoom.id : null) ) {
+            if ( roomId !== (currentRoomId ? currentRoomId : null) ) {
                 requestRoomAndMessages( roomId, () => chatDb.getRoomMetadata(roomId), () => chatDb.getRoomMessages(roomId) );
             }
         }
@@ -34,7 +34,7 @@ function Rooms({isSmall, rooms, currentRoom, requestRoomAndMessages}) {
 
 const mapStateToProps = store => {
     return {
-        currentRoom: store.chat.currentRoom,
+        currentRoomId: store.chat.currentRoomId,
         rooms: store.chat.rooms,
     }
 }
