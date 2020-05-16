@@ -1,12 +1,12 @@
 import React from "react";
 import './style.css';
 import {connect} from "react-redux";
-import {requestRoomAndMessages} from "../../../../redux/actions";
+import {requestRoomIdMessages} from "../../../../redux/actions";
 import SpinnerApp from "../../../Spinner";
 import RoomItem from './RoomItem';
 import {useChat} from "../../../../hooks/useChatFirebase";
 
-function Rooms({isSmall, rooms, currentRoomId, requestRoomAndMessages}) {
+function Rooms({isSmall, rooms, currentRoomId, requestRoomIdMessages}) {
 
     const chatDb = useChat();
 
@@ -15,7 +15,7 @@ function Rooms({isSmall, rooms, currentRoomId, requestRoomAndMessages}) {
         if (curElemRoomId) {
             let roomId = curElemRoomId.dataset.roomid;
             if ( roomId !== (currentRoomId ? currentRoomId : null) ) {
-                requestRoomAndMessages( roomId, () => chatDb.getRoomMetadata(roomId), () => chatDb.getRoomMessages(roomId) );
+                requestRoomIdMessages( roomId, () => chatDb.getRoomMessages(roomId) );
             }
         }
     }
@@ -40,7 +40,7 @@ const mapStateToProps = store => {
 }
 
 const mapDispatchToProps = {
-    requestRoomAndMessages
+    requestRoomIdMessages
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Rooms)

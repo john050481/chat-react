@@ -15,12 +15,14 @@ import {connect} from "react-redux";
 import {useDebounce} from '../../../hooks/useDebounce';
 import {useWindowSize} from '../../../hooks/useWindowSize';
 import {useChat} from "../../../hooks/useChatFirebase";
+import useChatMessages from './useChatMessages';
 const MAX_WIDTH = 600;//px
 
 function RoomList({requestUserRoomsMetadata}) {
     console.log('Render RoomList')
 
     const chatDb = useChat();
+    const newMessage = useChatMessages();
 
     //уменьшение сайдбара, при ширене экрана менее MAX_WIDTH, с задержкой в 1сек
     const [isSmall, setIsSmall] = useState(false);
@@ -39,14 +41,6 @@ function RoomList({requestUserRoomsMetadata}) {
 
         requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() );
     }, [chatDb.userData])
-
-    //подписка на новые сообщения
-    useEffect( () => {
-        const handlerEventMessageAdd = ({detail}) => console.log('RoomList, detail message ADD  === ', detail);
-        chatDb.addEventListener('message-add', handlerEventMessageAdd);
-
-        return () => chatDb.removeEventListener('message-add', handlerEventMessageAdd);
-    }, [])
 
     return (
         <div className={"flx sidebar-rooms" + ( isSmall ? ' small' : '' )}>

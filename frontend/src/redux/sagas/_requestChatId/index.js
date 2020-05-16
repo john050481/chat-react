@@ -1,5 +1,5 @@
 import {put, takeLatest, all, call} from 'redux-saga/effects'
-import {REQUEST_CHATID, FETCHED_CHATID, FETCHED_MESSAGES} from '../../types';
+import {REQUEST_CHATID, FETCHED_CHATID, UPDATE_ROOMID_MESSAGES} from '../../types';
 import {showLoader, hideLoader, showAlert} from '../../actions';
 
 //---REGUEST ONE CHAT (FOR ID)---
@@ -23,7 +23,7 @@ function* sagaWorkerRequestChatId(action) {
             messages: call(messagesRes.json.bind(messagesRes))
         });
         yield put({ type: FETCHED_CHATID, payload: chatInfo });
-        yield put({ type: FETCHED_MESSAGES, payload: messages });
+        yield put({ type: UPDATE_ROOMID_MESSAGES, payload: messages });
 
         yield put(hideLoader());
         yield put(showAlert({text: 'FETCH CHAT/MASSAGES DONE!!!', options: {variant: 'success'}}))

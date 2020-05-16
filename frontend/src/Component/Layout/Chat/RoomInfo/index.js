@@ -15,19 +15,19 @@ function RoomInfo({currentRoom}) {
                 <Form.Row>
                     <Form.Group as={Col}>
                         <Form.Label>ID</Form.Label>
-                        <Form.Control type="text" value={currentRoom.id} disabled/>
+                        <Form.Control type="text" value={currentRoom.data.id} disabled/>
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
                     <Form.Group as={Col}>
                         <Form.Label>Name</Form.Label>
-                        <Form.Control type="text" value={currentRoom.name} disabled/>
+                        <Form.Control type="text" value={currentRoom.data.name} disabled/>
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
                     <Form.Group as={Col}>
                         <Form.Label>Type</Form.Label>
-                        <Form.Control type="text" value={currentRoom.type} disabled/>
+                        <Form.Control type="text" value={currentRoom.data.type} disabled/>
                     </Form.Group>
                 </Form.Row>
 
@@ -36,7 +36,7 @@ function RoomInfo({currentRoom}) {
                 <Form.Row>
                     <Form.Group as={Col}>
                         <Form.Label>Created by user ID</Form.Label>
-                        <Form.Control type="text" value={currentRoom.createdByUserId} disabled/>
+                        <Form.Control type="text" value={currentRoom.data.createdByUserId} disabled/>
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
@@ -44,9 +44,9 @@ function RoomInfo({currentRoom}) {
                         <Form.Label>Created at</Form.Label>
                         <Form.Control
                             type="text"
-                            value={new Date(currentRoom.createdAt.seconds*1000).toLocaleDateString() +
+                            value={new Date(currentRoom.data.createdAt.seconds*1000).toLocaleDateString() +
                             ' / ' +
-                            new Date(currentRoom.createdAt.seconds*1000).toLocaleTimeString()}
+                            new Date(currentRoom.data.createdAt.seconds*1000).toLocaleTimeString()}
                             disabled
                         />
                     </Form.Group>
@@ -59,9 +59,9 @@ function RoomInfo({currentRoom}) {
                         <Form.Label>Last activity</Form.Label>
                         <Form.Control
                             type="text"
-                            value={new Date(currentRoom.lastActivity.seconds*1000).toLocaleDateString() +
+                            value={new Date(currentRoom.data.lastActivity.seconds*1000).toLocaleDateString() +
                             ' / ' +
-                            new Date(currentRoom.lastActivity.seconds*1000).toLocaleTimeString()}
+                            new Date(currentRoom.data.lastActivity.seconds*1000).toLocaleTimeString()}
                             disabled
                         />
                     </Form.Group>
@@ -79,7 +79,7 @@ function RoomInfo({currentRoom}) {
 
 const mapStateToProps = store => {
     return {
-        currentRoom: store.chat.currentRoom
+        currentRoom: store.chat.rooms.find( room => room.roomId === store.chat.currentRoomId)
     }
 }
 const mapDispatchToProps = {
