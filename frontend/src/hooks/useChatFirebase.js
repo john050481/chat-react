@@ -45,7 +45,7 @@ function useProvideChat() {
             .onSnapshot(function(DocumentReferenceUser) {
 
                 if (!DocumentReferenceUser.exists) {
-                    _createUser(auth.user.uid, {email: auth.user.email}/*, (userId) => setUserId(userId)*/);
+                    _createUser( auth.user.uid, {email: auth.user.email} );
                     return;
                 }
 
@@ -58,42 +58,39 @@ function useProvideChat() {
     },  [auth] );
     //---------------------------------------------------------------
     useEffect( () => {
-        console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-        console.log('prevUserData = ', prevUserData);
-        console.log('userData = ', userData);
-        console.log('subscribersUserRooms = ', [...subscribersUserRooms.current]);
-        if (prevUserData && userData) {
-            console.log('prevUserData === userData = ', prevUserData === userData);
-            console.log('prevUserData.rooms === userData.rooms = ', prevUserData.rooms === userData.rooms);
-
-            console.log('need SUBscribe = ', diffArrays(userData.rooms, prevUserData.rooms));
-            console.log('need UNscribe = ', diffArrays(prevUserData.rooms, userData.rooms));
-        }
-        console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-
-        //!!!!!!!!!!!!!! ПРОДУМАТЬ КАК ПОДПИСАТЬСЯ и ОТПИСАТЬСЯ от комнат!!!!!!!!!!!!!!!!!
-        // см. "need UNscribe" и "need SUBscribe" !!!!!!!!!
-
         dispatchEvent( { event: 'user-update', detail: {userData} } );
-
-        subscribersUserRooms.current.length = 0;
 
         if (!userData) return;
 
-        userData.rooms.forEach( roomId => {
+        /*
+        console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+        console.log('prevUserData = ', prevUserData);
+        console.log('userData = ', userData);
+        */
+        const _prevUserDataRooms = prevUserData ? prevUserData.rooms : [];
+        const _curUserDataRooms = userData ? userData.rooms : [];
+        const needSubscribe = diffArrays(_curUserDataRooms, _prevUserDataRooms);
+        const needUnsubscribe = diffArrays(_prevUserDataRooms, _curUserDataRooms);
+        /*
+        console.log('нужно подписаться на эти комнаты = need SUB scribe = ', needSubscribe);
+        console.log('нужно отписаться с этих комнат = need UN subscribe = ', needUnsubscribe);
+        console.log('на выходе должы быть подписаны на эти комнаты = _curUserDataRooms = ', _curUserDataRooms);
+        console.log('текущие subscribers = subscribersUserRooms.current = ', [...subscribersUserRooms.current]);
+        console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+        */
+        // ОТПИСЫВАЕМСЯ
+        subscribersUserRooms.current = subscribersUserRooms.current.filter( subscriber => {
+            if ( needUnsubscribe.find( unsubscribeRoomId => unsubscribeRoomId === subscriber.roomId) ) {
+                subscriber.unsubscribe();
+                return false;
+            }
+            return true;
+        } );
+        // ПОДПИСЫВАЕМСЯ
+        needSubscribe.forEach( roomId => {
             const unsubscribe = _subscribeRoomMessages(roomId);
             subscribersUserRooms.current.push({roomId, unsubscribe});
         } );
-
-        return () => {
-            console.log('-------------------------------------------------------------------------------------');
-            console.log('prevUserData = ', prevUserData);
-            console.log('userData = ', userData);
-            console.log('subscribersUserRooms = ', [...subscribersUserRooms.current]);
-            console.log('-------------------------------------------------------------------------------------');
-            subscribersUserRooms.current.forEach( item => item.unsubscribe() )
-        }
-
     }, [userData] );
     //---------------------------------------------------------------
     useEffect( () => {
@@ -113,14 +110,12 @@ function useProvideChat() {
         Т.е. "userData" может меняться по куче причин, и нам не обязательно отписывать/подписываться заново,
         а "userId" меняется если пользователь сменился или вышел, вот тут мы и отписываемся от ВСЕГО!
         */
-        console.log('*************************************************************************************');
-        console.log('МОНТИРОВАНИЕ!!! = ', );
-        console.log('*************************************************************************************');
         return () => {
+            /*
             console.log('*************************************************************************************');
-            console.log('ОТПИСКА!!! = ', );
-            console.log('subscribersUserRooms = ', [...subscribersUserRooms.current]);
+            console.log('ОТПИСКА от subscribersUserRooms = ', [...subscribersUserRooms.current]);
             console.log('*************************************************************************************');
+            */
             subscribersUserRooms.current.forEach( item => item.unsubscribe() );
             subscribersUserRooms.current.length = 0;
         }
@@ -159,6 +154,7 @@ function useProvideChat() {
     function _subscribeRoomMessages(roomId) {
         let firstRun = true;
         const unsubscribe = db.collection("room-messages").doc(roomId).collection("messages").onSnapshot(function (snapshot){
+            console.log('---------------useChatFirebase---------------');
             console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId} --- firstRun: ${firstRun} ---`);
 
             let source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
@@ -169,7 +165,7 @@ function useProvideChat() {
                 return;
             }
             snapshot.docChanges().forEach(function(change) {
-                console.log('path array === ', change.doc.ref.path.split('/'));
+                //console.log('path array === ', change.doc.ref.path.split('/'));
                 if (change.type === "added") {
                     console.log("added! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
                     dispatchEvent( {event: 'message-add', detail: {id: change.doc.id, message: change.doc.data(), path: change.doc.ref.path} } );
@@ -182,6 +178,7 @@ function useProvideChat() {
                     dispatchEvent( {event: 'message-remove', detail: {id: change.doc.id, message: change.doc.data(), path: change.doc.ref.path} } );
                 }
             });
+            console.log('---------------useChatFirebase---------------');
         });
         return unsubscribe;
     }//*********
@@ -205,6 +202,15 @@ function useProvideChat() {
         batch.update(docRefRoomMetadata, {
             lastActivity: firebase.firestore.FieldValue.serverTimestamp() // The time at which the room was created.
         });
+
+        /*
+        // ПРОИСХОДИТ ПОДПИСКА И ОТПИСКА НА ROOMS в UseEffect !!!!!!!!!! сравнивать массив rooms!?
+        // И КУЧА РЕНДЕРОВ!!!
+        const docRefUsers = db.collection('users').doc(this.userId);
+        batch.update(docRefUsers, {
+            lastActivity: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        */
 
         return batch.commit()
             .then(function () {
@@ -265,7 +271,9 @@ function useProvideChat() {
 
         if (!curUserData) return false;
 
-        return db.collection("room-metadata").where("id", "in", [...curUserData.rooms])
+        return db.collection("room-metadata")
+            .where("id", "in", [...curUserData.rooms])
+            .orderBy("lastActivity", "desc")
             .get()
             .then( querySnapshot => {
                     const roomsMetadata = [];
@@ -309,12 +317,15 @@ function useProvideChat() {
             });
     }//!!!!!!!!!!!!!!!!!!! ПРОБЛЕМА !!!!!!!!!!!!!!!!!!!
     function getRoomMessages(roomId) {
-        return db.collection("room-messages").doc(roomId).collection("messages").orderBy("timestamp").get().then( querySnapshot => {
-            let messages = [];
-            querySnapshot.forEach(function(doc) {
-                messages.push({...doc.data(), id: doc.id});
-            });
-            return messages;
+        return db.collection("room-messages").doc(roomId).collection("messages")
+            .orderBy("timestamp")
+            .get()
+            .then( querySnapshot => {
+                let messages = [];
+                querySnapshot.forEach(function(doc) {
+                    messages.push({...doc.data(), id: doc.id});
+                });
+                return messages;
         });
     }//*********
     function getRoomMessage(roomId, messageId) {

@@ -10,14 +10,17 @@ import {
     USER_LOGIN,
     USER_LOGOUT,
 
-    REQUEST_USERROOMS,
-    REQUEST_ROOMID,
+    REQUEST_USERROOMS_METADATA,
+    REQUEST_ROOMID_MESSAGES,
+    REQUEST_ROOMID_METADATA,
 
     CHAT_USER_ENTER,
     CHAT_USER_EXIT,
 
     CITATION_SET,
-    CITATION_CLEAR
+    CITATION_CLEAR,
+
+    ADD_NEW_MESSAGE_IN_CURRENT_CHAT
 } from './types'
 
 import changeFavicon from '../common/changeFavicon'
@@ -76,19 +79,18 @@ export function userLogout() {
         type: USER_LOGOUT,
     }
 }
-//___REQUEST_USERROOMS___
+//___REQUEST_USERROOMS_METADATA___
 export function requestUserRoomsMetadata(functionGetUserRoomsMetadataForSaga) {
     return {
-        type: REQUEST_USERROOMS,
+        type: REQUEST_USERROOMS_METADATA,
         functionGetUserRoomsMetadataForSaga
     }
 }
-//___REQUEST_ROOMID___
-export function requestRoom(roomId, functionGetRoomMetadataForSaga, functionGetRoomMessagesForSaga) {
+//___REQUEST_ROOMID_MESSAGES___
+export function requestRoomIdMessages(roomId, functionGetRoomMessagesForSaga) {
     return {
-        type: REQUEST_ROOMID,
+        type: REQUEST_ROOMID_MESSAGES,
         roomId,
-        functionGetRoomMetadataForSaga,
         functionGetRoomMessagesForSaga
     }
 }
@@ -116,5 +118,20 @@ export function setCitation(id, text, author) {
 export function clearCitation() {
     return {
         type: CITATION_CLEAR
+    }
+}
+//___ADD_NEW_MESSAGE_IN_CURRENT_CHAT___
+export function addNewMessageInCurrentChat(message) {
+    return {
+        type: ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
+        payload: message
+    }
+}
+//___UPDATE_ROOMID_METADATA___
+export function requestUpdateRoomMetadata(roomId, functionGetRoomMetadataForSaga) {
+    return {
+        type: REQUEST_ROOMID_METADATA,
+        roomId,
+        functionGetRoomMetadataForSaga
     }
 }

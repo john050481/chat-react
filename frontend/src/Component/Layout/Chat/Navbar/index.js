@@ -1,3 +1,4 @@
+import './style.css';
 import React from "react";
 import Button from "react-bootstrap/Button";
 import {FaSearch, FaCog, FaWhatsapp, FaTrash} from "react-icons/fa";
@@ -9,15 +10,21 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import RoomInfo from "../RoomInfo";
-import './style.css'
+import {useChat} from "../../../../hooks/useChatFirebase";
 
 function NavBarRoot(props) {
     console.log('Render NavBarMain')
+
+    const chatDb = useChat();
 
     const components = {
         RoomInfo: <RoomInfo />,
         FakeSearchMessage: <FakeSearchMessage />,
         FakeSettings: <FakeSettings />
+    }
+
+    function handleClickLeaveRoom(e) {
+        chatDb.leaveRoom(props.currentRoomId);
     }
 
     function handleClick(e) {
@@ -32,7 +39,7 @@ function NavBarRoot(props) {
     }
 
     return (
-            props.currentRoom &&
+            props.currentRoomId &&
                 <div className="navbarmain-block" onClick={handleClick}>
                     <Container>
                         <Row>
@@ -43,14 +50,14 @@ function NavBarRoot(props) {
                     </Container>
                     <Button variant="outline-primary" data-component='FakeSearchMessage' title="search message"><FaSearch /></Button>
                     <Button variant="outline-dark" data-component='FakeSettings' title="FakeSettings"><FaCog /></Button>
-                    <Button variant="outline-secondary" data-component='' title="Delete chat"><FaTrash /></Button>
+                    <Button variant="outline-secondary" data-component='' title="leave room" onClick={handleClickLeaveRoom}><FaTrash /></Button>
                 </div>
     )
 }
 
 const mapStateToProps = store => {
     return {
-        currentRoom: store.chat.currentRoom
+        currentRoomId: store.chat.currentRoomId
     }
 }
 const mapDispatchToProps = {
