@@ -1,10 +1,10 @@
 import {put, takeLatest, call} from 'redux-saga/effects'
-import {REQUEST_UPDATE_ROOMID_METADATA, UPDATE_ROOMID_METADATA} from '../../types';
+import {REQUEST_ROOMID_METADATA, UPDATE_ROOMID_METADATA} from '../../types';
 import {showLoader, hideLoader, showAlert} from '../../actions';
 
 //---REGUEST ROOM ID META---
 export default function* sagaWatcherRequestUpdateRoomIdMetadata() {
-    yield takeLatest(REQUEST_UPDATE_ROOMID_METADATA, sagaWorkerRequestUpdateRoomIdMetadata);
+    yield takeLatest(REQUEST_ROOMID_METADATA, sagaWorkerRequestUpdateRoomIdMetadata);
 }
 function* sagaWorkerRequestUpdateRoomIdMetadata(action) {
     const roomId = action.roomId;
