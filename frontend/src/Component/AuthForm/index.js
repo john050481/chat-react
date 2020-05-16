@@ -26,7 +26,6 @@ export default function AuthFormApp(props) {
                 setSpinner(false);
             })
             .then( async (result) => {
-                console.log("RESULT = ", result);
                 setAlert({text: 'Success!!!' + ' ' + messageSuccess, variant: 'success'});
                 if (delaySec) await startFinalCountDown(DELAY)
                 if (redirectUrl) router.push(redirectUrl)
