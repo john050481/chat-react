@@ -5,7 +5,7 @@ import './style.css'
 import {requestUserRoomsMetadata, showLayout} from "../../../../redux/actions";
 import {connect} from "react-redux";
 import Button from "react-bootstrap/Button";
-import {FaCog, FaRedo, FaArrowLeft, FaArrowRight} from "react-icons/fa";
+import {FaRedo, FaArrowLeft, FaArrowRight, FaPlus} from "react-icons/fa";
 import FakeSettings from '../../../FakeComponent/FakeSettings';
 import SearchedChats from './SearchedChats'
 import {useOnClickOutside} from "../../../../hooks/useOnClickOutside";
@@ -54,21 +54,21 @@ function NavBarSidebar(props) {
                 <InputGroup.Append hidden={props.isSmall}>
                     <Button
                         variant="outline-dark"
-                        data-component='FakeSettings'
-                        title="settings"
-                        size="sm"
-                        onClick={handleClickSettings}
-                    >
-                        <FaCog />
-                    </Button>
-                    <Button
-                        variant="outline-dark"
                         data-component='Refresh'
                         title="Refresh room/contact list"
                         size="sm"
                         onClick={(e)=>{props.requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() )}}
                     >
                         <FaRedo />
+                    </Button>
+                    <Button
+                        variant="outline-dark"
+                        data-component=''
+                        title="Add new chat"
+                        size="sm"
+                        onClick={(e)=>{}}
+                    >
+                        <FaPlus />
                     </Button>
                 </InputGroup.Append>
             </InputGroup>
