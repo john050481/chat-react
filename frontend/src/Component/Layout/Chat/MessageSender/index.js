@@ -27,7 +27,7 @@ function MessageSender(props) {
         };
 
         chatDb.sendMessage(
-            props.currentRoom.id,
+            props.currentRoomId,
             enterFieldElement.current.innerText,
             'default', false, props.citation.id
         )
@@ -74,12 +74,12 @@ function MessageSender(props) {
                     </div>
                     <div className='enter-block-wrapper'>
                         {useEmojiComponent ? <Button variant="outline-dark" className="messagesender-button" onClick = {handleClickEmojiIcon}><IoIosClose /></Button> : null}
-                        <Button variant="outline-dark" className="messagesender-button" disabled={!props.currentRoom} onClick = {handleClickEmojiIcon}>
+                        <Button variant="outline-dark" className="messagesender-button" disabled={!props.currentRoomId} onClick = {handleClickEmojiIcon}>
                             {String.fromCodePoint(129315)}
                         </Button>
                         <div ref={enterFieldElement}
                              className = 'enter-field'
-                             contentEditable = {!!props.currentRoom}
+                             contentEditable = {!!props.currentRoomId}
                              spellCheck = {true}
                              onKeyUp={(e)=>{
                                  setCaretPos( getCaretPos(enterFieldElement.current) )
@@ -89,7 +89,7 @@ function MessageSender(props) {
                              }}
                         >
                         </div>
-                        <Button variant="outline-dark" className="messagesender-button" disabled={!props.currentRoom} onClick = {handleClickSend}>
+                        <Button variant="outline-dark" className="messagesender-button" disabled={!props.currentRoomId} onClick = {handleClickSend}>
                             <IoMdSend />
                         </Button>
                     </div>
@@ -101,7 +101,7 @@ function MessageSender(props) {
 
 const mapStateToProps = store => {
     return {
-        currentRoom: store.chat.currentRoom,
+        currentRoomId: store.chat.currentRoomId,
         citation: store.chat.citation
     }
 }
