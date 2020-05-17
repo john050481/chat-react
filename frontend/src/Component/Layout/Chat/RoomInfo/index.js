@@ -12,11 +12,11 @@ function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
 
     const chatDb = useChat();
 
-    const [createdByUserId, setCreatedByUserId] = useState(null);
+    const [createdByUserEmail, setCreatedByUserEmail] = useState(null);
     useEffect( () => {
         (async () => {
-            let createdByUserId = await chatDb.getUserData(currentRoom.data.createdByUserId);
-            if (createdByUserId) setCreatedByUserId(createdByUserId.name);
+            let createdByUser = await chatDb.getUserData(currentRoom.data.createdByUserId);
+            if (createdByUser) setCreatedByUserEmail(createdByUser.email);
         })()
     });
 
@@ -72,8 +72,8 @@ function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
 
                     <Form.Row>
                         <Form.Group as={Col}>
-                            <Form.Label>Created by user ID / name</Form.Label>
-                            <Form.Control type="text" value={currentRoom.data.createdByUserId + ' / ' + createdByUserId} disabled/>
+                            <Form.Label>Created by user ID / email</Form.Label>
+                            <Form.Control type="text" value={currentRoom.data.createdByUserId + ' / ' + createdByUserEmail} disabled/>
                         </Form.Group>
                     </Form.Row>
                     <Form.Row>
