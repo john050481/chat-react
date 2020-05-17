@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import {FaRedo, FaArrowLeft, FaArrowRight, FaPlus} from "react-icons/fa";
 import FakeSettings from '../../../FakeComponent/FakeSettings';
 import SearchedChats from './SearchedChats'
+import CreateRoom from '../CreateRoom';
 import {useOnClickOutside} from "../../../../hooks/useOnClickOutside";
 import {useChat} from "../../../../hooks/useChatFirebase";
 
@@ -16,15 +17,14 @@ function NavBarSidebar(props) {
 
     const chatDb = useChat();
 
-
     const [isShowSearchedChat, setIsShowSearchedChat] = useState(false);
     const ref = useRef();
     useOnClickOutside(ref, (e)=>setIsShowSearchedChat(false));
 
     const [searchValue, setSearchValue] = useState('');
 
-    function handleClickSettings(e) {
-        props.setRender( (prev) => () => <FakeSettings /> );
+    function handleClickCreateRoom(e) {
+        props.setRender( (prev) => () => <CreateRoom /> );
         props.showLayout({region: props.region});
     }
 
@@ -66,7 +66,7 @@ function NavBarSidebar(props) {
                         data-component=''
                         title="Add new chat"
                         size="sm"
-                        onClick={(e)=>{}}
+                        onClick={handleClickCreateRoom}
                     >
                         <FaPlus />
                     </Button>

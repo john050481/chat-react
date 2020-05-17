@@ -24,7 +24,9 @@ function NavBarRoot(props) {
     }
 
     function handleClickLeaveRoom(e) {
-        chatDb.leaveRoom(props.currentRoomId);
+        let isLeaveRoom = confirm("Выйти из чата?");
+        if (isLeaveRoom)
+            chatDb.leaveRoom(props.currentRoomId);
     }
 
     function handleClick(e) {

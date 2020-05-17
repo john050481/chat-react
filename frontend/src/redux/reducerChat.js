@@ -11,7 +11,10 @@ import {
     CITATION_SET,
     CITATION_CLEAR,
 
-    ADD_NEW_MESSAGE_IN_CURRENT_CHAT
+    ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
+
+    /*ENTER_ROOM*/
+    EXIT_ROOM
 } from './types'
 
 const init = {
@@ -55,6 +58,13 @@ export default function (state = init, action) {
 
         case ADD_NEW_MESSAGE_IN_CURRENT_CHAT:
             return { ...state, messages: [...state.messages, action.payload]}
+
+        /*
+        case ENTER_ROOM:
+            return {...state}
+        */
+        case EXIT_ROOM:
+            return {...state, requestRoomId: null, currentRoomId: null, messages: []}
 
         default:
             return state

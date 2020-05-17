@@ -1,11 +1,40 @@
 import './style.css';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import ButtonWithLoader from '../../../../common/ButtonWithLoader';
 import Col from "react-bootstrap/Col";
 import {connect} from "react-redux";
+import {requestUpdateRoomMetadata, showAlert} from '../../../../redux/actions';
+import {useChat} from "../../../../hooks/useChatFirebase";
 
-function RoomInfo({currentRoom}) {
+function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
+
+    const chatDb = useChat();
+
+    const [createdByUserId, setCreatedByUserId] = useState(null);
+    useEffect( () => {
+        (async () => {
+            let createdByUserId = await chatDb.getUserData(currentRoom.data.createdByUserId);
+            if (createdByUserId) setCreatedByUserId(createdByUserId.name);
+        })()
+    });
+
+    const [nameChat, setNameChat] = useState(currentRoom.data.name);
+    const [visibleLoader, setVisibleLoader] = useState(false);
+
+    function handlerSave(e) {
+        setVisibleLoader(true);
+        chatDb.updateRoomMetadata(currentRoom.data.id, nameChat, currentRoom.data.type)
+            .finally( () => setVisibleLoader(false) )
+            .then( () => {
+                showAlert({text: 'Update room done!', options: {variant: 'success'}});
+                requestUpdateRoomMetadata(currentRoom.data.id, () => chatDb.getRoomMetadata(currentRoom.data.id));
+            })
+            .catch( e => {
+                showAlert({text: e.message, options: {variant: 'danger'}})
+            });
+    }
+
     return (
         currentRoom &&
         <div className='room-info-block'>
@@ -21,7 +50,11 @@ function RoomInfo({currentRoom}) {
                 <Form.Row>
                     <Form.Group as={Col}>
                         <Form.Label>Name</Form.Label>
-                        <Form.Control type="text" value={currentRoom.data.name} disabled/>
+                        <Form.Control
+                            type="text"
+                            value={nameChat}
+                            onChange={(e) =>{setNameChat(e.target.value)}}
+                        />
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
@@ -35,8 +68,8 @@ function RoomInfo({currentRoom}) {
 
                 <Form.Row>
                     <Form.Group as={Col}>
-                        <Form.Label>Created by user ID</Form.Label>
-                        <Form.Control type="text" value={currentRoom.data.createdByUserId} disabled/>
+                        <Form.Label>Created by user ID / name</Form.Label>
+                        <Form.Control type="text" value={currentRoom.data.createdByUserId + ' / ' + createdByUserId} disabled/>
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
@@ -69,9 +102,9 @@ function RoomInfo({currentRoom}) {
 
                 <hr />
 
-                <Button variant="primary" disabled>
-                    Submit
-                </Button>
+                <ButtonWithLoader variant="primary" onClick={handlerSave} visibleLoader={visibleLoader}>
+                    Save
+                </ButtonWithLoader>
             </Form>
         </div>
     )
@@ -83,6 +116,8 @@ const mapStateToProps = store => {
     }
 }
 const mapDispatchToProps = {
+    showAlert,
+    requestUpdateRoomMetadata
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoomInfo)

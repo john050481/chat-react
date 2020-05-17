@@ -20,7 +20,10 @@ import {
     CITATION_SET,
     CITATION_CLEAR,
 
-    ADD_NEW_MESSAGE_IN_CURRENT_CHAT
+    ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
+
+    /*ENTER_ROOM,*/
+    EXIT_ROOM
 } from './types'
 
 import changeFavicon from '../common/changeFavicon'
@@ -133,5 +136,16 @@ export function requestUpdateRoomMetadata(roomId, functionGetRoomMetadataForSaga
         type: REQUEST_ROOMID_METADATA,
         roomId,
         functionGetRoomMetadataForSaga
+    }
+}
+//___ENTER_ROOM___
+/*
+export function enterRoom(roomId) {
+}
+*/
+//___EXIT_ROOM___
+export function exitRoom(roomId) {
+    return {
+        type: EXIT_ROOM
     }
 }

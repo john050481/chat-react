@@ -15,14 +15,16 @@ import {connect} from "react-redux";
 import {useDebounce} from '../../../hooks/useDebounce';
 import {useWindowSize} from '../../../hooks/useWindowSize';
 import {useChat} from "../../../hooks/useChatFirebase";
-import useChatMessages from './useChatMessages';
+import useChatMessageAdd from './useChatMessageAdd';
+import useChatRoomEnterOrExit from "./useChatRoomEnterOrExit";
 const MAX_WIDTH = 600;//px
 
 function RoomList({requestUserRoomsMetadata}) {
     console.log('Render RoomList')
 
     const chatDb = useChat();
-    const newMessage = useChatMessages();
+    const lastMessage = useChatMessageAdd();
+    const lastEventRoom = useChatRoomEnterOrExit();
 
     //уменьшение сайдбара, при ширене экрана менее MAX_WIDTH, с задержкой в 1сек
     const [isSmall, setIsSmall] = useState(false);

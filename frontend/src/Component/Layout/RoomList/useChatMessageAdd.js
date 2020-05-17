@@ -3,8 +3,8 @@ import {useChat} from "../../../hooks/useChatFirebase";
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import {addNewMessageInCurrentChat, requestUpdateRoomMetadata} from '../../../redux/actions';
 
-export default function useChatMessages() {
-    console.log('---useChatMessages---');
+export default function useChatMessageAdd() {
+    console.log('---useChatMessageAdd---');
 
     const [newMessage, setNewMessage] = useState(null);
     const chatDb = useChat();
@@ -20,7 +20,7 @@ export default function useChatMessages() {
         function handlerEventMessageAdd ({detail}) {
             const roomId = detail.path.split('/')[1];
             setNewMessage({...detail, roomId});
-            console.log('---useChatMessages---, detail message ADD  === ', {...detail, roomId});
+            console.log('---useChatMessageAdd---, detail message ADD  === ', {...detail, roomId});
             const message = {...detail.message, id: detail.id};
             if (currentRoomId && roomId === currentRoomId) {
                 //новое сообщение пришло в активную комнату

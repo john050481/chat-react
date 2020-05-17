@@ -35,18 +35,14 @@ function ChatMessage(props) {
 
     return (
         <Toast className={'chat-message' + (itsMe ? ' my' : ' notMy')}>
-            {
-                message.name &&
-                <Toast.Header closeButton={false}>
-                    <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
-                    <strong className="mr-auto">
-                        {itsMe ? "Вы" : message.name }
-                    </strong>
-                    <small className='ml-3'>
-                        {formatDate(seconds)}
-                    </small>
-                </Toast.Header>
-            }
+            <Toast.Header closeButton={false}>
+                <strong className="mr-auto">
+                    {itsMe ? "Вы" : message.name }
+                </strong>
+                <small className='ml-3'>
+                    {formatDate(seconds)}
+                </small>
+            </Toast.Header>
             <Toast.Body>
                 {
                     citationComp &&

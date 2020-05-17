@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {useChat} from "../../../hooks/useChatFirebase";
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import { exitRoom } from '../../../redux/actions';
 
-export default function useChatRooms() {
-    console.log('---useChatRooms---');
+export default function useChatRoomEnterOrExit() {
+    console.log('---useChatRoomEnterOrExit---');
 
     const [newEvent, setNewEvent] = useState(null);
     const chatDb = useChat();
@@ -17,12 +18,13 @@ export default function useChatRooms() {
     //подписка на события с комнатой
     useEffect( () => {
         function handlerRoomEnter(eventObj) {
-            console.log('---useChatRooms---room---enter', eventObj);
+            console.log('---useChatRoomEnterOrExit---room---enter', eventObj);
             setNewEvent(eventObj);
         }
         function handlerRoomExit(eventObj) {
-            console.log('---useChatRooms---room---exit', eventObj);
+            console.log('---useChatRoomEnterOrExit---room---exit', eventObj);
             setNewEvent(eventObj);
+            dispatch(exitRoom(currentRoomId));
         }
         chatDb.addEventListener('room-enter', handlerRoomEnter);
         chatDb.addEventListener('room-exit', handlerRoomExit);
