@@ -85,18 +85,18 @@ export function userLogout() {
     }
 }
 //___REQUEST_USERROOMS_METADATA___
-export function requestUserRoomsMetadata(functionGetUserRoomsMetadataForSaga) {
+export function requestUserRoomsMetadata(functionToGetDataForSaga) {
     return {
         type: REQUEST_USERROOMS_METADATA,
-        functionGetUserRoomsMetadataForSaga
+        functionToGetDataForSaga
     }
 }
 //___REQUEST_ROOMID_MESSAGES___
-export function requestRoomIdMessages(roomId, functionGetRoomMessagesForSaga) {
+export function requestRoomIdMessages(roomId, functionToGetDataForSaga) {
     return {
         type: REQUEST_ROOMID_MESSAGES,
         roomId,
-        functionGetRoomMessagesForSaga
+        functionToGetDataForSaga
     }
 }
 //___CHAT_USER_ENTER___
@@ -133,11 +133,11 @@ export function addNewMessageInCurrentChat(message) {
     }
 }
 //___UPDATE_ROOMID_METADATA___
-export function requestUpdateRoomMetadata(roomId, functionGetRoomMetadataForSaga) {
+export function requestUpdateRoomMetadata(roomId, functionToGetDataForSaga) {
     return {
         type: REQUEST_ROOMID_METADATA,
         roomId,
-        functionGetRoomMetadataForSaga
+        functionToGetDataForSaga
     }
 }
 //___ENTER_ROOM___
@@ -152,9 +152,9 @@ export function exitRoom(roomId) {
     }
 }
 //___REQUEST_USER_CONTACTS___
-export function requestUserContacts(functionGetUserContactsForSaga) {
+export function requestUserContacts(functionToGetDataForSaga) {
     return {
         type: REQUEST_USER_CONTACTS,
-        functionGetUserContactsForSaga
+        functionToGetDataForSaga
     }
 }

@@ -3,17 +3,17 @@ import {REQUEST_ROOMID_METADATA, UPDATE_ROOMID_METADATA} from '../../types';
 import {showLoader, hideLoader, showAlert} from '../../actions';
 
 //---REGUEST ROOM ID META---
-export default function* sagaWatcherRequestUpdateRoomIdMetadata() {
-    yield takeLatest(REQUEST_ROOMID_METADATA, sagaWorkerRequestUpdateRoomIdMetadata);
+export default function* sagaWatcher() {
+    yield takeLatest(REQUEST_ROOMID_METADATA, sagaWorker);
 }
-function* sagaWorkerRequestUpdateRoomIdMetadata(action) {
+function* sagaWorker(action) {
     const roomId = action.roomId;
-    const functionGetRoomMetadataForSaga = action.functionGetRoomMetadataForSaga;
+    const functionToGetDataForSaga = action.functionToGetDataForSaga;
 
     try {
         yield put(showLoader())
 
-        let roomMetadata = yield call(functionGetRoomMetadataForSaga);
+        let roomMetadata = yield call(functionToGetDataForSaga);
         yield put({ type: UPDATE_ROOMID_METADATA, payload: {roomId, data: roomMetadata} });
 
         yield put(hideLoader());

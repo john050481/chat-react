@@ -3,15 +3,15 @@ import {REQUEST_USER_CONTACTS, UPDATE_USER_CONTACTS} from '../../types';
 import {showLoader, hideLoader, showAlert} from '../../actions';
 
 //---REGUEST ALL ROOMS METADATA---
-export default function* sagaWatcherRequestUserContacts() {
-    yield takeEvery(REQUEST_USER_CONTACTS, sagaWorkerRequestUserContacts);
+export default function* sagaWatcher() {
+    yield takeEvery(REQUEST_USER_CONTACTS, sagaWorker);
 }
-function* sagaWorkerRequestUserContacts(action) {
-    const functionGetUserContactsForSaga = action.functionGetUserContactsForSaga;
+function* sagaWorker(action) {
+    const functionToGetDataForSaga = action.functionToGetDataForSaga;
 
     try {
         yield put(showLoader())
-        let contacts = yield call(functionGetUserContactsForSaga);
+        let contacts = yield call(functionToGetDataForSaga);
         yield put({ type: UPDATE_USER_CONTACTS, payload: contacts });
         yield put(hideLoader());
         yield put(showAlert({text: 'FETCH CONTACTS DONE!!!', options: {variant: 'success'}}))
