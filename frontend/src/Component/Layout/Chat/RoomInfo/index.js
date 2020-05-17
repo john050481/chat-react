@@ -6,6 +6,7 @@ import Col from "react-bootstrap/Col";
 import {connect} from "react-redux";
 import {requestUpdateRoomMetadata, showAlert} from '../../../../redux/actions';
 import {useChat} from "../../../../hooks/useChatFirebase";
+import AccordionApp from '../../../../common/Accordion';
 
 function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
 
@@ -40,72 +41,73 @@ function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
         <div className='room-info-block'>
             <h1>Room info</h1>
 
-            <Form className='room-info-form'>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>ID</Form.Label>
-                        <Form.Control type="text" value={currentRoom.data.id} disabled/>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={nameChat}
-                            onChange={(e) =>{setNameChat(e.target.value)}}
-                        />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Type</Form.Label>
-                        <Form.Control type="text" value={currentRoom.data.type} disabled/>
-                    </Form.Group>
-                </Form.Row>
+                <AccordionApp defaultActiveKey='0' title='Основное' >
+                    <Form.Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={nameChat}
+                                onChange={(e) =>{setNameChat(e.target.value)}}
+                            />
+                        </Form.Group>
+                    </Form.Row>
+                </AccordionApp>
 
-                <hr />
+                <AccordionApp title='Дополнительно' >
+                    <Form.Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>ID</Form.Label>
+                            <Form.Control type="text" value={currentRoom.data.id} disabled/>
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>Type</Form.Label>
+                            <Form.Control type="text" value={currentRoom.data.type} disabled/>
+                        </Form.Group>
+                    </Form.Row>
 
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Created by user ID / name</Form.Label>
-                        <Form.Control type="text" value={currentRoom.data.createdByUserId + ' / ' + createdByUserId} disabled/>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Created at</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={new Date(currentRoom.data.createdAt.seconds*1000).toLocaleDateString() +
-                            ' / ' +
-                            new Date(currentRoom.data.createdAt.seconds*1000).toLocaleTimeString()}
-                            disabled
-                        />
-                    </Form.Group>
-                </Form.Row>
+                    <hr />
 
-                <hr />
+                    <Form.Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>Created by user ID / name</Form.Label>
+                            <Form.Control type="text" value={currentRoom.data.createdByUserId + ' / ' + createdByUserId} disabled/>
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>Created at</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={new Date(currentRoom.data.createdAt.seconds*1000).toLocaleDateString() +
+                                ' / ' +
+                                new Date(currentRoom.data.createdAt.seconds*1000).toLocaleTimeString()}
+                                disabled
+                            />
+                        </Form.Group>
+                    </Form.Row>
 
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Last activity</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={new Date(currentRoom.data.lastActivity.seconds*1000).toLocaleDateString() +
-                            ' / ' +
-                            new Date(currentRoom.data.lastActivity.seconds*1000).toLocaleTimeString()}
-                            disabled
-                        />
-                    </Form.Group>
-                </Form.Row>
+                    <hr />
 
-                <hr />
+                    <Form.Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>Last activity</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={new Date(currentRoom.data.lastActivity.seconds*1000).toLocaleDateString() +
+                                ' / ' +
+                                new Date(currentRoom.data.lastActivity.seconds*1000).toLocaleTimeString()}
+                                disabled
+                            />
+                        </Form.Group>
+                    </Form.Row>
+                </AccordionApp>
 
                 <ButtonWithLoader variant="primary" onClick={handlerSave} visibleLoader={visibleLoader}>
                     Save
                 </ButtonWithLoader>
-            </Form>
         </div>
     )
 }

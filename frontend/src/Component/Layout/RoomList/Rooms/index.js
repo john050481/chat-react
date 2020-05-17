@@ -5,7 +5,7 @@ import {requestRoomIdMessages} from "../../../../redux/actions";
 import SpinnerApp from "../../../Spinner";
 import RoomItem from './RoomItem';
 import {useChat} from "../../../../hooks/useChatFirebase";
-import AccordionApp from '../Accordion';
+import AccordionApp from '../../../../common/Accordion';
 import {FaUserAlt, FaComments} from "react-icons/fa";
 
 function Rooms({isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages}) {
