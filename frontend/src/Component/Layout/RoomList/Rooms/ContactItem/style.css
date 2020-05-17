@@ -1,0 +1,17 @@
+.contact {
+    cursor: pointer;
+}
+
+.contact:hover:not(.active) {
+    background: hsla(259, 100%, 95%, 0.85);
+}
+
+.contact-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.text-align-end {
+    text-align: end;
+}

@@ -7,12 +7,26 @@ import RoomItem from './RoomItem';
 import {useChat} from "../../../../hooks/useChatFirebase";
 import AccordionApp from '../../../../common/Accordion';
 import {FaUserAlt, FaComments} from "react-icons/fa";
+import ContactItem from "./ContactItem";
 
 function Rooms({isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages}) {
 
     const chatDb = useChat();
 
+    function handleContextMenu(e) {
+        e.preventDefault();
+
+        let curElemContactId = e.target.closest('[data-contactid]');
+        console.log(curElemContactId);
+
+        let curElemRoomId = e.target.closest('[data-roomid]');
+        console.log(curElemRoomId);
+    }
+    
     function handleClick(e) {
+        let curElemContactId = e.target.closest('[data-contactid]');
+        console.log(curElemContactId);
+
         let curElemRoomId = e.target.closest('[data-roomid]');
         if (curElemRoomId) {
             let roomId = curElemRoomId.dataset.roomid;
@@ -23,7 +37,7 @@ function Rooms({isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages})
     }
 
     return (
-        <div className='rooms' onClick={handleClick}>
+        <div className='rooms' onClick={handleClick} onContextMenu={handleContextMenu}>
             <AccordionApp defaultActiveKey='0' title='Чаты' isSmall={isSmall} Icon={FaComments}>
                 {   (!rooms.length)
                     ? <SpinnerApp />
@@ -36,9 +50,7 @@ function Rooms({isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages})
                 {   (!contacts.length)
                     ? <SpinnerApp />
                     : contacts.map(contact =>
-                        <div key={contact.userId}>
-                            {contact.data.name} / {contact.data.email}
-                        </div>
+                        <ContactItem key={contact.userId} contact={contact} isSmall={isSmall} />
                     )
                 }
             </AccordionApp>

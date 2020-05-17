@@ -2,7 +2,7 @@ import './style.css'
 import React from 'react'
 import Card from "react-bootstrap/Card";
 import Loader from "../../../../Loader";
-import {FaUserCircle} from "react-icons/fa";
+import {FaComments} from "react-icons/fa";
 import {connect} from "react-redux";
 
 function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId}) {
@@ -17,7 +17,7 @@ function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId}) {
                         <div className='chat-header'>
                             {loader && requestRoomId === room.roomId && currentRoomId !== requestRoomId
                                 ? <Loader className='mr-2' />
-                                : <FaUserCircle title={room.data.name} className='mr-2' size='2em'/>
+                                : <FaComments title={room.data.name} className='mr-2' size='2em'/>
                             }
 
                             <span className={'chat__name'} hidden={isSmall}>
