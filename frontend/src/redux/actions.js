@@ -84,21 +84,6 @@ export function userLogout() {
         type: USER_LOGOUT,
     }
 }
-//___REQUEST_USERROOMS_METADATA___
-export function requestUserRoomsMetadata(functionToGetDataForSaga) {
-    return {
-        type: REQUEST_USERROOMS_METADATA,
-        functionToGetDataForSaga
-    }
-}
-//___REQUEST_ROOMID_MESSAGES___
-export function requestRoomIdMessages(roomId, functionToGetDataForSaga) {
-    return {
-        type: REQUEST_ROOMID_MESSAGES,
-        roomId,
-        functionToGetDataForSaga
-    }
-}
 //___CHAT_USER_ENTER___
 export function chatUserEnter(user) {
     return {
@@ -109,6 +94,29 @@ export function chatUserEnter(user) {
 export function chatUserExit() {
     return {
         type: CHAT_USER_EXIT,
+    }
+}
+//___REQUEST_USERROOMS_METADATA___
+export function requestUserRoomsMetadata(functionToGetDataForSaga) {
+    return {
+        type: REQUEST_USERROOMS_METADATA,
+        functionToGetDataForSaga
+    }
+}
+//___REQUEST_ROOMID_METADATA___
+export function requestUpdateRoomMetadata(roomId, functionToGetDataForSaga) {
+    return {
+        type: REQUEST_ROOMID_METADATA,
+        roomId,
+        functionToGetDataForSaga
+    }
+}
+//___REQUEST_ROOMID_MESSAGES___
+export function requestRoomIdMessages(roomId, functionToGetDataForSaga) {
+    return {
+        type: REQUEST_ROOMID_MESSAGES,
+        roomId,
+        functionToGetDataForSaga
     }
 }
 //___CITATION___
@@ -130,14 +138,6 @@ export function addNewMessageInCurrentChat(message) {
     return {
         type: ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
         payload: message
-    }
-}
-//___UPDATE_ROOMID_METADATA___
-export function requestUpdateRoomMetadata(roomId, functionToGetDataForSaga) {
-    return {
-        type: REQUEST_ROOMID_METADATA,
-        roomId,
-        functionToGetDataForSaga
     }
 }
 //___ENTER_ROOM___
