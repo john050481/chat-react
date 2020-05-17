@@ -1,12 +1,12 @@
 import {combineReducers} from "redux";
 import reducerApp from './reducerApp'
 import reducerChat from './reducerChat'
-import reducerUser from "./reducerUser";
+import reducerAuth from "./reducerAuth";
 import {USER_LOGOUT} from './types'
 
 //---НУЖНО ОБНУЛИТЬ СТЕЙТ(при логауте)---
 const appReducer = combineReducers({
-    auth: reducerUser,
+    auth: reducerAuth,
     app: reducerApp,
     chat: reducerChat
 })

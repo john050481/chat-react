@@ -394,6 +394,24 @@ function useProvideChat() {
         const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
         return db.collection('/users').doc(curUserId)
     }//*********this
+    async function getUserContacts(userId) {
+        const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
+        const curUserData = await getUserData(curUserId);
+
+        if (!curUserData) return false;
+
+        if (!curUserData.contacts.length) return Promise.resolve([])
+
+        return db.collection("users")
+            .where("id", "in", [...curUserData.contacts])
+            .get()
+            .then( querySnapshot => {
+                    const usersMetadata = [];
+                    querySnapshot.forEach(doc => usersMetadata.push({userId: doc.id, data: doc.data()}) );
+                    return usersMetadata;
+                }
+            )
+    }//*********this
 
     function addEventListener(event, callback) {
         /* смотри выше: const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-remove', 'room-invite', 'room-invite-response'];
@@ -481,6 +499,7 @@ function useProvideChat() {
 
         getUserData,
         getUserRef,
+        getUserContacts,
 
         addEventListener,
         removeEventListener,

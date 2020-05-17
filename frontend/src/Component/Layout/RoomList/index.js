@@ -9,7 +9,7 @@ import Header from '../../Template/Header'
 import Footer from '../../Template/Footer'
 
 import {REGION_SIDEBAR} from '../../../redux/types'
-import {requestUserRoomsMetadata} from "../../../redux/actions";
+import {requestUserRoomsMetadata, requestUserContacts} from "../../../redux/actions";
 import {connect} from "react-redux";
 
 import {useDebounce} from '../../../hooks/useDebounce';
@@ -19,7 +19,7 @@ import useChatMessageAdd from './useChatMessageAdd';
 import useChatRoomEnterOrExit from "./useChatRoomEnterOrExit";
 const MAX_WIDTH = 600;//px
 
-function RoomList({requestUserRoomsMetadata}) {
+function RoomList({requestUserRoomsMetadata, requestUserContacts}) {
     console.log('Render RoomList')
 
     const chatDb = useChat();
@@ -42,6 +42,7 @@ function RoomList({requestUserRoomsMetadata}) {
         if (!chatDb.userData) return;
 
         requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() );
+        requestUserContacts( () => chatDb.getUserContacts() );
     }, [chatDb.userData])
 
     return (
@@ -64,7 +65,8 @@ function RoomList({requestUserRoomsMetadata}) {
 }
 
 const mapDispatchToProps = {
-    requestUserRoomsMetadata
+    requestUserRoomsMetadata,
+    requestUserContacts
 }
 
 export default connect(null, mapDispatchToProps)(RoomList)

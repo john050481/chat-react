@@ -2,11 +2,10 @@ import React, {useRef, useState} from "react";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import './style.css'
-import {requestUserRoomsMetadata, showLayout} from "../../../../redux/actions";
+import {requestUserRoomsMetadata, showLayout, requestUserContacts} from "../../../../redux/actions";
 import {connect} from "react-redux";
 import Button from "react-bootstrap/Button";
 import {FaRedo, FaArrowLeft, FaArrowRight, FaPlus} from "react-icons/fa";
-import FakeSettings from '../../../FakeComponent/FakeSettings';
 import SearchedChats from './SearchedChats'
 import CreateRoom from '../CreateRoom';
 import {useOnClickOutside} from "../../../../hooks/useOnClickOutside";
@@ -47,8 +46,8 @@ function NavBarSidebar(props) {
                     value={searchValue}
                     onChange={(e)=>setSearchValue(e.target.value)}
                     onFocus={()=>setIsShowSearchedChat(true)}
-                    placeholder="search contact"
-                    aria-label="search contact"
+                    placeholder="search chats"
+                    aria-label="search chats"
                     aria-describedby="basic-addon2"
                 />
                 <InputGroup.Append hidden={props.isSmall}>
@@ -57,7 +56,10 @@ function NavBarSidebar(props) {
                         data-component='Refresh'
                         title="Refresh room/contact list"
                         size="sm"
-                        onClick={(e)=>{props.requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() )}}
+                        onClick={(e)=>{
+                            props.requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() );
+                            props.requestUserContacts( () => chatDb.getUserContacts() );
+                        }}
                     >
                         <FaRedo />
                     </Button>
@@ -93,7 +95,8 @@ const mapStateToProps = store => {
 }
 const mapDispatchToProps = {
     showLayout,
-    requestUserRoomsMetadata
+    requestUserRoomsMetadata,
+    requestUserContacts
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBarSidebar)

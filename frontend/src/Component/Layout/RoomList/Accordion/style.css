@@ -1,0 +1,12 @@
+.accordion-app {
+
+}
+
+.accordion-app--card-header {
+    padding: 0;
+    cursor: pointer;
+}
+
+.accordion-app--card-body {
+    padding: 0;
+}

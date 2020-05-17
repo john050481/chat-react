@@ -1,6 +1,7 @@
 import './style.css'
 import React, {useState} from "react";
 import FormControl from "react-bootstrap/FormControl";
+import Form from "react-bootstrap/Form";
 import ButtonWithLoader from '../../../../common/ButtonWithLoader';
 import InputGroup from "react-bootstrap/InputGroup";
 import {useChat} from "../../../../hooks/useChatFirebase";
@@ -14,11 +15,13 @@ function CreateRoom({showAlert, showLayout}) {
 
     const [visibleLoader, setVisibleLoader] = useState(false);
     const [roomName, setChatName] = useState('');
+    const [isPublic, setIsPublic] = useState(false);
 
     async function handlerSave(e) {
         setVisibleLoader(true);
         try {
-            const roomId = await chatDb.createRoom(roomName, 'private');
+            const roomType = isPublic ? 'public' : 'private' ;
+            const roomId = await chatDb.createRoom(roomName, roomType);
             await chatDb.enterRoom(roomId);
             showAlert({text: 'Room create!', options: {variant: 'success'}});
             showLayout({region: ''});
@@ -42,6 +45,14 @@ function CreateRoom({showAlert, showLayout}) {
                     <ButtonWithLoader variant="outline-primary" onClick={handlerSave} visibleLoader={visibleLoader}>Save</ButtonWithLoader>
                 </InputGroup.Append>
             </InputGroup>
+            <Form.Check
+                className='create-room-switch'
+                id="chatIsPublic"
+                type="switch"
+                label="public"
+                value={isPublic}
+                onChange={ e => setIsPublic(e.target.value) }
+            />
         </div>
     )
 }

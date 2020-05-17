@@ -23,7 +23,9 @@ import {
     ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
 
     /*ENTER_ROOM,*/
-    EXIT_ROOM
+    EXIT_ROOM,
+
+    REQUEST_USER_CONTACTS
 } from './types'
 
 import changeFavicon from '../common/changeFavicon'
@@ -147,5 +149,12 @@ export function enterRoom(roomId) {
 export function exitRoom(roomId) {
     return {
         type: EXIT_ROOM
+    }
+}
+//___REQUEST_USER_CONTACTS___
+export function requestUserContacts(functionGetUserContactsForSaga) {
+    return {
+        type: REQUEST_USER_CONTACTS,
+        functionGetUserContactsForSaga
     }
 }
