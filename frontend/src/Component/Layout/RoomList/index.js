@@ -17,9 +17,12 @@ import {useWindowSize} from '../../../hooks/useWindowSize';
 import {useChat} from "../../../hooks/useChatFirebase";
 import useChatMessageAdd from './useChatMessageAdd';
 import useChatRoomEnterOrExit from "./useChatRoomEnterOrExit";
+
+import equalArrays from "../../../common/equalArrays";
+
 const MAX_WIDTH = 600;//px
 
-function RoomList({requestUserRoomsMetadata, requestUserContacts}) {
+function RoomList({user, requestUserRoomsMetadata, requestUserContacts}) {
     console.log('Render RoomList')
 
     const chatDb = useChat();
@@ -39,11 +42,15 @@ function RoomList({requestUserRoomsMetadata, requestUserContacts}) {
 
     //заполнение roomlist
     useEffect( () => {
-        if (!chatDb.userData) return;
+        if (!user) return;
 
-        requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() );
-        requestUserContacts( () => chatDb.getUserContacts() );
-    }, [chatDb.userData])
+        if (!equalArrays(user.rooms, chatDb.prevUserData ? chatDb.prevUserData.rooms : null)) {
+            requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() );
+        }
+        if (!equalArrays(user.contacts, chatDb.prevUserData ? chatDb.prevUserData.contacts : null)) {
+            requestUserContacts( () => chatDb.getUserContacts() );
+        }
+    }, [user])
 
     return (
         <div className={"flx sidebar-rooms" + ( isSmall ? ' small' : '' )}>
@@ -64,9 +71,14 @@ function RoomList({requestUserRoomsMetadata, requestUserContacts}) {
     )
 }
 
+const mapStateToProps = store => {
+    return {
+        user: store.chat.user
+    }
+}
 const mapDispatchToProps = {
     requestUserRoomsMetadata,
     requestUserContacts
 }
 
-export default connect(null, mapDispatchToProps)(RoomList)
+export default connect(mapStateToProps, mapDispatchToProps)(RoomList)
