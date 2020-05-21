@@ -9,6 +9,7 @@ import AccordionApp from '../../../common/Accordion';
 import ButtonWithLoader from '../../../common/ButtonWithLoader';
 
 function Profile({user, showAlert}) {
+    console.log('Render Profile')
 
     const chatDb = useChat();
 
