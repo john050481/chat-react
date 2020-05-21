@@ -38,7 +38,7 @@ function Rooms({isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages})
 
     return (
         <div className='rooms' onClick={handleClick} onContextMenu={handleContextMenu}>
-            <AccordionApp defaultActiveKey='0' title='Чаты' isSmall={isSmall} Icon={FaComments}>
+            <AccordionApp isOpen={true} title='Чаты' isSmall={isSmall} Icon={FaComments}>
                 {   (!rooms.length)
                     ? <SpinnerApp />
                     : rooms.map(room =>
@@ -46,7 +46,7 @@ function Rooms({isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages})
                     )
                 }
             </AccordionApp>
-            <AccordionApp defaultActiveKey='0' title='Контакты' isSmall={isSmall} Icon={FaUserAlt}>
+            <AccordionApp isOpen={true} title='Контакты' isSmall={isSmall} Icon={FaUserAlt}>
                 {   (!contacts.length)
                     ? <SpinnerApp />
                     : contacts.map(contact =>

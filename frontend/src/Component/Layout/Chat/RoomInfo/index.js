@@ -41,7 +41,7 @@ function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
         <div className='room-info-block'>
             <h1>Room info</h1>
 
-                <AccordionApp defaultActiveKey='0' title='Основное' >
+                <AccordionApp isOpen={true} title='Основное' >
                     <Form.Row>
                         <Form.Group as={Col}>
                             <Form.Label>Name</Form.Label>

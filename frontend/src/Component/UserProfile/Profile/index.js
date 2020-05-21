@@ -34,7 +34,7 @@ function Profile({user, showAlert}) {
             <h1>Profile</h1>
 
 
-            <AccordionApp defaultActiveKey='0' title='Основное' >
+            <AccordionApp isOpen={true} title='Основное' >
                 <Form.Row>
                     <Form.Group as={Col}>
                         <Form.Label>Name</Form.Label>
