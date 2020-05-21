@@ -9,15 +9,17 @@ export default function AccordionApp(props) {
 
     const [toggleOpen, setToggleOpen] = useState(!!isOpen);
 
-    function handleOnClick(e) {
-        setToggleOpen(!toggleOpen);
-    }
-
     return (
         <Accordion className='accordion-app' defaultActiveKey={isOpen? "0" : ""} {...rest} >
             <Card>
                 <Card.Header className='accordion-app--card-header'>
-                    <Accordion.Toggle as={Card.Header} variant="link" eventKey="0" title={title} onClick={handleOnClick}>
+                    <Accordion.Toggle
+                        as={Card.Header}
+                        variant="link"
+                        eventKey="0"
+                        title={title}
+                        onClick={ e => setToggleOpen(!toggleOpen) }
+                    >
                         {
                             !isSmall
                             ? title
