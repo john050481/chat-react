@@ -34,9 +34,8 @@ function NavBarRoot(props) {
         e.preventDefault();
         let elem = e.target.closest('[data-component]')
         if (!elem) return;
-        let disabled = elem.disabled;
         let component = elem.dataset.component;
-        if (!component || disabled) return;
+        if (!component) return;
         props.setRender( (prev) => () => components[component] );
         props.showLayout({region: props.region, component});
     }
