@@ -17,6 +17,7 @@ function NavBarRoot(props) {
 
     const chatDb = useChat();
 
+    /*LAYOUT*/
     useEffect( () => {
         if (!props.layout.region || !props.layout.component)
             return;
@@ -24,13 +25,11 @@ function NavBarRoot(props) {
         if (props.layout.region === props.region)
             props.setRender( (prev) => () => components[props.layout.component] );
     }, [props.layout]);
-
     const components = {
         RoomInfo: <RoomInfo />,
         FakeSearchMessage: <FakeSearchMessage />,
         FakeSettings: <FakeSettings />
     }
-
     function handleClick(e) {
         e.preventDefault();
         let elem = e.target.closest('[data-component]')
@@ -41,6 +40,7 @@ function NavBarRoot(props) {
         props.setRender( (prev) => () => components[component] );
         props.showLayout({region: props.region, component});
     }
+    /*LAYOUT*/
 
     function handleClickLeaveRoom(e) {
         let isLeaveRoom = confirm("Выйти из чата?");

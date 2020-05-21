@@ -27,6 +27,7 @@ function NavBarSidebar(props) {
 
     const [searchValue, setSearchValue] = useState('');
 
+    /*LAYOUT*/
     useEffect( () => {
         if (!props.layout.region || !props.layout.component)
             return;
@@ -34,16 +35,15 @@ function NavBarSidebar(props) {
         if (props.layout.region === props.region)
             props.setRender( (prev) => () => components[props.layout.component] );
     }, [props.layout]);
-
     const components = {
         CreateRoom: <CreateRoom />
     }
-
     function handleClickCreateRoom(e) {
         const component = 'CreateRoom';
         props.setRender( (prev) => () => components[component] );
         props.showLayout({region: props.region, component});
     }
+    /*LAYOUT*/
 
     return (
         <div className="navbarsidebar-block" ref={ref}>

@@ -16,6 +16,7 @@ import './style.css'
 function NavBarRoot(props) {
     console.log('Render NavBarRoot')
 
+    /*LAYOUT*/
     useEffect( () => {
         if (!props.layout.region || !props.layout.component)
             return;
@@ -23,7 +24,6 @@ function NavBarRoot(props) {
         if (props.layout.region === props.region)
             props.setRender( (prev) => () => components[props.layout.component] );
     }, [props.layout]);
-
     const components = {
         UserProfile: <UserProfile />,
         FakeSearchMessage: <FakeSearchMessage />,
@@ -31,7 +31,6 @@ function NavBarRoot(props) {
         AuthForm: <AuthForm />,
         About: <About />
     }
-
     function handleClick(e) {
         e.preventDefault();
         let elem = e.target.closest('[data-component]')
@@ -41,6 +40,7 @@ function NavBarRoot(props) {
         props.setRender( (prev) => () => components[component] );
         props.showLayout({region: props.region, component});
     }
+    /*LAYOUT*/
 
     return (
         <div className="navbar-root-block" onClick={handleClick}>
