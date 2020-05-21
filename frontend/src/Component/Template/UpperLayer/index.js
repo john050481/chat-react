@@ -12,7 +12,7 @@ function UpperLayer(props) {
     console.log('Render UpperLayer, region = ', props.region);
 
     const ref = useRef();
-    useOnClickOutside(ref, (e)=>props.showLayout({region: ''}));
+    useOnClickOutside(ref, (e)=>props.showLayout({region: '', component: ''}));
 
     return (
         <div className="UpperLayerBlock">
@@ -28,7 +28,7 @@ function UpperLayer(props) {
                                   title="close"
                                   variant="outline-danger"
                                   className="closeLayout"
-                                  onClick={(e)=>props.showLayout({region: ''})}>
+                                  onClick={(e)=>props.showLayout({region: '', component: ''})}>
                                   <IoIosClose />
                               </Button>
                           </div>

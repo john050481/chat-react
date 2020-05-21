@@ -1,5 +1,5 @@
 import './style.css';
-import React from "react";
+import React, {useEffect} from "react";
 import Button from "react-bootstrap/Button";
 import {FaSearch, FaCog, FaWhatsapp, FaTrash} from "react-icons/fa";
 import FakeSearchMessage from '../../../FakeComponent/FakeSearchMessage'
@@ -17,16 +17,18 @@ function NavBarRoot(props) {
 
     const chatDb = useChat();
 
+    useEffect( () => {
+        if (!props.layout.region || !props.layout.component)
+            return;
+
+        if (props.layout.region === props.region)
+            props.setRender( (prev) => () => components[props.layout.component] );
+    }, [props.layout]);
+
     const components = {
         RoomInfo: <RoomInfo />,
         FakeSearchMessage: <FakeSearchMessage />,
         FakeSettings: <FakeSettings />
-    }
-
-    function handleClickLeaveRoom(e) {
-        let isLeaveRoom = confirm("Выйти из чата?");
-        if (isLeaveRoom)
-            chatDb.leaveRoom(props.currentRoomId);
     }
 
     function handleClick(e) {
@@ -37,7 +39,13 @@ function NavBarRoot(props) {
         let component = elem.dataset.component;
         if (!component || disabled) return;
         props.setRender( (prev) => () => components[component] );
-        props.showLayout({region: props.region});
+        props.showLayout({region: props.region, component});
+    }
+
+    function handleClickLeaveRoom(e) {
+        let isLeaveRoom = confirm("Выйти из чата?");
+        if (isLeaveRoom)
+            chatDb.leaveRoom(props.currentRoomId);
     }
 
     return (
@@ -59,7 +67,8 @@ function NavBarRoot(props) {
 
 const mapStateToProps = store => {
     return {
-        currentRoomId: store.chat.currentRoomId
+        currentRoomId: store.chat.currentRoomId,
+        layout: store.app.layout
     }
 }
 const mapDispatchToProps = {

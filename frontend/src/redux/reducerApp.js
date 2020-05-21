@@ -10,7 +10,8 @@ const init = {
         options: {}
     },
     layout: {
-        region: ''
+        region: '',
+        component: ''
     }
 }
 

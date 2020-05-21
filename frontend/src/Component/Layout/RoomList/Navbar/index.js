@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import './style.css'
@@ -10,6 +10,11 @@ import SearchedChats from './SearchedChats'
 import CreateRoom from '../CreateRoom';
 import {useOnClickOutside} from "../../../../hooks/useOnClickOutside";
 import {useChat} from "../../../../hooks/useChatFirebase";
+import UserProfile from "../../../UserProfile";
+import FakeSearchMessage from "../../../FakeComponent/FakeSearchMessage";
+import FakeSettings from "../../../FakeComponent/FakeSettings";
+import AuthForm from "../../../AuthForm";
+import About from "../../../About";
 
 function NavBarSidebar(props) {
     console.log('Render NavBarSidebar');
@@ -22,9 +27,22 @@ function NavBarSidebar(props) {
 
     const [searchValue, setSearchValue] = useState('');
 
+    useEffect( () => {
+        if (!props.layout.region || !props.layout.component)
+            return;
+
+        if (props.layout.region === props.region)
+            props.setRender( (prev) => () => components[props.layout.component] );
+    }, [props.layout]);
+
+    const components = {
+        CreateRoom: <CreateRoom />
+    }
+
     function handleClickCreateRoom(e) {
-        props.setRender( (prev) => () => <CreateRoom /> );
-        props.showLayout({region: props.region});
+        const component = 'CreateRoom';
+        props.setRender( (prev) => () => components[component] );
+        props.showLayout({region: props.region, component});
     }
 
     return (
@@ -91,6 +109,7 @@ function NavBarSidebar(props) {
 
 const mapStateToProps = store => {
     return {
+        layout: store.app.layout
     }
 }
 const mapDispatchToProps = {

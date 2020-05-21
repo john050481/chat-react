@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Button from "react-bootstrap/Button";
 import {FaSearch, FaCog, FaUserAlt, FaSignOutAlt, FaInfo} from "react-icons/fa";
 import {showLayout} from "../../../../redux/actions";
@@ -16,6 +16,14 @@ import './style.css'
 function NavBarRoot(props) {
     console.log('Render NavBarRoot')
 
+    useEffect( () => {
+        if (!props.layout.region || !props.layout.component)
+            return;
+
+        if (props.layout.region === props.region)
+            props.setRender( (prev) => () => components[props.layout.component] );
+    }, [props.layout]);
+
     const components = {
         UserProfile: <UserProfile />,
         FakeSearchMessage: <FakeSearchMessage />,
@@ -31,7 +39,7 @@ function NavBarRoot(props) {
         let component = elem.dataset.component;
         if (!component) return;
         props.setRender( (prev) => () => components[component] );
-        props.showLayout({region: props.region});
+        props.showLayout({region: props.region, component});
     }
 
     return (
@@ -55,7 +63,8 @@ function NavBarRoot(props) {
 
 const mapStateToProps = store => {
     return {
-        photoURL: store.auth.user ? store.auth.user.photoURL : ''
+        photoURL: store.auth.user ? store.auth.user.photoURL : '',
+        layout: store.app.layout
     }
 }
 const mapDispatchToProps = {

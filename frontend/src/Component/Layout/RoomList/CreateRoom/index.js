@@ -24,7 +24,7 @@ function CreateRoom({showAlert, showLayout}) {
             const roomId = await chatDb.createRoom(roomName, roomType);
             await chatDb.enterRoom(roomId);
             showAlert({text: 'Room create!', options: {variant: 'success'}});
-            showLayout({region: ''});
+            showLayout({region: '', component: ''});
         } catch (e) {
             showAlert({text: e.message, options: {variant: 'danger'}})
         }
