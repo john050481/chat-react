@@ -22,7 +22,6 @@ function Profile({user, showAlert}) {
             .finally( () => setVisibleLoader(false) )
             .then( () => {
                 showAlert({text: 'Update user done!', options: {variant: 'success'}});
-                //requestUpdateRoomMetadata(currentRoom.data.id, () => chatDb.getRoomMetadata(currentRoom.data.id));
             })
             .catch( e => {
                 showAlert({text: e.message, options: {variant: 'danger'}})
