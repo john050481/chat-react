@@ -17,18 +17,18 @@ function NavBarSidebar(props) {
 
     const chatDb = useChat();
 
-    const [isShowSearchedChat, setIsShowSearchedChat] = useState(false);
-    const ref = useRef();
-    useOnClickOutside(ref, (e)=>setIsShowSearchedChat(false));
-
-    const [searchValue, setSearchValue] = useState('');
-
     /*LAYOUT*/
     const components = {
         CreateRoom: <CreateRoom />
     }
     const handleClick = useLayout({components, setRender: props.setRender, region: props.region});
     /*LAYOUT*/
+
+    const [isShowSearchedChat, setIsShowSearchedChat] = useState(false);
+    const ref = useRef();
+    useOnClickOutside(ref, (e)=>setIsShowSearchedChat(false));
+
+    const [searchValue, setSearchValue] = useState('');
 
     return (
         <div className="navbarsidebar-block" ref={ref}>
