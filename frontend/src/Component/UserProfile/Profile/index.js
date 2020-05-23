@@ -9,6 +9,24 @@ import AccordionApp from '../../../common/Accordion';
 import ButtonWithLoader from '../../../common/ButtonWithLoader';
 import formatDate from '../../../common/formatDate';
 
+function TemplateComponent(props) {
+    const {label, name, value, disabled=false, onChange, as=Col, type='text'} = props;
+    return (
+        <Form.Row>
+            <Form.Group as={as}>
+                <Form.Label>{label}</Form.Label>
+                <Form.Control
+                    type={type}
+                    name={name}
+                    value={value}
+                    disabled={disabled}
+                    onChange={onChange}
+                />
+            </Form.Group>
+        </Form.Row>
+    )
+}
+
 function Profile({user, showAlert}) {
     console.log('Render Profile')
 
@@ -66,120 +84,47 @@ function Profile({user, showAlert}) {
         */
     }
 
-    function TemplateComponentDisabled(props) {
-        const {label, value, as=Col, type='text'} = props;
-        return (
-            <Form.Row>
-                <Form.Group as={as}>
-                    <Form.Label>{label}</Form.Label>
-                    <Form.Control type={type} value={value} disabled/>
-                </Form.Group>
-            </Form.Row>
-        )
-    }
-
     return (
         user &&
         <div className='profile-block'>
+            <div className="profile-block__sticky">
+                <ButtonWithLoader className="profile-block__button" variant="primary" onClick={handlerSave} visibleLoader={visibleLoader}>
+                    Save
+                </ButtonWithLoader>
+            </div>
+
             <h1>Profile</h1>
 
             {/*здесь ИЗменяемые*/}
             <AccordionApp isOpen={true} title='Основное' >
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control type="text" name={'name'} value={chatUser.name} onChange={handlerValueChange}
-                        />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Website</Form.Label>
-                        <Form.Control type="text" name={'website'} value={chatUser.website} onChange={handlerValueChange} />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>User name</Form.Label>
-                        <Form.Control type="text" name={'username'} value={chatUser.username} onChange={handlerValueChange} />
-                    </Form.Group>
-                </Form.Row>
-                </AccordionApp>
+                <TemplateComponent label={'Name'} name={'name'} value={chatUser.name} onChange={handlerValueChange} />
+                <TemplateComponent label={'Website'} name={'website'} value={chatUser.website} onChange={handlerValueChange} />
+                <TemplateComponent label={'User name'} name={'username'} value={chatUser.username} onChange={handlerValueChange} />
+            </AccordionApp>
 
-                <AccordionApp title='Company' >
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Company name</Form.Label>
-                        <Form.Control type="text" name={'company.name'} value={chatUser.company.name} onChange={handlerValueChange} />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Company catchPhrase</Form.Label>
-                        <Form.Control type="text" name={'company.catchPhrase'} value={chatUser.company.catchPhrase} onChange={handlerValueChange} />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Company bs</Form.Label>
-                        <Form.Control type="text" name={'company.bs'} value={chatUser.company.bs} onChange={handlerValueChange} />
-                    </Form.Group>
-                </Form.Row>
+            <AccordionApp title='Company' >
+                <TemplateComponent label={'Company name'} name={'company.name'} value={chatUser.company.name} onChange={handlerValueChange} />
+                <TemplateComponent label={'Company catchPhrase'} name={'company.catchPhrase'} value={chatUser.company.catchPhrase} onChange={handlerValueChange} />
+                <TemplateComponent label={'Company bs'} name={'company.bs'} value={chatUser.company.bs} onChange={handlerValueChange} />
             </AccordionApp>
 
             <AccordionApp title='Address' >
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>City</Form.Label>
-                        <Form.Control type="text" name={'address.city'} value={chatUser.address.city} onChange={handlerValueChange} />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Street</Form.Label>
-                        <Form.Control type="text" name={'address.street'} value={chatUser.address.street} onChange={handlerValueChange} />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Suite</Form.Label>
-                        <Form.Control type="text" name={'address.suite'} value={chatUser.address.suite} onChange={handlerValueChange} />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>zipcode</Form.Label>
-                        <Form.Control type="text" name={'address.zipcode'} value={chatUser.address.zipcode} onChange={handlerValueChange} />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Geo lat</Form.Label>
-                        <Form.Control type="text" name={'address.geo.lat'} value={chatUser.address.geo.lat} onChange={handlerValueChange} />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Geo lng</Form.Label>
-                        <Form.Control type="text" name={'address.geo.lng'} value={chatUser.address.geo.lng} onChange={handlerValueChange} />
-                    </Form.Group>
-                </Form.Row>
+                <TemplateComponent label={'City'} name={'address.city'} value={chatUser.address.city} onChange={handlerValueChange} />
+                <TemplateComponent label={'Street'} name={'address.street'} value={chatUser.address.street} onChange={handlerValueChange} />
+                <TemplateComponent label={'Suite'} name={'address.suite'} value={chatUser.address.suite} onChange={handlerValueChange} />
+                <TemplateComponent label={'Zipcode'} name={'address.zipcode'} value={chatUser.address.zipcode} onChange={handlerValueChange} />
+                <TemplateComponent label={'Geo lat'} name={'address.geo.lat'} value={chatUser.address.geo.lat} onChange={handlerValueChange} />
+                <TemplateComponent label={'Geo lng'} name={'address.geo.lng'} value={chatUser.address.geo.lng} onChange={handlerValueChange} />
             </AccordionApp>
 
             {/*здесь НЕ изменяемые*/}
             <AccordionApp title='Дополнительно' >
-                <TemplateComponentDisabled label={'ID'} value={user.id} />
-                <TemplateComponentDisabled label={'Email'} value={user.email} />
-                <TemplateComponentDisabled label={'Phone'} value={user.phone} />
+                <TemplateComponent label={'ID'} value={user.id} disabled={true} />
+                <TemplateComponent label={'Email'} value={user.email} disabled={true} />
+                <TemplateComponent label={'Phone'} value={user.phone} disabled={true} />
                 <hr />
-                <TemplateComponentDisabled label={'Last activity'} value={formatDate(user.lastActivity.seconds*1000)}/>
+                <TemplateComponent label={'Last activity'} value={formatDate(user.lastActivity.seconds*1000)} disabled={true} />
             </AccordionApp>
-
-            <ButtonWithLoader variant="primary" onClick={handlerSave} visibleLoader={visibleLoader}>
-                Save
-            </ButtonWithLoader>
-
-
         </div>
     )
 }

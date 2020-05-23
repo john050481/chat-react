@@ -5,3 +5,16 @@
 .profile-block .accordion-app--card-body {
     padding: 15px
 }
+
+.profile-block__sticky {
+    position: sticky;
+    top: 5px;
+    left: 100%;
+    z-index: 1000;
+    background-color: #fff;
+    text-align: end;
+}
+
+.profile-block__button {
+
+}
