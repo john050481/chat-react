@@ -25,13 +25,13 @@ function NavBarSidebar(props) {
     /*LAYOUT*/
 
     const [isShowSearchedChat, setIsShowSearchedChat] = useState(false);
-    const ref = useRef();
-    useOnClickOutside(ref, (e)=>setIsShowSearchedChat(false));
+    const navbarBlockRef = useRef();
+    useOnClickOutside(navbarBlockRef, (e)=>setIsShowSearchedChat(false));
 
     const [searchValue, setSearchValue] = useState('');
 
     return (
-        <div className="navbarsidebar-block" ref={ref}>
+        <div className="navbarsidebar-block" ref={navbarBlockRef}>
             <InputGroup className="pl-3 pr-3 search-contact">
                 <InputGroup.Prepend>
                     <Button
