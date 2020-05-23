@@ -3,6 +3,11 @@
     overflow-y: auto;
 }
 
+.rooms__contextmenu {
+    position: fixed !important;
+    z-index: 10000 !important;
+}
+
 /*виден при ширине экрана от 500 до 600 px*/
 /*@media (min-width: 500px) and (max-width: 600px) {
     .chat__name {display: none; position: absolute}

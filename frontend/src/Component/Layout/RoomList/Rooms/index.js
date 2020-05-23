@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import './style.css';
 import {connect} from "react-redux";
 import {requestRoomIdMessages} from "../../../../redux/actions";
@@ -8,11 +8,14 @@ import {useChat} from "../../../../hooks/useChatFirebase";
 import AccordionApp from '../../../../common/Accordion';
 import {FaUserAlt, FaComments} from "react-icons/fa";
 import ContactItem from "./ContactItem";
+import ContextMenu from "@john0504/react-contextmenu";
 
 function Rooms({isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages}) {
 
     const chatDb = useChat();
 
+    const [visibleContextMenu, setVisibleContextMenu] = useState(false);
+    const [pageXY, setPageXY] = useState([0, 0]);
     function handleContextMenu(e) {
         e.preventDefault();
 
@@ -21,6 +24,10 @@ function Rooms({isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages})
 
         let curElemRoomId = e.target.closest('[data-roomid]');
         console.log(curElemRoomId);
+
+        console.log(e.pageX, e.pageY);
+        setPageXY([e.pageX, e.pageY])
+        setVisibleContextMenu(true);
     }
     
     function handleClick(e) {
@@ -54,6 +61,16 @@ function Rooms({isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages})
                     )
                 }
             </AccordionApp>
+            <ContextMenu
+                className={'react-contextmenu rooms__contextmenu'}
+                visible={visibleContextMenu}
+                hideMenu={ () => setVisibleContextMenu(false) }
+                pageXY={pageXY}
+                /*items={items}*/
+                callbackOnClickMenu={(data, parentLiElem) => {
+                    console.log(data, parentLiElem);
+                }}
+            />
         </div>
     )
 }
