@@ -11,6 +11,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import RoomInfo from "../RoomInfo";
 import {useChat} from "../../../../hooks/useChatFirebase";
+import useLayout from "../../useLayout";
 
 function NavBarRoot(props) {
     console.log('Render NavBarMain')
@@ -18,27 +19,12 @@ function NavBarRoot(props) {
     const chatDb = useChat();
 
     /*LAYOUT*/
-    useEffect( () => {
-        if (!props.layout.region || !props.layout.component)
-            return;
-
-        if (props.layout.region === props.region)
-            props.setRender( (prev) => () => components[props.layout.component] );
-    }, [props.layout]);
     const components = {
         RoomInfo: <RoomInfo />,
         FakeSearchMessage: <FakeSearchMessage />,
         FakeSettings: <FakeSettings />
     }
-    function handleClick(e) {
-        e.preventDefault();
-        let elem = e.target.closest('[data-component]')
-        if (!elem) return;
-        let component = elem.dataset.component;
-        if (!component) return;
-        props.setRender( (prev) => () => components[component] );
-        props.showLayout({region: props.region, component});
-    }
+    const handleClick = useLayout({components, setRender: props.setRender, region: props.region});
     /*LAYOUT*/
 
     function handleClickLeaveRoom(e) {

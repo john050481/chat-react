@@ -15,6 +15,7 @@ import FakeSearchMessage from "../../../FakeComponent/FakeSearchMessage";
 import FakeSettings from "../../../FakeComponent/FakeSettings";
 import AuthForm from "../../../AuthForm";
 import About from "../../../About";
+import useLayout from "../../useLayout";
 
 function NavBarSidebar(props) {
     console.log('Render NavBarSidebar');
@@ -28,21 +29,10 @@ function NavBarSidebar(props) {
     const [searchValue, setSearchValue] = useState('');
 
     /*LAYOUT*/
-    useEffect( () => {
-        if (!props.layout.region || !props.layout.component)
-            return;
-
-        if (props.layout.region === props.region)
-            props.setRender( (prev) => () => components[props.layout.component] );
-    }, [props.layout]);
     const components = {
         CreateRoom: <CreateRoom />
     }
-    function handleClickCreateRoom(e) {
-        const component = 'CreateRoom';
-        props.setRender( (prev) => () => components[component] );
-        props.showLayout({region: props.region, component});
-    }
+    const handleClick = useLayout({components, setRender: props.setRender, region: props.region});
     /*LAYOUT*/
 
     return (
@@ -83,10 +73,11 @@ function NavBarSidebar(props) {
                     </Button>
                     <Button
                         variant="outline-dark"
-                        data-component=''
+                        data-component='FakeSearchMessage'
+                        data-component='CreateRoom'
                         title="Add new chat"
                         size="sm"
-                        onClick={handleClickCreateRoom}
+                        onClick={handleClick}
                     >
                         <FaPlus />
                     </Button>

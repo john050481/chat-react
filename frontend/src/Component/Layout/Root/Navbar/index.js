@@ -1,3 +1,4 @@
+import './style.css'
 import React, {useEffect} from "react";
 import Button from "react-bootstrap/Button";
 import {FaSearch, FaCog, FaUserAlt, FaSignOutAlt, FaInfo} from "react-icons/fa";
@@ -11,19 +12,12 @@ import About from '../../../About';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import './style.css'
+import useLayout from '../../useLayout';
 
 function NavBarRoot(props) {
     console.log('Render NavBarRoot')
 
     /*LAYOUT*/
-    useEffect( () => {
-        if (!props.layout.region || !props.layout.component)
-            return;
-
-        if (props.layout.region === props.region)
-            props.setRender( (prev) => () => components[props.layout.component] );
-    }, [props.layout]);
     const components = {
         UserProfile: <UserProfile />,
         FakeSearchMessage: <FakeSearchMessage />,
@@ -31,15 +25,7 @@ function NavBarRoot(props) {
         AuthForm: <AuthForm />,
         About: <About />
     }
-    function handleClick(e) {
-        e.preventDefault();
-        let elem = e.target.closest('[data-component]')
-        if (!elem) return;
-        let component = elem.dataset.component;
-        if (!component) return;
-        props.setRender( (prev) => () => components[component] );
-        props.showLayout({region: props.region, component});
-    }
+    const handleClick = useLayout({components, setRender: props.setRender, region: props.region});
     /*LAYOUT*/
 
     return (

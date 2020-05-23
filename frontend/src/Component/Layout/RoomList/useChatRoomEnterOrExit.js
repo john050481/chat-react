@@ -10,9 +10,9 @@ export default function useChatRoomEnterOrExit() {
     const chatDb = useChat();
 
     const dispatch = useDispatch();
-    const { rooms, currentRoomId } = useSelector(state => ({
-        rooms: state.chat.rooms,
-        currentRoomId: state.chat.currentRoomId
+    const { rooms, currentRoomId } = useSelector(store => ({
+        rooms: store.chat.rooms,
+        currentRoomId: store.chat.currentRoomId
     }), shallowEqual);
 
     //подписка на события с комнатой
