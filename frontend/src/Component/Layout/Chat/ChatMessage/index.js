@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import Toast from 'react-bootstrap/Toast'
 import {connect} from "react-redux";
 import {useChat} from "../../../../hooks/useChatFirebase";
+import formatDate from '../../../../common/formatDate';
 
 function ChatMessage(props) {
     const {user, currentRoomId, message, messageBlockScroll} = props;
@@ -23,10 +24,6 @@ function ChatMessage(props) {
 
     function diffDateInDays(date1ms, date2ms) {
         return Math.floor( (date1ms - date2ms)/1000/60/60/24 );
-    }
-    function formatDate(dateMs) {
-        const date = new Date(dateMs);
-        return  `${date.toLocaleDateString()} | ${date.toLocaleTimeString()}`
     }
 
     let seconds = message.timestamp ? message.timestamp.seconds*1000 : Date.now();
