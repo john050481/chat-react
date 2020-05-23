@@ -38,7 +38,8 @@ export default function(props) {
             </ul>
             <h2>Внешнее источники/компоненты:</h2>
             <ul>
-                <li>Аутентификация: <a target='_blank' href={'https://firebase.google.com/docs/auth/web/start'}>Firebase</a></li>
+                <li>Аутентификация: <a target='_blank' href={'https://firebase.google.com/docs/auth/web/start'}>Firebase Authentication</a></li>
+                <li>База данных: <a target='_blank' href={'https://firebase.google.com/docs/firestore/quickstart'}>Cloud Firestore</a></li>
                 <li>Фома аутентификации: <a target='_blank' href={'https://www.npmjs.com/package/@john0504/react-authform'}>@john0504/react-authform</a></li>
                 <li>Контекстное меню: <a target='_blank' href={'https://www.npmjs.com/package/@john0504/react-contextmenu'}>@john0504/react-contextmenu</a></li>
                 <li>Эмоджи: <a target='_blank' href={'https://emoji-api.com'}>Emoji API</a></li>
