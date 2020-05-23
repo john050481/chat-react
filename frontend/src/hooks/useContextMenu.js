@@ -16,7 +16,7 @@ export default function useContextMenu(props) {
                 handler(event);
             };
 
-            ref.current.addEventListener('touchstart', listener);
+            ref.current.addEventListener('contextmenu', listener);
 
             return () => {
                 ref.current.removeEventListener('contextmenu', listener);
