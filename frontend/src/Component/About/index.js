@@ -10,12 +10,31 @@ export default function(props) {
             <hr />
             <h2>Использовалось:</h2>
             <ul>
-                <li>Javascript (Promise, async/await)</li>
-                <li>React (HOC, render prop, prop-types)</li>
-                <li>Redux (connect, middleware, devtools)</li>
-                <li>Redux-saga</li>
-                <li>React hooks</li>
-                <li>React-router (router dom)</li>
+                <li>Javascript</li>
+                <ul>
+                    <li>promise</li>
+                    <li>async/await</li>
+                    <li>...</li>
+                </ul>
+                <li>React</li>
+                <ul>
+                    <li>HOC</li>
+                    <li>hook</li>
+                    <li>render prop</li>
+                    <li>prop-types</li>
+                    <li>react-router-dom</li>
+                    <li>...</li>
+                </ul>
+                <li>Redux</li>
+                <ul>
+                    <li>connect</li>
+                    <li>hook</li>
+                    <li>middleware</li>
+                    <li>devtools</li>
+                    <li>redux-saga</li>
+                    <li>redux-thunk</li>
+                    <li>...</li>
+                </ul>
             </ul>
             <h2>Внешнее источники/компоненты:</h2>
             <ul>
@@ -23,7 +42,6 @@ export default function(props) {
                 <li>Фома аутентификации: <a target='_blank' href={'https://www.npmjs.com/package/@john0504/react-authform'}>@john0504/react-authform</a></li>
                 <li>Контекстное меню: <a target='_blank' href={'https://www.npmjs.com/package/@john0504/react-contextmenu'}>@john0504/react-contextmenu</a></li>
                 <li>Эмоджи: <a target='_blank' href={'https://emoji-api.com'}>Emoji API</a></li>
-                <li>Данные: <a target='_blank' href={'https://jsonplaceholder.typicode.com/'}>JSONPlaceholder</a></li>
                 <li>Хуки: <a target='_blank' href={'https://usehooks.com'}>useHooks.com</a></li>
                 <li>Bootstrap: <a target='_blank' href={'https://react-bootstrap.github.io/components/'}>React-bootstrap</a></li>
                 <li>Icons: <a target='_blank' href={'https://react-icons.netlify.app/'}>React-icons</a></li>
