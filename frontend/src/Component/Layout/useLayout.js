@@ -18,7 +18,7 @@ export default function useLayout(props) {
 
         if (layout.region === region)
             setRender( (prev) => () => components[layout.component] );
-    }, [layout, region, setRender]);
+    }, [layout, components, setRender, region]);
 
     const handleClickOnNavBar = useCallback(
         (e) => {
