@@ -11,7 +11,7 @@ export default function(props) {
             <h2>Использовалось:</h2>
             <ul>
                 <li>Javascript (Promise, async/await)</li>
-                <li>React (HOC, render prop)</li>
+                <li>React (HOC, render prop, prop-types)</li>
                 <li>Redux (connect, middleware, devtools)</li>
                 <li>Redux-saga</li>
                 <li>React hooks</li>
@@ -20,7 +20,8 @@ export default function(props) {
             <h2>Внешнее источники/компоненты:</h2>
             <ul>
                 <li>Аутентификация: <a target='_blank' href={'https://firebase.google.com/docs/auth/web/start'}>Firebase</a></li>
-                <li>Фома аутентификации: <a target='_blank' href={'https://www.npmjs.com/package/@john0504/react-authform'}>john0504</a></li>
+                <li>Фома аутентификации: <a target='_blank' href={'https://www.npmjs.com/package/@john0504/react-authform'}>@john0504/react-authform</a></li>
+                <li>Контекстное меню: <a target='_blank' href={'https://www.npmjs.com/package/@john0504/react-contextmenu'}>@john0504/react-contextmenu</a></li>
                 <li>Эмоджи: <a target='_blank' href={'https://emoji-api.com'}>Emoji API</a></li>
                 <li>Данные: <a target='_blank' href={'https://jsonplaceholder.typicode.com/'}>JSONPlaceholder</a></li>
                 <li>Хуки: <a target='_blank' href={'https://usehooks.com'}>useHooks.com</a></li>
