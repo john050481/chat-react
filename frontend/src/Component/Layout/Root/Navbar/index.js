@@ -1,8 +1,7 @@
 import './style.css'
-import React, {useEffect} from "react";
+import React from "react";
 import Button from "react-bootstrap/Button";
 import {FaSearch, FaCog, FaUserAlt, FaSignOutAlt, FaInfo} from "react-icons/fa";
-import {showLayout} from "../../../../redux/actions";
 import {connect} from "react-redux";
 import FakeSearchMessage from '../../../FakeComponent/FakeSearchMessage'
 import FakeSettings from '../../../FakeComponent/FakeSettings';
@@ -49,12 +48,10 @@ function NavBarRoot(props) {
 
 const mapStateToProps = store => {
     return {
-        photoURL: store.auth.user ? store.auth.user.photoURL : '',
-        layout: store.app.layout
+        photoURL: store.auth.user ? store.auth.user.photoURL : ''
     }
 }
 const mapDispatchToProps = {
-    showLayout
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBarRoot)

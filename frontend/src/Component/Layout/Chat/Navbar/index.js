@@ -1,9 +1,8 @@
 import './style.css';
-import React, {useEffect} from "react";
+import React from "react";
 import Button from "react-bootstrap/Button";
 import {FaSearch, FaCog, FaWhatsapp, FaTrash} from "react-icons/fa";
 import FakeSearchMessage from '../../../FakeComponent/FakeSearchMessage'
-import {showLayout} from "../../../../redux/actions";
 import {connect} from "react-redux";
 import FakeSettings from '../../../FakeComponent/FakeSettings';
 import Container from "react-bootstrap/Container";
@@ -52,12 +51,10 @@ function NavBarRoot(props) {
 
 const mapStateToProps = store => {
     return {
-        currentRoomId: store.chat.currentRoomId,
-        layout: store.app.layout
+        currentRoomId: store.chat.currentRoomId
     }
 }
 const mapDispatchToProps = {
-    showLayout
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBarRoot)
