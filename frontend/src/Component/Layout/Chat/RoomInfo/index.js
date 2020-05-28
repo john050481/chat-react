@@ -46,7 +46,7 @@ function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
                     <Form.Row>
                         <Form.Group as={Col}>
                             <Form.Label>
-                                Name {currentRoom.data.type === 'private' ? ' (room is private! cannot be changed!)' : ''}
+                                Name {currentRoom.data.type === 'private' ? ' (Room is private! Name cannot be changed!)' : ''}
                             </Form.Label>
                             <Form.Control
                                 type="text"
