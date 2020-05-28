@@ -11,27 +11,31 @@ import Alert from '../../Alert'
 import Loader from '../../Loader'
 import NavBarRoot from './Navbar'
 import {REGION_ROOT} from '../../../redux/types'
+import {useChat} from "../../../hooks/useChatFirebase";
 
 export default function (props) {
     console.log('Render Root (ENTRY POINT)');
 
+    const chatDb = useChat();
+
     const region = REGION_ROOT;
 
-    return (
-        <div className="content-wrapper">
-            <Header>
-                <NavBarRoot region={region} />
-            </Header>
+    return ( !chatDb.userData
+        ? null
+        : <div className="content-wrapper">
+              <Header>
+                  <NavBarRoot region={region} />
+              </Header>
 
-            <Main region={region}>
-                <Chat />
-                <RoomList />
-            </Main>
+              <Main region={region}>
+                  <Chat />
+                  <RoomList />
+              </Main>
 
-            <Footer>
-                <Alert />
-                <Loader />
-            </Footer>
-        </div>
+              <Footer>
+                  <Alert />
+                  <Loader />
+              </Footer>
+          </div>
     )
 }
