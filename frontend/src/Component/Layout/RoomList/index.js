@@ -9,7 +9,6 @@ import Header from '../../Template/Header'
 import Footer from '../../Template/Footer'
 
 import {REGION_SIDEBAR} from '../../../redux/types'
-import {connect} from "react-redux";
 
 import {useDebounce} from '../../../hooks/useDebounce';
 import {useWindowSize} from '../../../hooks/useWindowSize';
