@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import './style.css'
+import SpinnerApp from "../../Spinner";
 
 import Main from '../../Template/Main'
 import Header from '../../Template/Header'
@@ -21,7 +22,7 @@ export default function (props) {
     const region = REGION_ROOT;
 
     return ( !chatDb.userData
-        ? null
+        ? <SpinnerApp />
         : <div className="content-wrapper">
               <Header>
                   <NavBarRoot region={region} />
