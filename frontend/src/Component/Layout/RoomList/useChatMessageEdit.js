@@ -50,7 +50,7 @@ export default function useChatMessageEdit() {
                 // изменение в сообщении пришло в НЕ активную комнату
                 // использовать rooms
             }
-            //dispatch(requestUpdateRoomMetadata(roomId, () => chatDb.getRoomMetadata(roomId)));
+            dispatch(requestUpdateRoomMetadata(roomId, () => chatDb.getRoomMetadata(roomId)));
         }
         chatDb.addEventListener('message-modify', handlerEventMessageModify);
 
