@@ -29,6 +29,7 @@ function useProvideChat() {
         'room-enter',
         'room-exit',
         'message-add',
+        'message-modify',
         'message-remove',
         'room-invite',
         'room-invite-response'
@@ -180,6 +181,7 @@ function useProvideChat() {
                 }
                 if (change.type === "modified") {
                     console.log("modified! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
+                    dispatchEvent( {event: 'message-modify', detail: {id: change.doc.id, message: change.doc.data(), path: change.doc.ref.path} } );
                 }
                 if (change.type === "removed") {
                     console.log("removed! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
@@ -414,11 +416,12 @@ function useProvideChat() {
     }//*********this
 
     function addEventListener(event, callback) {
-        /* смотри выше: const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-remove', 'room-invite', 'room-invite-response'];
+        /* смотри выше: const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-modify', 'message-remove', 'room-invite', 'room-invite-response'];
         user-update - Invoked when the user's metadata changes.
         room-enter - Invoked when the user successfully enters a room.
         room-exit - Invoked when the user exists a room.
         message-add - Invoked when a new message is received.
+        message-modify - Invoked when a message is modify.
         message-remove - Invoked when a message is deleted.
         room-invite - Invoked when a new room invite is received.
         room-invite-response - Invoked when a response to a previous invite is received.

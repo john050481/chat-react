@@ -26,7 +26,8 @@ export default function useChatMessageAdd() {
                 //новое сообщение пришло в активную комнату
                 dispatch(addNewMessageInCurrentChat(message));
             } else {
-                //новое сообщение пришло в НЕ активную комнату
+                // новое сообщение пришло в НЕ активную комнату
+                // использовать rooms
             }
             dispatch(requestUpdateRoomMetadata(roomId, () => chatDb.getRoomMetadata(roomId)));
         }
