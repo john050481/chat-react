@@ -15,7 +15,7 @@ function CreateRoom({showAlert, showLayout}) {
 
     const [visibleLoader, setVisibleLoader] = useState(false);
     const [roomName, setChatName] = useState('');
-    const [isPublic, setIsPublic] = useState(false);
+    const [isPublic, setIsPublic] = useState(true);
 
     async function handlerSave(e) {
         setVisibleLoader(true);
@@ -50,7 +50,7 @@ function CreateRoom({showAlert, showLayout}) {
                 id="chatIsPublic"
                 type="switch"
                 label="public"
-                value={isPublic}
+                checked={isPublic}
                 onChange={ e => setIsPublic(e.target.value) }
             />
         </div>
