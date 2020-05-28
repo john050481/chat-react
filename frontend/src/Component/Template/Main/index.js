@@ -17,6 +17,5 @@ export default function Main(props) {
 }
 
 Main.propTypes = {
-    region: PropTypes.string.isRequired,
-    render: PropTypes.func.isRequired
+    region: PropTypes.string.isRequired
 }

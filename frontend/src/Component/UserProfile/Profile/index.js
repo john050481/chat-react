@@ -1,5 +1,5 @@
 import './style.css';
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import {connect} from "react-redux";
