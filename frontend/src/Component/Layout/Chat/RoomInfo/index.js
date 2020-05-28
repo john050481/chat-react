@@ -45,9 +45,12 @@ function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
                 <AccordionApp isOpen={true} title='Основное' >
                     <Form.Row>
                         <Form.Group as={Col}>
-                            <Form.Label>Name</Form.Label>
+                            <Form.Label>
+                                Name {currentRoom.data.type === 'private' ? ' (room is private! cannot be changed!)' : ''}
+                            </Form.Label>
                             <Form.Control
                                 type="text"
+                                disabled = {currentRoom.data.type === 'private'}
                                 value={nameChat}
                                 onChange={(e) =>{setNameChat(e.target.value)}}
                             />
