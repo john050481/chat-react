@@ -7,21 +7,17 @@ import {connect} from "react-redux";
 import Button from "react-bootstrap/Button";
 import {FaRedo, FaArrowLeft, FaArrowRight, FaPlus} from "react-icons/fa";
 import SearchedChats from './SearchedChats'
-import CreateRoom from '../CreateRoom';
 import {useOnClickOutside} from "../../../../hooks/useOnClickOutside";
 import {useChat} from "../../../../hooks/useChatFirebase";
 import useLayout from "../../useLayout";
 
 function NavBarSidebar(props) {
-    console.log('Render NavBarSidebar', props);
+    console.log('Render NavBarSidebar');
 
     const chatDb = useChat();
 
     /*LAYOUT*/
-    const components = {
-        CreateRoom: <CreateRoom />
-    }
-    const handleClick = useLayout({components, setRender: props.setRender, region: props.region});
+    const handleClick = useLayout({region: props.region});
     /*LAYOUT*/
 
     const [isShowSearchedChat, setIsShowSearchedChat] = useState(false);
