@@ -1,35 +1,66 @@
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import './style.css';
 import {connect} from "react-redux";
-import {requestRoomIdMessages} from "../../../../redux/actions";
+import {requestRoomIdMessages, requestUserContacts, requestUserRoomsMetadata} from "../../../../redux/actions";
 import SpinnerApp from "../../../Spinner";
 import RoomItem from './RoomItem';
 import {useChat} from "../../../../hooks/useChatFirebase";
 import AccordionApp from '../../../../common/Accordion';
 import {FaUserAlt, FaComments} from "react-icons/fa";
 import ContactItem from "./ContactItem";
+import equalArrays from "../../../../common/equalArrays";
+import useChatMessageEdit from "../useChatMessageEdit";
+import useChatRoomEnterOrExit from "../useChatRoomEnterOrExit";
 import ContextMenu from "@john0504/react-contextmenu";
+import useContextMenu from "../../../../hooks/useContextMenu";
+import itemsContextMenuForRooms from '../../../../hooks/useContextMenu/itemsContextMenuForRooms';
+import itemsContextMenuForContacts from '../../../../hooks/useContextMenu/itemsContextMenuForContacts';
 
-function Rooms({isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages}) {
+function Rooms(props) {
+    console.log('Render Rooms');
+
+    const {isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages, requestUserRoomsMetadata, requestUserContacts} = props;
 
     const chatDb = useChat();
+    const lastMessage = useChatMessageEdit();
+    const lastEventRoom = useChatRoomEnterOrExit();
 
-    const [visibleContextMenu, setVisibleContextMenu] = useState(false);
-    const [pageXY, setPageXY] = useState([0, 0]);
+    //заполнение rooms & contacts
+    useEffect( () => {
+        if (!chatDb.userData) return;
+
+        if (!equalArrays(chatDb.userData.rooms, chatDb.prevUserData ? chatDb.prevUserData.rooms : null)) {
+            requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() );
+        } // rooms
+        if (!equalArrays(chatDb.userData.contacts, chatDb.prevUserData ? chatDb.prevUserData.contacts : null)) {
+            requestUserContacts( () => chatDb.getUserContacts() );
+        } // contacts
+    }, [chatDb.userData])
+
+    //////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!! ContextMenu
+    // доработать, возможно вынести на уроввень выше и использовать там data-contextmenu
+    /**/
+    const refContainerContextMenu = useRef(null);
+    useContextMenu(refContainerContextMenu, handleContextMenu);
+    /**/
+    const [contextMenu, setContextMenu] = useState({visibleContextMenu: false, pageXY: [0, 0], itemsContextMenu: []});
     function handleContextMenu(e) {
         e.preventDefault();
 
-        let curElemContactId = e.target.closest('[data-contactid]');
-        console.log(curElemContactId);
-
         let curElemRoomId = e.target.closest('[data-roomid]');
-        console.log(curElemRoomId);
+        let curElemContactId = e.target.closest('[data-contactid]');
 
-        console.log(e.pageX, e.pageY);
-        setPageXY([e.pageX, e.pageY])
-        setVisibleContextMenu(true);
+        let itemsContextMenu = [];
+        if (curElemRoomId) {
+            itemsContextMenu = itemsContextMenuForRooms;
+        } else if (curElemContactId) {
+            itemsContextMenu = itemsContextMenuForContacts;
+        }
+
+        setContextMenu({visibleContextMenu: true, pageXY: [e.pageX, e.pageY], itemsContextMenu});
     }
-    
+    /////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
     function handleClick(e) {
         let curElemContactId = e.target.closest('[data-contactid]');
         console.log(curElemContactId);
@@ -44,7 +75,7 @@ function Rooms({isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages})
     }
 
     return (
-        <div className='rooms' onClick={handleClick} onContextMenu={handleContextMenu}>
+        <div className='rooms' onClick={handleClick} ref={refContainerContextMenu}>
             <AccordionApp isOpen={true} title='Чаты' isSmall={isSmall} Icon={FaComments}>
                 {   (!rooms.length)
                     ? <SpinnerApp />
@@ -63,10 +94,10 @@ function Rooms({isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages})
             </AccordionApp>
             <ContextMenu
                 className={'react-contextmenu rooms__contextmenu'}
-                visible={visibleContextMenu}
-                hideMenu={ () => setVisibleContextMenu(false) }
-                pageXY={pageXY}
-                /*items={items}*/
+                visible={contextMenu.visibleContextMenu}
+                hideMenu={ () => setContextMenu({...contextMenu, visibleContextMenu: false} ) }
+                pageXY={contextMenu.pageXY}
+                items={contextMenu.itemsContextMenu}
                 callbackOnClickMenu={(data, parentLiElem) => {
                     console.log(data, parentLiElem);
                 }}
@@ -84,6 +115,8 @@ const mapStateToProps = store => {
 }
 
 const mapDispatchToProps = {
+    requestUserRoomsMetadata,
+    requestUserContacts,
     requestRoomIdMessages
 }
 

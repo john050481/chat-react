@@ -1,7 +1,8 @@
 import React, {useEffect} from "react";
 
-export default function useContextMenu(props) {
-    const {ref, handler} = props;
+////////////////////////////!!!!!!!!!!!!!!!!!!!!!!
+// использовать!!!
+export default function index(ref, handler) {
     useEffect(
         () => {
             if (!ref.current)
@@ -9,7 +10,7 @@ export default function useContextMenu(props) {
 
             const listener = event => {
                 // Do nothing if clicking ref's element or descendent elements
-                if (!ref.current || ref.current.contains(event.target)) {
+                if (!ref.current || !ref.current.contains(event.target)) {
                     return;
                 }
 
@@ -25,3 +26,4 @@ export default function useContextMenu(props) {
         [ref, handler]
     );
 }
+
