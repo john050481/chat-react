@@ -17,6 +17,7 @@ import {
     CITATION_CLEAR,
 
     ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
+    MODIFY_MESSAGE_IN_CURRENT_CHAT,
 
     /*ENTER_ROOM*/
     EXIT_ROOM,
@@ -75,6 +76,11 @@ export default function (state = init, action) {
 
         case ADD_NEW_MESSAGE_IN_CURRENT_CHAT:
             return { ...state, messages: [...state.messages, action.payload]}
+        case MODIFY_MESSAGE_IN_CURRENT_CHAT:
+            // !!!!!!!!!!!! нужно сортировать, но можно и удалить, где находится сообщение, и туда же вставить, хз что быстрее!!!!!
+            let arrOfMessages = [action.payload, ...state.messages.filter( message => message.id !== action.payload.id)];
+            arrOfMessages.sort( (a, b) => a.timestamp - b.timestamp );
+            return { ...state, messages: arrOfMessages }
 
         /*
         case ENTER_ROOM:

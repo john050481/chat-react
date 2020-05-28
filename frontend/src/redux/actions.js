@@ -21,6 +21,7 @@ import {
     CITATION_CLEAR,
 
     ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
+    MODIFY_MESSAGE_IN_CURRENT_CHAT,
 
     /*ENTER_ROOM,*/
     EXIT_ROOM,
@@ -137,6 +138,13 @@ export function clearCitation() {
 export function addNewMessageInCurrentChat(message) {
     return {
         type: ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
+        payload: message
+    }
+}
+//___MODIFY_MESSAGE_IN_CURRENT_CHAT___
+export function modifyMessageInCurrentChat(message) {
+    return {
+        type: MODIFY_MESSAGE_IN_CURRENT_CHAT,
         payload: message
     }
 }
