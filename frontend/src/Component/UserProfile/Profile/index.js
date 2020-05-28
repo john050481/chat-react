@@ -1,5 +1,5 @@
 import './style.css';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import {connect} from "react-redux";
@@ -27,18 +27,18 @@ function TemplateComponent(props) {
     )
 }
 
-function Profile({user, showAlert}) {
-    console.log('Render Profile')
+function Profile({showAlert}) {
+    console.log('Render UserProfile Profile')
 
     const chatDb = useChat();
 
-    const [chatUser, setChatUser] = useState({...user});
+    const [chatUser, setChatUser] = useState({...chatDb.userData});
 
     const [visibleLoader, setVisibleLoader] = useState(false);
 
     function handlerSave(e) {
         setVisibleLoader(true);
-        chatDb.updateUser(user.id, chatUser)
+        chatDb.updateUser(chatDb.userId, chatUser)
             .finally( () => setVisibleLoader(false) )
             .then( () => {
                 showAlert({text: 'Update user done!', options: {variant: 'success'}});
@@ -85,7 +85,7 @@ function Profile({user, showAlert}) {
     }
 
     return (
-        user &&
+        chatUser &&
         <div className='profile-block'>
             <div className="profile-block__sticky">
                 <ButtonWithLoader className="profile-block__button" variant="primary" onClick={handlerSave} visibleLoader={visibleLoader}>
@@ -119,11 +119,11 @@ function Profile({user, showAlert}) {
 
             {/*здесь НЕ изменяемые*/}
             <AccordionApp title='Дополнительно' >
-                <TemplateComponent label={'ID'} value={user.id} disabled={true} />
-                <TemplateComponent label={'Email'} value={user.email} disabled={true} />
-                <TemplateComponent label={'Phone'} value={user.phone} disabled={true} />
+                <TemplateComponent label={'ID'} value={chatDb.userId} disabled={true} />
+                <TemplateComponent label={'Email'} value={chatDb.userData.email} disabled={true} />
+                <TemplateComponent label={'Phone'} value={chatDb.userData.phone} disabled={true} />
                 <hr />
-                <TemplateComponent label={'Last activity'} value={printFormatDate(user.lastActivity ? user.lastActivity.seconds*1000 : NaN)} disabled={true} />
+                <TemplateComponent label={'Last activity'} value={printFormatDate(chatDb.userData.lastActivity ? chatDb.userData.lastActivity.seconds*1000 : NaN)} disabled={true} />
             </AccordionApp>
         </div>
     )
@@ -131,7 +131,6 @@ function Profile({user, showAlert}) {
 
 const mapStateToProps = store => {
     return {
-        user: store.chat.user
     }
 }
 const mapDispatchToProps = {

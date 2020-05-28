@@ -9,7 +9,7 @@ export default function Main(props) {
 
     return (
         <div className="container-app clearfix">
-            <UpperLayer region={props.region} render={props.render}>
+            <UpperLayer region={props.region}>
                 {props.children}
             </UpperLayer>
         </div>

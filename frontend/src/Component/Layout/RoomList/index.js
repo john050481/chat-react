@@ -22,8 +22,8 @@ import equalArrays from "../../../common/equalArrays";
 
 const MAX_WIDTH = 600;//px
 
-function RoomList({user, requestUserRoomsMetadata, requestUserContacts}) {
-    console.log('Render RoomList')
+function RoomList({requestUserRoomsMetadata, requestUserContacts}) {
+    console.log('Render RoomList (ENTRY POINT)')
 
     const chatDb = useChat();
     const lastMessage = useChatMessageAdd();
@@ -38,27 +38,26 @@ function RoomList({user, requestUserRoomsMetadata, requestUserContacts}) {
     }, [debouncedIsSmall])
 
     const region = REGION_SIDEBAR;
-    let [render, setRender] = useState(()=>()=>{});
 
     //заполнение roomlist
     useEffect( () => {
-        if (!user) return;
+        if (!chatDb.userData) return;
 
-        if (!equalArrays(user.rooms, chatDb.prevUserData ? chatDb.prevUserData.rooms : null)) {
+        if (!equalArrays(chatDb.userData.rooms, chatDb.prevUserData ? chatDb.prevUserData.rooms : null)) {
             requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() );
         }
-        if (!equalArrays(user.contacts, chatDb.prevUserData ? chatDb.prevUserData.contacts : null)) {
+        if (!equalArrays(chatDb.userData.contacts, chatDb.prevUserData ? chatDb.prevUserData.contacts : null)) {
             requestUserContacts( () => chatDb.getUserContacts() );
         }
-    }, [user])
+    }, [chatDb.userData])
 
     return (
         <div className={"flx sidebar-rooms" + ( isSmall ? ' small' : '' )}>
             <Header style={{background: '#D3D3D3'}}>
-                <NavBarRoomList region={region} setRender={setRender} isSmall={isSmall} setIsSmall={setIsSmall}/>
+                <NavBarRoomList region={region} isSmall={isSmall} setIsSmall={setIsSmall}/>
             </Header>
 
-            <Main region={region} render={render}>
+            <Main region={region}>
                 <aside className="sidebar">
                     <Rooms isSmall={isSmall}/>
                 </aside>
@@ -73,7 +72,6 @@ function RoomList({user, requestUserRoomsMetadata, requestUserContacts}) {
 
 const mapStateToProps = store => {
     return {
-        user: store.chat.user
     }
 }
 const mapDispatchToProps = {

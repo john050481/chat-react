@@ -3,11 +3,6 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import {FaSearch, FaCog, FaUserAlt, FaSignOutAlt, FaInfo} from "react-icons/fa";
 import {connect} from "react-redux";
-import FakeSearchMessage from '../../../FakeComponent/FakeSearchMessage'
-import FakeSettings from '../../../FakeComponent/FakeSettings';
-import UserProfile from "../../../UserProfile";
-import AuthForm from '../../../AuthForm';
-import About from '../../../About';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -17,14 +12,7 @@ function NavBarRoot(props) {
     console.log('Render NavBarRoot')
 
     /*LAYOUT*/
-    const components = {
-        UserProfile: <UserProfile />,
-        FakeSearchMessage: <FakeSearchMessage />,
-        FakeSettings: <FakeSettings />,
-        AuthForm: <AuthForm />,
-        About: <About />
-    }
-    const handleClick = useLayout({components, setRender: props.setRender, region: props.region});
+    const handleClick = useLayout({region: props.region});
     /*LAYOUT*/
 
     return (

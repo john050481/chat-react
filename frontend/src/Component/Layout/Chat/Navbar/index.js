@@ -2,13 +2,10 @@ import './style.css';
 import React from "react";
 import Button from "react-bootstrap/Button";
 import {FaSearch, FaCog, FaWhatsapp, FaTrash} from "react-icons/fa";
-import FakeSearchMessage from '../../../FakeComponent/FakeSearchMessage'
 import {connect} from "react-redux";
-import FakeSettings from '../../../FakeComponent/FakeSettings';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import RoomInfo from "../RoomInfo";
 import {useChat} from "../../../../hooks/useChatFirebase";
 import useLayout from "../../useLayout";
 
@@ -18,12 +15,7 @@ function NavBarRoot(props) {
     const chatDb = useChat();
 
     /*LAYOUT*/
-    const components = {
-        RoomInfo: <RoomInfo />,
-        FakeSearchMessage: <FakeSearchMessage />,
-        FakeSettings: <FakeSettings />
-    }
-    const handleClick = useLayout({components, setRender: props.setRender, region: props.region});
+    const handleClick = useLayout({region: props.region});
     /*LAYOUT*/
 
     function handleClickLeaveRoom(e) {

@@ -16,15 +16,14 @@ export default function (props) {
     console.log('Render Root (ENTRY POINT)');
 
     const region = REGION_ROOT;
-    let [render, setRender] = useState(()=>()=>{});
 
     return (
         <div className="content-wrapper">
             <Header>
-                <NavBarRoot region={region} setRender={setRender}/>
+                <NavBarRoot region={region} />
             </Header>
 
-            <Main region={region} render={render}>
+            <Main region={region}>
                 <Chat />
                 <RoomList />
             </Main>

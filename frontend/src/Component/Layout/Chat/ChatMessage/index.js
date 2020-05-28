@@ -6,7 +6,7 @@ import {useChat} from "../../../../hooks/useChatFirebase";
 import {printFormatDate, diffDateInDays, printFormatDaysAgo} from '../../../../common/dates';
 
 function ChatMessage(props) {
-    const {user, currentRoomId, message, messageBlockScroll} = props;
+    const {currentRoomId, message, messageBlockScroll} = props;
 
     const [citationComp, setCitationComp] = useState(null);
 
@@ -23,7 +23,7 @@ function ChatMessage(props) {
     }, [])
 
     let milliseconds = message.timestamp ? message.timestamp.seconds*1000 : NaN;
-    const itsMe = user.id === message.userId;
+    const itsMe = chatDb.userId === message.userId;
     const daysAgo = diffDateInDays(Date.now(), milliseconds);
 
     return (
@@ -52,7 +52,6 @@ function ChatMessage(props) {
 
 const mapStateToProps = store => {
     return {
-        user: store.chat.user,
         currentRoomId: store.chat.currentRoomId
     }
 }
