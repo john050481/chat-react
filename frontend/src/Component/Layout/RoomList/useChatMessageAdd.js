@@ -6,8 +6,8 @@ import {addNewMessageInCurrentChat, requestUpdateRoomMetadata} from '../../../re
 export default function useChatMessageAdd() {
     console.log('---useChatMessageAdd---');
 
-    const [newMessage, setNewMessage] = useState(null);
     const chatDb = useChat();
+    const [newMessage, setNewMessage] = useState(null);
 
     const dispatch = useDispatch();
     const { rooms, currentRoomId } = useSelector(store => ({

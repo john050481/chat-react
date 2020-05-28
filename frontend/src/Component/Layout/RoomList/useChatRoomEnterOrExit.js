@@ -6,8 +6,8 @@ import { exitRoom } from '../../../redux/actions';
 export default function useChatRoomEnterOrExit() {
     console.log('---useChatRoomEnterOrExit---');
 
-    const [newEvent, setNewEvent] = useState(null);
     const chatDb = useChat();
+    const [newEvent, setNewEvent] = useState(null);
 
     const dispatch = useDispatch();
     const { rooms, currentRoomId } = useSelector(store => ({
