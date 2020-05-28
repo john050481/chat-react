@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {requestUpdateRoomMetadata, showAlert} from '../../../../redux/actions';
 import {useChat} from "../../../../hooks/useChatFirebase";
 import AccordionApp from '../../../../common/Accordion';
+import {printFormatDate} from '../../../../common/dates';
 
 function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
 
@@ -81,9 +82,7 @@ function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
                             <Form.Label>Created at</Form.Label>
                             <Form.Control
                                 type="text"
-                                value={new Date(currentRoom.data.createdAt.seconds*1000).toLocaleDateString() +
-                                ' / ' +
-                                new Date(currentRoom.data.createdAt.seconds*1000).toLocaleTimeString()}
+                                value={printFormatDate(currentRoom.data.createdAt ? currentRoom.data.createdAt.seconds*1000 : NaN)}
                                 disabled
                             />
                         </Form.Group>
@@ -96,9 +95,7 @@ function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
                             <Form.Label>Last activity</Form.Label>
                             <Form.Control
                                 type="text"
-                                value={new Date(currentRoom.data.lastActivity.seconds*1000).toLocaleDateString() +
-                                ' / ' +
-                                new Date(currentRoom.data.lastActivity.seconds*1000).toLocaleTimeString()}
+                                value={printFormatDate(currentRoom.data.lastActivity ? currentRoom.data.lastActivity.seconds*1000 : NaN)}
                                 disabled
                             />
                         </Form.Group>

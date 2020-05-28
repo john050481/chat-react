@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import Toast from 'react-bootstrap/Toast'
 import {connect} from "react-redux";
 import {useChat} from "../../../../hooks/useChatFirebase";
-import formatDate from '../../../../common/formatDate';
+import {printFormatDate, diffDateInDays, printFormatDaysAgo} from '../../../../common/dates';
 
 function ChatMessage(props) {
     const {user, currentRoomId, message, messageBlockScroll} = props;
@@ -22,13 +22,9 @@ function ChatMessage(props) {
             })()
     }, [])
 
-    function diffDateInDays(date1ms, date2ms) {
-        return Math.floor( (date1ms - date2ms)/1000/60/60/24 );
-    }
-
-    let seconds = message.timestamp ? message.timestamp.seconds*1000 : Date.now();
+    let milliseconds = message.timestamp ? message.timestamp.seconds*1000 : NaN;
     const itsMe = user.id === message.userId;
-    const daysAgo = diffDateInDays(Date.now(), seconds);
+    const daysAgo = diffDateInDays(Date.now(), milliseconds);
 
     return (
         <Toast className={'chat-message' + (itsMe ? ' my' : ' notMy')}>
@@ -37,7 +33,7 @@ function ChatMessage(props) {
                     {itsMe ? "Вы" : message.name }
                 </strong>
                 <small className='ml-3'>
-                    {formatDate(seconds)}
+                    {printFormatDate(milliseconds)}
                 </small>
             </Toast.Header>
             <Toast.Body>
@@ -49,7 +45,7 @@ function ChatMessage(props) {
                 }
                 <p data-message={message.message} data-author={message.name} data-id={message.id}>{message.message}</p>
             </Toast.Body>
-            <small className='chat-message--time'>{daysAgo ? `${daysAgo} days ago` : 'today'}</small>
+            <small className='chat-message--time'>{printFormatDaysAgo(daysAgo)}</small>
         </Toast>
     )
 }

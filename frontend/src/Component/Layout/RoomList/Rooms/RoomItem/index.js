@@ -4,10 +4,9 @@ import Card from "react-bootstrap/Card";
 import Loader from "../../../../Loader";
 import {FaComments} from "react-icons/fa";
 import {connect} from "react-redux";
+import {printFormatDate} from '../../../../../common/dates';
 
 function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId}) {
-    let seconds = room.data.lastActivity ? room.data.lastActivity.seconds*1000 : Date.now();
-
     return (
         <div data-roomid={room.roomId}>
             <Card className={ 'chat' + (currentRoomId === room.roomId ? ' active' : '') }>
@@ -25,8 +24,7 @@ function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId}) {
                                       </span>
                         </div>
                         <footer className="blockquote-footer text-align-end" hidden={isSmall}>
-                            {new Date(seconds).toLocaleDateString()} {' / '}
-                            {new Date(seconds).toLocaleTimeString()}
+                            {printFormatDate(room.data.lastActivity ? room.data.lastActivity.seconds*1000 : NaN)}
                         </footer>
                     </blockquote>
                 </Card.Body>

@@ -7,7 +7,7 @@ import {showAlert} from '../../../redux/actions';
 import {useChat} from "../../../hooks/useChatFirebase";
 import AccordionApp from '../../../common/Accordion';
 import ButtonWithLoader from '../../../common/ButtonWithLoader';
-import formatDate from '../../../common/formatDate';
+import {printFormatDate} from '../../../common/dates';
 
 function TemplateComponent(props) {
     const {label, name, value, disabled=false, onChange, as=Col, type='text'} = props;
@@ -123,7 +123,7 @@ function Profile({user, showAlert}) {
                 <TemplateComponent label={'Email'} value={user.email} disabled={true} />
                 <TemplateComponent label={'Phone'} value={user.phone} disabled={true} />
                 <hr />
-                <TemplateComponent label={'Last activity'} value={formatDate(user.lastActivity.seconds*1000)} disabled={true} />
+                <TemplateComponent label={'Last activity'} value={printFormatDate(user.lastActivity ? user.lastActivity.seconds*1000 : NaN)} disabled={true} />
             </AccordionApp>
         </div>
     )
