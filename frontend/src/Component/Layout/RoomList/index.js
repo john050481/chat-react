@@ -9,25 +9,15 @@ import Header from '../../Template/Header'
 import Footer from '../../Template/Footer'
 
 import {REGION_SIDEBAR} from '../../../redux/types'
-import {requestUserRoomsMetadata, requestUserContacts} from "../../../redux/actions";
 import {connect} from "react-redux";
 
 import {useDebounce} from '../../../hooks/useDebounce';
 import {useWindowSize} from '../../../hooks/useWindowSize';
-import {useChat} from "../../../hooks/useChatFirebase";
-import useChatMessageAdd from './useChatMessageAdd';
-import useChatRoomEnterOrExit from "./useChatRoomEnterOrExit";
-
-import equalArrays from "../../../common/equalArrays";
 
 const MAX_WIDTH = 600;//px
 
-function RoomList({requestUserRoomsMetadata, requestUserContacts}) {
+export default function RoomList(props) {
     console.log('Render RoomList (ENTRY POINT)')
-
-    const chatDb = useChat();
-    const lastMessage = useChatMessageAdd();
-    const lastEventRoom = useChatRoomEnterOrExit();
 
     //уменьшение сайдбара, при ширене экрана менее MAX_WIDTH, с задержкой в 1сек
     const [isSmall, setIsSmall] = useState(false);
@@ -38,18 +28,6 @@ function RoomList({requestUserRoomsMetadata, requestUserContacts}) {
     }, [debouncedIsSmall])
 
     const region = REGION_SIDEBAR;
-
-    //заполнение roomlist
-    useEffect( () => {
-        if (!chatDb.userData) return;
-
-        if (!equalArrays(chatDb.userData.rooms, chatDb.prevUserData ? chatDb.prevUserData.rooms : null)) {
-            requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() );
-        }
-        if (!equalArrays(chatDb.userData.contacts, chatDb.prevUserData ? chatDb.prevUserData.contacts : null)) {
-            requestUserContacts( () => chatDb.getUserContacts() );
-        }
-    }, [chatDb.userData])
 
     return (
         <div className={"flx sidebar-rooms" + ( isSmall ? ' small' : '' )}>
@@ -69,14 +47,3 @@ function RoomList({requestUserRoomsMetadata, requestUserContacts}) {
         </div>
     )
 }
-
-const mapStateToProps = store => {
-    return {
-    }
-}
-const mapDispatchToProps = {
-    requestUserRoomsMetadata,
-    requestUserContacts
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(RoomList)
