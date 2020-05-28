@@ -47,6 +47,9 @@ function App({userLogin, userLogout, chatUserEnter, chatUserExit}) {
                       <div style={{fontSize: '20px', textAlign: 'center', marginTop: '57px'}}>
                           Для примера введите LOGIN / PASSWORD: <span style={{color: 'red'}}>example@example.ru</span>
                       </div>
+                      <div style={{fontSize: '20px', textAlign: 'center', marginTop: '57px'}}>
+                          для второго пользователя: <span style={{color: 'red'}}>example1@example.ru</span>
+                      </div>
                       <AuthForm /*auth={auth}*/ />
                   </Route>
                   <Redirect to="/chat" />
