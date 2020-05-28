@@ -15,7 +15,7 @@ export default function useChatMessageEdit() {
         currentRoomId: store.chat.currentRoomId
     }), shallowEqual);
 
-    //подписка на новые сообщения
+    // ADD (подписка на новые сообщения)
     useEffect( () => {
         function handlerEventMessageAdd ({detail}) {
             const roomId = detail.path.split('/')[1];
@@ -36,7 +36,7 @@ export default function useChatMessageEdit() {
         return () => chatDb.removeEventListener('message-add', handlerEventMessageAdd);
     }, [rooms, currentRoomId]);
 
-    //подписка на измененные сообщения
+    // MODIFY (подписка на измененные сообщения)
     useEffect( () => {
         function handlerEventMessageModify ({detail}) {
             const roomId = detail.path.split('/')[1];
@@ -57,7 +57,7 @@ export default function useChatMessageEdit() {
         return () => chatDb.removeEventListener('message-modify', handlerEventMessageModify);
     }, [rooms, currentRoomId]);
 
-    //подписка на удаленные сообщения
+    // REMOVE (подписка на удаленные сообщения)
     useEffect( () => {
         function handlerEventMessageRemove ({detail}) {
             const roomId = detail.path.split('/')[1];
