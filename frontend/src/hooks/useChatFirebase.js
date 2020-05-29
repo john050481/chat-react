@@ -177,15 +177,15 @@ function useProvideChat() {
                 //console.log('path array === ', change.doc.ref.path.split('/'));
                 if (change.type === "added") {
                     console.log("added! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
-                    dispatchEvent( {event: 'message-add', detail: {id: change.doc.id, message: change.doc.data(), path: change.doc.ref.path} } );
+                    dispatchEvent( {event: 'message-add', detail: {message: {...change.doc.data(), id: change.doc.id}, path: change.doc.ref.path} } );
                 }
                 if (change.type === "modified") {
                     console.log("modified! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
-                    dispatchEvent( {event: 'message-modify', detail: {id: change.doc.id, message: change.doc.data(), path: change.doc.ref.path} } );
+                    dispatchEvent( {event: 'message-modify', detail: {message: {...change.doc.data(), id: change.doc.id}, path: change.doc.ref.path} } );
                 }
                 if (change.type === "removed") {
                     console.log("removed! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
-                    dispatchEvent( {event: 'message-remove', detail: {id: change.doc.id, message: change.doc.data(), path: change.doc.ref.path} } );
+                    dispatchEvent( {event: 'message-remove', detail: {message: {...change.doc.data(), id: change.doc.id}, path: change.doc.ref.path} } );
                 }
             });
             console.log('---------------useChatFirebase---------------');
