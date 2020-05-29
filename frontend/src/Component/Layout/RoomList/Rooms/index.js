@@ -53,7 +53,8 @@ function Rooms(props) {
             itemsContextMenu = itemsContextMenuForContacts;
         }
 
-        setContextMenu({visibleContextMenu: true, pageXY: [e.pageX, e.pageY], itemsContextMenu});
+        if (curElemRoomId || curElemContactId)
+            setContextMenu({visibleContextMenu: true, pageXY: [e.pageX, e.pageY], itemsContextMenu});
     }
     /////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 
