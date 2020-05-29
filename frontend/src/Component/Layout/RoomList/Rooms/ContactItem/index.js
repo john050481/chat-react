@@ -1,7 +1,6 @@
 import './style.css'
 import React from 'react'
 import Card from "react-bootstrap/Card";
-import Loader from "../../../../Loader";
 import {FaUserCircle} from "react-icons/fa";
 
 export default function ContactItem({contact, isSmall}) {

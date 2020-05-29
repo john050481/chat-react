@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.css'
-import SpinnerApp from "../../../../Spinner";
+import SpinnerApp from "../../../../../common/Spinner";
 
 export default class EmojiList extends React.Component {
     constructor(props) {

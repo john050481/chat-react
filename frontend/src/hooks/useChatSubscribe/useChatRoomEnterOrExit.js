@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {useChat} from "../../../hooks/useChatFirebase";
+import {useChat} from "../useChatFirebase";
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import { exitRoom } from '../../../redux/actions';
+import { exitRoom } from '../../redux/actions';
 
 export default function useChatRoomEnterOrExit() {
     console.log('---useChatRoomEnterOrExit---');

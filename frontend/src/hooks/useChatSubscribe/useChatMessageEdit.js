@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {useChat} from "../../../hooks/useChatFirebase";
+import {useChat} from "../useChatFirebase";
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import {addNewMessageInCurrentChat, modifyMessageInCurrentChat, removeMessageInCurrentChat, addNewMessageInOtherChat, requestUpdateRoomMetadata} from '../../../redux/actions';
-import usePrevious from '../../../hooks/usePrevious';
+import {addNewMessageInCurrentChat, modifyMessageInCurrentChat, removeMessageInCurrentChat, addNewMessageInOtherChat, requestUpdateRoomMetadata} from '../../redux/actions';
+import usePrevious from '../usePrevious';
 
 function useChatMessageSubscribe() {
     console.log('---useChatMessageSubscribe---');
@@ -14,7 +14,7 @@ function useChatMessageSubscribe() {
     useEffect( () => {
         console.log('---useChatMessageSubscribe---useEffect');
         function handlerEventMessage ({event, detail}) {
-            const roomId = detail.path.split('/')[1];
+            let roomId = detail.path.split('/')[1];
             setLastMessageEdit({...detail, roomId, event});
             console.log('---useChatMessageSubscribe---handlerEventMessage, detail message ADD/MODIFY/REMOVE  === ', {...detail, roomId, event});
         }

@@ -4,7 +4,7 @@ import {useAuth} from "./useAuth";
 import usersModel from '../model/users';
 import roomMessagesModel from '../model/roomMessages';
 import roomMetadataModel from '../model/roomMetadata';
-import diffArrays from "../common/diffArrays";
+import {diffArrays} from "../common/arrays";
 import usePrevious from '../hooks/usePrevious';
 
 const chatContext = createContext();
@@ -213,14 +213,12 @@ function useProvideChat() {
             lastActivity: firebase.firestore.FieldValue.serverTimestamp() // The time at which the room was created.
         });
 
-        /*
         // ПРОИСХОДИТ ПОДПИСКА И ОТПИСКА НА ROOMS в UseEffect !!!!!!!!!! сравнивать массив rooms!?
         // И КУЧА РЕНДЕРОВ!!!
         const docRefUsers = db.collection('users').doc(this.userId);
         batch.update(docRefUsers, {
             lastActivity: firebase.firestore.FieldValue.serverTimestamp()
         });
-        */
 
         return batch.commit()
             .then(function () {

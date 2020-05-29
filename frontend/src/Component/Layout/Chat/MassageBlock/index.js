@@ -3,7 +3,7 @@ import React, {useEffect, useRef} from 'react'
 import Citation from '../Citation'
 import {connect} from "react-redux";
 import ChatMessage from '../ChatMessage'
-import SpinnerApp from "../../../Spinner";
+import SpinnerApp from "../../../../common/Spinner";
 import {setCitation} from "../../../../redux/actions";
 
 function MessageBlock(props) {

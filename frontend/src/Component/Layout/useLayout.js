@@ -4,8 +4,8 @@ import {showLayout} from "../../redux/actions";
 
 import CreateRoom from "./RoomList/CreateRoom";
 import RoomInfo from "./Chat/RoomInfo";
-import FakeSearchMessage from "../FakeComponent/FakeSearchMessage";
-import FakeSettings from "../FakeComponent/FakeSettings";
+import FakeSearchMessage from "../../common/FakeComponent/FakeSearchMessage";
+import FakeSettings from "../../common/FakeComponent/FakeSettings";
 import UserProfile from "../UserProfile";
 import AuthForm from "../AuthForm";
 import About from "../About";

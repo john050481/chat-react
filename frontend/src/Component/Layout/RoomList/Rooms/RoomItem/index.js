@@ -1,7 +1,7 @@
 import './style.css'
 import React from 'react'
 import Card from "react-bootstrap/Card";
-import Loader from "../../../../Loader";
+import Loader from "../../../../../common/Loader";
 import {FaComments} from "react-icons/fa";
 import {connect} from "react-redux";
 import {printFormatDate} from '../../../../../common/dates';

@@ -2,15 +2,13 @@ import React, {useEffect, useRef, useState} from "react";
 import './style.css';
 import {connect} from "react-redux";
 import {requestRoomIdMessages, requestUserContacts, requestUserRoomsMetadata} from "../../../../redux/actions";
-import SpinnerApp from "../../../Spinner";
+import SpinnerApp from "../../../../common/Spinner";
 import RoomItem from './RoomItem';
 import {useChat} from "../../../../hooks/useChatFirebase";
 import AccordionApp from '../../../../common/Accordion';
 import {FaUserAlt, FaComments} from "react-icons/fa";
 import ContactItem from "./ContactItem";
-import equalArrays from "../../../../common/equalArrays";
-import useChatMessageEdit from "../useChatMessageEdit";
-import useChatRoomEnterOrExit from "../useChatRoomEnterOrExit";
+import {equalArrays} from "../../../../common/arrays";
 import ContextMenu from "@john0504/react-contextmenu";
 import useContextMenu from "../../../../hooks/useContextMenu";
 import itemsContextMenuForRooms from '../../../../hooks/useContextMenu/itemsContextMenuForRooms';
@@ -22,8 +20,6 @@ function Rooms(props) {
     const {isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages, requestUserRoomsMetadata, requestUserContacts} = props;
 
     const chatDb = useChat();
-    const lastMessage = useChatMessageEdit();
-    const lastEventRoom = useChatRoomEnterOrExit();
 
     //заполнение rooms & contacts
     useEffect( () => {
