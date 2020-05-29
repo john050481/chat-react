@@ -17,6 +17,8 @@ export default function useChatRoomEnterOrExit() {
 
     //подписка на события с комнатой
     useEffect( () => {
+        console.log('---useChatRoomEnterOrExit---useEffect');
+
         function handlerRoomEnter(eventObj) {
             console.log('---useChatRoomEnterOrExit---room---enter', eventObj);
             setNewEvent(eventObj);

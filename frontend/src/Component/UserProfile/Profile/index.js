@@ -120,10 +120,10 @@ function Profile({showAlert}) {
             {/*здесь НЕ изменяемые*/}
             <AccordionApp title='Дополнительно' >
                 <TemplateComponent label={'ID'} value={chatDb.userId} disabled={true} />
-                <TemplateComponent label={'Email'} value={chatDb.userData.email} disabled={true} />
-                <TemplateComponent label={'Phone'} value={chatDb.userData.phone} disabled={true} />
+                <TemplateComponent label={'Email'} value={chatUser.email} disabled={true} />
+                <TemplateComponent label={'Phone'} value={chatUser.phone} disabled={true} />
                 <hr />
-                <TemplateComponent label={'Last activity'} value={printFormatDate(chatDb.userData.lastActivity ? chatDb.userData.lastActivity.seconds*1000 : NaN)} disabled={true} />
+                <TemplateComponent label={'Last activity'} value={printFormatDate(chatUser.lastActivity ? chatUser.lastActivity.seconds*1000 : NaN)} disabled={true} />
             </AccordionApp>
         </div>
     )
