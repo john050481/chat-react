@@ -32,6 +32,7 @@ export default function useChatRoomEnterOrExit() {
         chatDb.addEventListener('room-exit', handlerRoomExit);
 
         return () => {
+            console.log('---useChatRoomEnterOrExit---useEffect---unmount');
             chatDb.removeEventListener('room-enter', handlerRoomEnter);
             chatDb.removeEventListener('room-exit', handlerRoomExit);
         }
