@@ -18,6 +18,8 @@ import {
 
     ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
     MODIFY_MESSAGE_IN_CURRENT_CHAT,
+    REMOVE_MESSAGE_IN_CURRENT_CHAT,
+    ADD_NEW_MESSAGE_IN_OTHER_CHAT,
 
     /*ENTER_ROOM*/
     EXIT_ROOM,
@@ -81,6 +83,16 @@ export default function (state = init, action) {
             let arrOfMessages = [action.payload, ...state.messages.filter( message => message.id !== action.payload.id)];
             arrOfMessages.sort( (a, b) => a.timestamp - b.timestamp );
             return { ...state, messages: arrOfMessages }
+        case REMOVE_MESSAGE_IN_CURRENT_CHAT:
+            return { ...state, messages: [...state.messages.filter( message => message.id !== action.payload.id)]}
+        case ADD_NEW_MESSAGE_IN_OTHER_CHAT:
+            return {...state, rooms: [...state.rooms.map( room => {
+                    if (room.roomId === action.payload)
+                        return {...room, addNewMessage: true};
+                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!! продумать с таблицей со статусами
+                    return room;
+                } ) ]
+            }
 
         /*
         case ENTER_ROOM:

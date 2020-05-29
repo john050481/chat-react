@@ -22,6 +22,8 @@ import {
 
     ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
     MODIFY_MESSAGE_IN_CURRENT_CHAT,
+    REMOVE_MESSAGE_IN_CURRENT_CHAT,
+    ADD_NEW_MESSAGE_IN_OTHER_CHAT,
 
     /*ENTER_ROOM,*/
     EXIT_ROOM,
@@ -146,6 +148,20 @@ export function modifyMessageInCurrentChat(message) {
     return {
         type: MODIFY_MESSAGE_IN_CURRENT_CHAT,
         payload: message
+    }
+}
+//___REMOVE_MESSAGE_IN_CURRENT_CHAT___
+export function removeMessageInCurrentChat(message) {
+    return {
+        type: REMOVE_MESSAGE_IN_CURRENT_CHAT,
+        payload: message
+    }
+}
+//___ADD_NEW_MESSAGE_IN_OTHER_CHAT___
+export function addNewMessageInOtherChat(roomId) {
+    return {
+        type: ADD_NEW_MESSAGE_IN_OTHER_CHAT,
+        payload: roomId
     }
 }
 //___ENTER_ROOM___
