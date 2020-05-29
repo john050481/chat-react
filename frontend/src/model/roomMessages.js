@@ -8,5 +8,6 @@ export default {
     message: "", // The content of the message.
     timestamp: "", // The time at which the message was sent. // firebase.firestore.FieldValue.serverTimestamp()
     forwarded: false, // пересланное сообщение или нет
+    edited: false, // отредактировано или нет
     citationId: "" // id процитированного сообщения, если есть
 }
