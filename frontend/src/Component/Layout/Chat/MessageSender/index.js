@@ -33,7 +33,8 @@ function MessageSender(props) {
         )
             .then( messageId => {
                 props.clearCitation();
-                enterFieldElement.current.innerText = '';
+                if (enterFieldElement.current)
+                    enterFieldElement.current.innerText = '';
             })
             .catch( err =>
                 props.showAlert({text: err.message, options: {variant: 'danger'}})
