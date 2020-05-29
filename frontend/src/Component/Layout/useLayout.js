@@ -6,7 +6,7 @@ import CreateRoom from "./RoomList/CreateRoom";
 import RoomInfo from "./Chat/RoomInfo";
 import FakeSearchMessage from "../../common/FakeComponent/FakeSearchMessage";
 import FakeSettings from "../../common/FakeComponent/FakeSettings";
-import UserProfile from "../UserProfile";
+import UserProfile from "./Root/UserProfile";
 import AuthForm from "../AuthForm";
 import About from "../About";
 

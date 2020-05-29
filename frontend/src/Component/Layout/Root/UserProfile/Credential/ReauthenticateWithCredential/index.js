@@ -1,6 +1,6 @@
 import './style.css'
 import React, {useEffect, useState, useRef} from 'react';
-import ModalApp from "../../../../common/Modal";
+import ModalApp from "../../../../../../common/Modal";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";

@@ -3,11 +3,11 @@ import React, {useState} from 'react';
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import {connect} from "react-redux";
-import {showAlert} from '../../../redux/actions';
-import {useChat} from "../../../hooks/useChatFirebase";
-import AccordionApp from '../../../common/Accordion';
-import ButtonWithLoader from '../../../common/ButtonWithLoader';
-import {printFormatDate} from '../../../common/dates';
+import {showAlert} from '../../../../../redux/actions';
+import {useChat} from "../../../../../hooks/useChatFirebase";
+import AccordionApp from '../../../../../common/Accordion';
+import ButtonWithLoader from '../../../../../common/ButtonWithLoader';
+import {printFormatDate} from '../../../../../common/dates';
 
 function TemplateComponent(props) {
     const {label, name, value, disabled=false, onChange, as=Col, type='text'} = props;

@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import './style.css'
 import Form from "react-bootstrap/Form";
-import ButtonWithLoader from "../../../common/ButtonWithLoader";
+import ButtonWithLoader from "../../../../../common/ButtonWithLoader";
 import {connect} from "react-redux";
-import {useAuth} from "../../../hooks/useAuth";
-import {showAlert} from "../../../redux/actions";
+import {useAuth} from "../../../../../hooks/useAuth";
+import {showAlert} from "../../../../../redux/actions";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
