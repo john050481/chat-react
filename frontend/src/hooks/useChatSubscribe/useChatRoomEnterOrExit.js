@@ -38,7 +38,7 @@ function useChatRoomEnterOrExitSubscribe() {
 export default function useChatRoomEnterOrExit() {
     console.log('---useChatRoomEnterOrExit---');
 
-    const chatDb = useChat();
+//    const chatDb = useChat();
     let newEvent = useChatRoomEnterOrExitSubscribe();
     let prevNewEvent = usePrevious(newEvent);
 
