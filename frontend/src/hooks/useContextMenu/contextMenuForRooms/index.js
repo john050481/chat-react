@@ -1,4 +1,7 @@
-export default [
+import {showLayout} from "../../../redux/actions";
+import {REGION_CHAT} from "../../../redux/types";
+
+export const itemsContextMenuForRooms = [
     {
         type: "item",
         title: "Room info",
@@ -28,3 +31,11 @@ export default [
         className: "" // this.state.type === "anyType" ? "disabled" : "" /*type, name or value*/
     },
 ];
+
+export function handleClickOnItemRoom(data, roomId, dispatch) {
+    console.log(data, roomId);
+
+    if (data === 'room-info') {
+        dispatch(showLayout( {region: REGION_CHAT, component: "RoomInfo", props: {roomId: roomId}} ));
+    }
+}

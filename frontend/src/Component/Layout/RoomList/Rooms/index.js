@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import './style.css';
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
 import {requestRoomIdMessages, requestUserContacts, requestUserRoomsMetadata} from "../../../../redux/actions";
 import SpinnerApp from "../../../../common/Spinner";
 import RoomItem from './RoomItem';
@@ -11,8 +11,8 @@ import ContactItem from "./ContactItem";
 import {equalArrays} from "../../../../common/arrays";
 import ContextMenu from "@john0504/react-contextmenu";
 import useContextMenu from "../../../../hooks/useContextMenu";
-import itemsContextMenuForRooms from '../../../../hooks/useContextMenu/itemsContextMenuForRooms';
-import itemsContextMenuForContacts from '../../../../hooks/useContextMenu/itemsContextMenuForContacts';
+import {itemsContextMenuForRooms, handleClickOnItemRoom} from '../../../../hooks/useContextMenu/contextMenuForRooms';
+import {itemsContextMenuForContacts, handleClickOnItemContact} from '../../../../hooks/useContextMenu/contextMenuForContacts';
 
 function Rooms(props) {
     console.log('Render Rooms');
@@ -39,7 +39,8 @@ function Rooms(props) {
     const refContainerContextMenu = useRef(null);
     useContextMenu(refContainerContextMenu, handleContextMenu);
     /**/
-    const [contextMenu, setContextMenu] = useState({visibleContextMenu: false, pageXY: [0, 0], itemsContextMenu: []});
+    const dispatch = useDispatch();
+    const [contextMenu, setContextMenu] = useState({visibleContextMenu: false, pageXY: [0, 0], itemsContextMenu: [], callbackOnClickMenu: ()=>{}});
     function handleContextMenu(e) {
         e.preventDefault();
 
@@ -47,14 +48,19 @@ function Rooms(props) {
         let curElemContactId = e.target.closest('[data-contactid]');
 
         let itemsContextMenu = [];
+        let callbackOnClickMenu = ()=>{};
         if (curElemRoomId) {
+            const roomId = curElemRoomId.dataset.roomid;
             itemsContextMenu = itemsContextMenuForRooms;
+            callbackOnClickMenu = (data, parentLiElem) => handleClickOnItemRoom(data, roomId, dispatch);
         } else if (curElemContactId) {
+            const contactId = curElemContactId.dataset.contactid;
             itemsContextMenu = itemsContextMenuForContacts;
+            callbackOnClickMenu = (data, parentLiElem) => handleClickOnItemContact(data, contactId, dispatch);
         }
 
         if (curElemRoomId || curElemContactId)
-            setContextMenu({visibleContextMenu: true, pageXY: [e.pageX, e.pageY], itemsContextMenu});
+            setContextMenu({visibleContextMenu: true, pageXY: [e.pageX, e.pageY], itemsContextMenu, callbackOnClickMenu});
     }
     /////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 
@@ -95,9 +101,7 @@ function Rooms(props) {
                 hideMenu={ () => setContextMenu({...contextMenu, visibleContextMenu: false} ) }
                 pageXY={contextMenu.pageXY}
                 items={contextMenu.itemsContextMenu}
-                callbackOnClickMenu={(data, parentLiElem) => {
-                    console.log(data, parentLiElem);
-                }}
+                callbackOnClickMenu={contextMenu.callbackOnClickMenu}
             />
         </div>
     )
