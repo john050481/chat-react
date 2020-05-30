@@ -8,7 +8,7 @@ import Main from '../../Template/Main'
 import Header from '../../Template/Header'
 import Footer from '../../Template/Footer'
 
-import {REGION_SIDEBAR} from '../../../redux/types'
+import {REGION_ROOMLIST} from '../../../redux/types'
 
 import {useDebounce} from '../../../hooks/useDebounce';
 import {useWindowSize} from '../../../hooks/useWindowSize';
@@ -26,7 +26,7 @@ export default function RoomList(props) {
         setIsSmall(debouncedIsSmall)
     }, [debouncedIsSmall])
 
-    const region = REGION_SIDEBAR;
+    const region = REGION_ROOMLIST;
 
     return (
         <div className={"flx sidebar-rooms" + ( isSmall ? ' small' : '' )}>

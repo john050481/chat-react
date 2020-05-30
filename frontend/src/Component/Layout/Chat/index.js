@@ -8,12 +8,12 @@ import Footer from '.././../Template/Footer'
 import MessageSender from './MessageSender'
 import NavBarChat from './Navbar'
 import MessageBlock from './MassageBlock'
-import {REGION_MAIN} from '../../../redux/types'
+import {REGION_CHAT} from '../../../redux/types'
 
 export default function () {
     console.log('Render Chat (ENTRY POINT)')
 
-    const region = REGION_MAIN;
+    const region = REGION_CHAT;
 
     return (
         <div className="content">
