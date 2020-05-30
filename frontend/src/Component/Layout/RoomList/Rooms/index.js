@@ -36,11 +36,10 @@ function Rooms(props) {
     //////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!! ContextMenu
     // доработать, возможно вынести на уроввень выше и использовать там data-contextmenu
     /**/
-    const refContainerContextMenu = useRef(null);
-    useContextMenu(refContainerContextMenu, handleContextMenu);
-    /**/
     const dispatch = useDispatch();
     const [contextMenu, setContextMenu] = useState({visibleContextMenu: false, pageXY: [0, 0], itemsContextMenu: [], callbackOnClickMenu: ()=>{}});
+    const refContainerContextMenu = useRef(null);
+    useContextMenu(refContainerContextMenu, handleContextMenu);
     function handleContextMenu(e) {
         e.preventDefault();
 
@@ -52,11 +51,11 @@ function Rooms(props) {
         if (curElemRoomId) {
             const roomId = curElemRoomId.dataset.roomid;
             itemsContextMenu = itemsContextMenuForRooms;
-            callbackOnClickMenu = (data, parentLiElem) => handleClickOnItemRoom(data, roomId, dispatch);
+            callbackOnClickMenu = (data, parentLiElem) => handleClickOnItemRoom({data, roomId, dispatch, chatDb});
         } else if (curElemContactId) {
             const contactId = curElemContactId.dataset.contactid;
             itemsContextMenu = itemsContextMenuForContacts;
-            callbackOnClickMenu = (data, parentLiElem) => handleClickOnItemContact(data, contactId, dispatch);
+            callbackOnClickMenu = (data, parentLiElem) => handleClickOnItemContact({data, contactId, dispatch, chatDb});
         }
 
         if (curElemRoomId || curElemContactId)

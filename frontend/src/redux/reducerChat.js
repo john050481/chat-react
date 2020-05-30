@@ -99,7 +99,9 @@ export default function (state = init, action) {
             return {...state}
         */
         case EXIT_ROOM:
-            return {...state, requestRoomId: null, currentRoomId: null, messages: []}
+            if (action.payload === state.currentRoomId) // если выход из активной комнаты
+                return {...state, requestRoomId: null, currentRoomId: null, messages: []}
+            return state; // если из НЕ активной
 
         case REQUEST_USER_CONTACTS:
             return {...state, contacts: []}

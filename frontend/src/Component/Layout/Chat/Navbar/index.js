@@ -1,7 +1,7 @@
 import './style.css';
 import React from "react";
 import Button from "react-bootstrap/Button";
-import {FaSearch, FaCog, FaWhatsapp, FaTrash} from "react-icons/fa";
+import {FaSearch, FaCog, FaInfoCircle, FaTrash} from "react-icons/fa";
 import {connect} from "react-redux";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -30,7 +30,7 @@ function NavBarRoot(props) {
                     <Container>
                         <Row>
                             <Col>
-                                <Button variant="outline-success" data-component='RoomInfo' title="room info"><FaWhatsapp /></Button>
+                                <Button variant="outline-success" data-component='RoomInfo' title="room info"><FaInfoCircle size={'1.3em'} /></Button>
                             </Col>
                         </Row>
                     </Container>

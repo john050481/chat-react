@@ -1,4 +1,4 @@
-import {showLayout} from "../../../redux/actions";
+import {showLayout, requestRoomIdMessages} from "../../../redux/actions";
 import {REGION_CHAT} from "../../../redux/types";
 
 export const itemsContextMenuForRooms = [
@@ -32,10 +32,21 @@ export const itemsContextMenuForRooms = [
     },
 ];
 
-export function handleClickOnItemRoom(data, roomId, dispatch) {
+export function handleClickOnItemRoom({data, roomId, dispatch, chatDb}) {
     console.log(data, roomId);
 
     if (data === 'room-info') {
         dispatch(showLayout( {region: REGION_CHAT, component: "RoomInfo", props: {roomId: roomId}} ));
+    };
+    if (data === 'room-open') {
+        dispatch(requestRoomIdMessages( roomId, () => chatDb.getRoomMessages(roomId) ));
+    };
+
+    if (data === 'room-mute') {
+        console.log("!!!!!!!!!!! РЕАЛИЗОВАТЬ !!!!!!!!!!!");
+    };
+
+    if (data === 'room-exit') {
+        chatDb.leaveRoom(roomId);
     }
 }

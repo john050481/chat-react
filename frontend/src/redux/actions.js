@@ -172,7 +172,8 @@ export function enterRoom(roomId) {
 //___EXIT_ROOM___
 export function exitRoom(roomId) {
     return {
-        type: EXIT_ROOM
+        type: EXIT_ROOM,
+        payload: roomId
     }
 }
 //___REQUEST_USER_CONTACTS___

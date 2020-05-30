@@ -18,7 +18,7 @@ export const itemsContextMenuForContacts = [
     },
 ];
 
-export function handleClickOnItemContact(data, contactId, dispatch) {
+export function handleClickOnItemContact({data, contactId, dispatch, chatDb}) {
     console.log(data, contactId);
 
     if (data === 'contact-info') {
