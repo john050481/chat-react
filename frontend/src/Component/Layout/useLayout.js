@@ -43,7 +43,7 @@ export default function useLayout(props) {
             if (!elem) return;
             let component = elem.dataset.component;
             if (!component) return;
-            dispatch( showLayout({region: region, component}) );
+            dispatch( showLayout({region, component}) );
         },
         [region],
     );
