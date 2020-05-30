@@ -13,8 +13,9 @@ function UpperLayer(props) {
     console.log('Render UpperLayer, region = ', props.region);
 
     const ref = useRef();
-    useOnClickOutside(ref, (e)=>props.showLayout({region: '', component: ''}));
+    useOnClickOutside(ref, (e)=>props.showLayout({region: '', component: '', props: null}));
 
+    let CurrentComponent = props.layout.component ? components[props.layout.component] : null ;
     return (
         <div className="UpperLayerBlock">
             <CSSTransition
@@ -24,12 +25,12 @@ function UpperLayer(props) {
                     {
                         (props.layout.region === props.region)
                         ? <div className="UpperLayer" ref={ref}>
-                              {props.layout.component ? components[props.layout.component] : null}
+                              {CurrentComponent ? <CurrentComponent {...props.layout.props} /> : null}
                               <Button
                                   title="close"
                                   variant="outline-danger"
                                   className="closeLayout"
-                                  onClick={(e)=>props.showLayout({region: '', component: ''})}>
+                                  onClick={(e)=>props.showLayout({region: '', component: '', props: null})}>
                                   <IoIosClose />
                               </Button>
                           </div>

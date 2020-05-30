@@ -11,7 +11,8 @@ const init = {
     },
     layout: {
         region: '',
-        component: ''
+        component: '',
+        props: null
     }
 }
 

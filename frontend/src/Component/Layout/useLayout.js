@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect} from "react";
-import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import React, {useCallback} from "react";
+import { useDispatch } from 'react-redux';
 import {showLayout} from "../../redux/actions";
 
 import CreateRoom from "./RoomList/CreateRoom";
@@ -9,32 +9,23 @@ import FakeSettings from "../../common/FakeComponent/FakeSettings";
 import UserProfile from "./Root/UserProfile";
 import AuthForm from "../AuthForm";
 import About from "../About";
-
-import usePrevious from "../../hooks/usePrevious";
+import Profile from "../../common/Profile";
 
 export const components = {
-    CreateRoom: <CreateRoom />,
-    RoomInfo: <RoomInfo />,
-    FakeSearchMessage: <FakeSearchMessage />,
-    FakeSettings: <FakeSettings />,
-    UserProfile: <UserProfile />,
-    AuthForm: <AuthForm />,
-    About: <About />
+    CreateRoom: CreateRoom,
+    RoomInfo: RoomInfo,
+    FakeSearchMessage: FakeSearchMessage,
+    FakeSettings: FakeSettings,
+    UserProfile: UserProfile,
+    AuthForm: AuthForm,
+    About: About,
+    Profile: Profile
 };
 
 export default function useLayout(props) {
     const {region} = props;
 
     const dispatch = useDispatch();
-    const { layout } = useSelector(store => ({
-        layout: store.app.layout
-    }), shallowEqual);
-
-    let prevLayout = usePrevious(layout);
-
-    useEffect( () => {
-        console.log('LAYOUT useEffect ############# ', layout, prevLayout);
-    }, [layout.region, layout.component, region]);
 
     const handleShowLayout = useCallback(
         (e) => {
@@ -43,7 +34,7 @@ export default function useLayout(props) {
             if (!elem) return;
             let component = elem.dataset.component;
             if (!component) return;
-            dispatch( showLayout({region, component}) );
+            dispatch( showLayout({ region, component, props: {} }) );
         },
         [region],
     );

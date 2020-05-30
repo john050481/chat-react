@@ -1,16 +1,16 @@
 import './style.css';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import {connect} from "react-redux";
-import {showAlert} from '../../../../../redux/actions';
-import {useChat} from "../../../../../hooks/useChatFirebase";
-import AccordionApp from '../../../../../common/Accordion';
-import ButtonWithLoader from '../../../../../common/ButtonWithLoader';
-import {printFormatDate} from '../../../../../common/dates';
+import {showAlert} from '../../redux/actions';
+import {useChat} from "../../hooks/useChatFirebase";
+import AccordionApp from '../Accordion';
+import ButtonWithLoader from '../ButtonWithLoader';
+import {printFormatDate} from '../dates';
 
 function TemplateComponent(props) {
-    const {label, name, value, disabled=false, onChange, as=Col, type='text'} = props;
+    const {label, name, value, disabled=true, onChange, as=Col, type='text'} = props;
     return (
         <Form.Row>
             <Form.Group as={as}>
@@ -27,12 +27,27 @@ function TemplateComponent(props) {
     )
 }
 
-function Profile({showAlert}) {
-    console.log('Render UserProfile Profile')
+function Profile({showAlert, userId}) {
+    console.log('Render UserProfile Profile', userId)
 
     const chatDb = useChat();
 
-    const [chatUser, setChatUser] = useState({...chatDb.userData});
+    // если есть "userId", то мы хотим посмотреть профиль НЕ нашего юзера, а другого, например из списка контактов
+    const itsNotMyUser = userId ? true : false;
+
+    const initChatUserData = userId ? null : {...chatDb.userData, userId: chatDb.userId};
+    const [chatUser, setChatUser] = useState(initChatUserData);
+
+    useEffect( () => {
+        if (userId)
+            chatDb.getUserData(userId)
+                .then( userData => {
+                    setChatUser({...userData, userId})
+                } )
+                .catch( e => {
+                    showAlert({text: e.message, options: {variant: 'danger'}})
+                } )
+    }, [userId])
 
     const [visibleLoader, setVisibleLoader] = useState(false);
 
@@ -87,39 +102,43 @@ function Profile({showAlert}) {
     return (
         chatUser &&
         <div className='profile-block'>
-            <div className="profile-block__sticky">
-                <ButtonWithLoader className="profile-block__button" variant="primary" onClick={handlerSave} visibleLoader={visibleLoader}>
-                    Save
-                </ButtonWithLoader>
-            </div>
+            {
+                itsNotMyUser
+                ? null
+                : <div className="profile-block__sticky">
+                      <ButtonWithLoader className="profile-block__button" variant="primary" onClick={handlerSave} visibleLoader={visibleLoader}>
+                          Save
+                      </ButtonWithLoader>
+                  </div>
+            }
 
             <h1>Profile</h1>
 
             {/*здесь ИЗменяемые*/}
             <AccordionApp isOpen={true} title='Основное' >
-                <TemplateComponent label={'Name'} name={'name'} value={chatUser.name} onChange={handlerValueChange} />
-                <TemplateComponent label={'Website'} name={'website'} value={chatUser.website} onChange={handlerValueChange} />
-                <TemplateComponent label={'User name'} name={'username'} value={chatUser.username} onChange={handlerValueChange} />
+                <TemplateComponent label={'Name'} name={'name'} value={chatUser.name} onChange={handlerValueChange} disabled={itsNotMyUser} />
+                <TemplateComponent label={'Website'} name={'website'} value={chatUser.website} onChange={handlerValueChange} disabled={itsNotMyUser} />
+                <TemplateComponent label={'User name'} name={'username'} value={chatUser.username} onChange={handlerValueChange} disabled={itsNotMyUser} />
             </AccordionApp>
 
             <AccordionApp title='Company' >
-                <TemplateComponent label={'Company name'} name={'company.name'} value={chatUser.company.name} onChange={handlerValueChange} />
-                <TemplateComponent label={'Company catchPhrase'} name={'company.catchPhrase'} value={chatUser.company.catchPhrase} onChange={handlerValueChange} />
+                <TemplateComponent label={'Company name'} name={'company.name'} value={chatUser.company.name} onChange={handlerValueChange} disabled={itsNotMyUser} />
+                <TemplateComponent label={'Company catchPhrase'} name={'company.catchPhrase'} value={chatUser.company.catchPhrase} onChange={handlerValueChange} disabled={itsNotMyUser} />
                 <TemplateComponent label={'Company bs'} name={'company.bs'} value={chatUser.company.bs} onChange={handlerValueChange} />
             </AccordionApp>
 
             <AccordionApp title='Address' >
-                <TemplateComponent label={'City'} name={'address.city'} value={chatUser.address.city} onChange={handlerValueChange} />
-                <TemplateComponent label={'Street'} name={'address.street'} value={chatUser.address.street} onChange={handlerValueChange} />
-                <TemplateComponent label={'Suite'} name={'address.suite'} value={chatUser.address.suite} onChange={handlerValueChange} />
-                <TemplateComponent label={'Zipcode'} name={'address.zipcode'} value={chatUser.address.zipcode} onChange={handlerValueChange} />
-                <TemplateComponent label={'Geo lat'} name={'address.geo.lat'} value={chatUser.address.geo.lat} onChange={handlerValueChange} />
-                <TemplateComponent label={'Geo lng'} name={'address.geo.lng'} value={chatUser.address.geo.lng} onChange={handlerValueChange} />
+                <TemplateComponent label={'City'} name={'address.city'} value={chatUser.address.city} onChange={handlerValueChange} disabled={itsNotMyUser} />
+                <TemplateComponent label={'Street'} name={'address.street'} value={chatUser.address.street} onChange={handlerValueChange} disabled={itsNotMyUser} />
+                <TemplateComponent label={'Suite'} name={'address.suite'} value={chatUser.address.suite} onChange={handlerValueChange} disabled={itsNotMyUser} />
+                <TemplateComponent label={'Zipcode'} name={'address.zipcode'} value={chatUser.address.zipcode} onChange={handlerValueChange} disabled={itsNotMyUser} />
+                <TemplateComponent label={'Geo lat'} name={'address.geo.lat'} value={chatUser.address.geo.lat} onChange={handlerValueChange} disabled={itsNotMyUser} />
+                <TemplateComponent label={'Geo lng'} name={'address.geo.lng'} value={chatUser.address.geo.lng} onChange={handlerValueChange} disabled={itsNotMyUser} />
             </AccordionApp>
 
             {/*здесь НЕ изменяемые*/}
             <AccordionApp title='Дополнительно' >
-                <TemplateComponent label={'ID'} value={chatDb.userId} disabled={true} />
+                <TemplateComponent label={'ID'} value={chatUser.userId} disabled={true} />
                 <TemplateComponent label={'Email'} value={chatUser.email} disabled={true} />
                 <TemplateComponent label={'Phone'} value={chatUser.phone} disabled={true} />
                 <hr />
