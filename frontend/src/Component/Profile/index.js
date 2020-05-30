@@ -5,9 +5,9 @@ import Col from "react-bootstrap/Col";
 import {connect} from "react-redux";
 import {showAlert} from '../../redux/actions';
 import {useChat} from "../../hooks/useChatFirebase";
-import AccordionApp from '../Accordion';
-import ButtonWithLoader from '../ButtonWithLoader';
-import {printFormatDate} from '../dates';
+import AccordionApp from '../../common/Accordion';
+import ButtonWithLoader from '../../common/ButtonWithLoader';
+import {printFormatDate} from '../../common/dates';
 
 function TemplateComponent(props) {
     const {label, name, value, disabled=true, onChange, as=Col, type='text'} = props;

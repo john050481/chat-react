@@ -9,7 +9,7 @@ import FakeSettings from "../../common/FakeComponent/FakeSettings";
 import UserProfile from "./Root/UserProfile";
 import AuthForm from "../AuthForm";
 import About from "../About";
-import Profile from "../../common/Profile";
+import Profile from "../Profile";
 
 export const components = {
     CreateRoom: CreateRoom,
