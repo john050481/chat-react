@@ -36,7 +36,7 @@ export default function useLayout(props) {
         console.log('LAYOUT useEffect ############# ', layout, prevLayout);
     }, [layout.region, layout.component, region]);
 
-    const handleClickOnNavBar = useCallback(
+    const handleShowLayout = useCallback(
         (e) => {
             e.preventDefault();
             let elem = e.target.closest('[data-component]')
@@ -48,5 +48,5 @@ export default function useLayout(props) {
         [region],
     );
 
-    return handleClickOnNavBar;
+    return handleShowLayout;
 }
