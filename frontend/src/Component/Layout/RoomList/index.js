@@ -14,11 +14,10 @@ import {useDebounce} from '../../../hooks/useDebounce';
 import {useWindowSize} from '../../../hooks/useWindowSize';
 
 const MAX_WIDTH = 600;//px
+const region = REGION_ROOMLIST;
 
 export default function RoomList(props) {
     console.log('Render RoomList (ENTRY POINT)')
-
-    const region = REGION_ROOMLIST;
 
     //уменьшение сайдбара, при ширене экрана менее MAX_WIDTH, с задержкой в 1сек
     const [isSmall, setIsSmall] = useState(false);

@@ -10,10 +10,10 @@ import NavBarChat from './Navbar'
 import MessageBlock from './MassageBlock'
 import {REGION_CHAT} from '../../../redux/types'
 
+const region = REGION_CHAT;
+
 export default function () {
     console.log('Render Chat (ENTRY POINT)')
-
-    const region = REGION_CHAT;
 
     return (
         <div className="content">

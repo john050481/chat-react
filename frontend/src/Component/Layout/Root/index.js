@@ -18,11 +18,10 @@ import useChatRoomEnterOrExit from "../../../hooks/useChatSubscribe/useChatRoomE
 import {chatUserUpdate, chatUserExit} from "../../../redux/actions";
 import {connect} from "react-redux";
 
-function Root(props) {
-    console.log('Render Root (ENTRY POINT)');
-    const {chatUserUpdate, chatUserExit} = props;
+const region = REGION_ROOT;
 
-    const region = REGION_ROOT;
+function Root({chatUserUpdate, chatUserExit}) {
+    console.log('Render Root (ENTRY POINT)');
 
     const chatDb = useChat();
     const lastMessageEdit = useChatMessageEdit();
