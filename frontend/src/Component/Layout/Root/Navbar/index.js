@@ -12,11 +12,11 @@ function NavBarRoot(props) {
     console.log('Render NavBarRoot')
 
     /*LAYOUT*/
-    const handleClick = useLayout({region: props.region});
+    const handleShowLayout = useLayout({region: props.region});
     /*LAYOUT*/
 
     return (
-        <div className="navbar-root-block" onClick={handleClick}>
+        <div className="navbar-root-block" onClick={handleShowLayout}>
             <Container>
                 <Row>
                     <Col>

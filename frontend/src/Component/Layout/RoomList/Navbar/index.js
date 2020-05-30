@@ -17,7 +17,7 @@ function NavBarSidebar(props) {
     const chatDb = useChat();
 
     /*LAYOUT*/
-    const handleClick = useLayout({region: props.region});
+    const handleShowLayout = useLayout({region: props.region});
     /*LAYOUT*/
 
     const [isShowSearchedChat, setIsShowSearchedChat] = useState(false);
@@ -66,7 +66,7 @@ function NavBarSidebar(props) {
                         data-component='CreateRoom'
                         title="Add new chat"
                         size="sm"
-                        onClick={handleClick}
+                        onClick={handleShowLayout}
                     >
                         <FaPlus />
                     </Button>

@@ -15,7 +15,7 @@ function NavBarRoot(props) {
     const chatDb = useChat();
 
     /*LAYOUT*/
-    const handleClick = useLayout({region: props.region});
+    const handleShowLayout = useLayout({region: props.region});
     /*LAYOUT*/
 
     function handleClickLeaveRoom(e) {
@@ -26,7 +26,7 @@ function NavBarRoot(props) {
 
     return (
             props.currentRoomId &&
-                <div className="navbarmain-block" onClick={handleClick}>
+                <div className="navbarmain-block" onClick={handleShowLayout}>
                     <Container>
                         <Row>
                             <Col>
