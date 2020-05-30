@@ -18,6 +18,8 @@ const MAX_WIDTH = 600;//px
 export default function RoomList(props) {
     console.log('Render RoomList (ENTRY POINT)')
 
+    const region = REGION_ROOMLIST;
+
     //уменьшение сайдбара, при ширене экрана менее MAX_WIDTH, с задержкой в 1сек
     const [isSmall, setIsSmall] = useState(false);
     const windowSize = useWindowSize();
@@ -25,8 +27,6 @@ export default function RoomList(props) {
     useEffect( () => {
         setIsSmall(debouncedIsSmall)
     }, [debouncedIsSmall])
-
-    const region = REGION_ROOMLIST;
 
     return (
         <div className={"flx sidebar-rooms" + ( isSmall ? ' small' : '' )}>

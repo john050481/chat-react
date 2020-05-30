@@ -22,6 +22,8 @@ function Root(props) {
     console.log('Render Root (ENTRY POINT)');
     const {chatUserUpdate, chatUserExit} = props;
 
+    const region = REGION_ROOT;
+
     const chatDb = useChat();
     const lastMessageEdit = useChatMessageEdit();
     const lastEventRoom = useChatRoomEnterOrExit();
@@ -32,8 +34,6 @@ function Root(props) {
             chatUserExit()
         }
     }, [chatDb.userData])
-
-    const region = REGION_ROOT;
 
     return ( !chatDb.userData
         ? <SpinnerApp />
