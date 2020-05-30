@@ -1,7 +1,5 @@
 import React, {useEffect} from "react";
 
-////////////////////////////!!!!!!!!!!!!!!!!!!!!!!
-// использовать!!!
 export default function useContextMenu(ref, handler) {
     useEffect(
         () => {
