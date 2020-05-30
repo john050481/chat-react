@@ -1,13 +1,13 @@
 import './style.css';
 import React, {useEffect, useState} from 'react';
 import Form from "react-bootstrap/Form";
-import ButtonWithLoader from '../../../../common/ButtonWithLoader';
+import ButtonWithLoader from '../../common/ButtonWithLoader';
 import Col from "react-bootstrap/Col";
 import {connect} from "react-redux";
-import {requestUpdateRoomMetadata, showAlert} from '../../../../redux/actions';
-import {useChat} from "../../../../hooks/useChatFirebase";
-import AccordionApp from '../../../../common/Accordion';
-import {printFormatDate} from '../../../../common/dates';
+import {requestUpdateRoomMetadata, showAlert} from '../../redux/actions';
+import {useChat} from "../../hooks/useChatFirebase";
+import AccordionApp from '../../common/Accordion';
+import {printFormatDate} from '../../common/dates';
 
 function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
 
@@ -112,9 +112,10 @@ function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
     )
 }
 
-const mapStateToProps = store => {
+const mapStateToProps = (store, ownProps) => {
+    const curRoomId = ownProps.roomId ? ownProps.roomId : store.chat.currentRoomId;
     return {
-        currentRoom: store.chat.rooms.find( room => room.roomId === store.chat.currentRoomId)
+        currentRoom: store.chat.rooms.find( room => room.roomId === curRoomId)
     }
 }
 const mapDispatchToProps = {

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import {showLayout} from "../../redux/actions";
 
 import CreateRoom from "./RoomList/CreateRoom";
-import RoomInfo from "./Chat/RoomInfo";
+import RoomInfo from "../RoomInfo";
 import FakeSearchMessage from "../../common/FakeComponent/FakeSearchMessage";
 import FakeSettings from "../../common/FakeComponent/FakeSettings";
 import UserProfile from "./Root/UserProfile";
