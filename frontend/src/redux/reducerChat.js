@@ -1,5 +1,5 @@
 import {
-    CHAT_USER_ENTER,
+    CHAT_USER_UPDATE,
     CHAT_USER_EXIT,
 
     REQUEST_USERROOMS_METADATA,
@@ -46,7 +46,7 @@ const init = {
 
 export default function (state = init, action) {
     switch (action.type) {
-        case CHAT_USER_ENTER:
+        case CHAT_USER_UPDATE:
             return { ...state, user: action.payload}
         case CHAT_USER_EXIT:
             return { ...state, user: null}

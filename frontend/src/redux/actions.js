@@ -14,7 +14,7 @@ import {
     REQUEST_ROOMID_MESSAGES,
     REQUEST_ROOMID_METADATA,
 
-    CHAT_USER_ENTER,
+    CHAT_USER_UPDATE,
     CHAT_USER_EXIT,
 
     CITATION_SET,
@@ -87,10 +87,10 @@ export function userLogout() {
         type: USER_LOGOUT,
     }
 }
-//___CHAT_USER_ENTER___
-export function chatUserEnter(user) {
+//___CHAT_USER_UPDATE___
+export function chatUserUpdate(user) {
     return {
-        type: CHAT_USER_ENTER,
+        type: CHAT_USER_UPDATE,
         payload: user
     }
 }

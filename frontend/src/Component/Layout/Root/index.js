@@ -15,19 +15,19 @@ import {REGION_ROOT} from '../../../redux/types'
 import {useChat} from "../../../hooks/useChatFirebase";
 import useChatMessageEdit from "../../../hooks/useChatSubscribe/useChatMessageEdit";
 import useChatRoomEnterOrExit from "../../../hooks/useChatSubscribe/useChatRoomEnterOrExit";
-import {chatUserEnter, chatUserExit} from "../../../redux/actions";
+import {chatUserUpdate, chatUserExit} from "../../../redux/actions";
 import {connect} from "react-redux";
 
 function Root(props) {
     console.log('Render Root (ENTRY POINT)');
-    const {chatUserEnter, chatUserExit} = props;
+    const {chatUserUpdate, chatUserExit} = props;
 
     const chatDb = useChat();
     const lastMessageEdit = useChatMessageEdit();
     const lastEventRoom = useChatRoomEnterOrExit();
     useEffect( () => {
         if (chatDb.userData) {
-            chatUserEnter(chatDb);
+            chatUserUpdate(chatDb);
         } else {
             chatUserExit()
         }
@@ -56,7 +56,7 @@ function Root(props) {
 }
 
 const mapDispatchToProps = {
-    chatUserEnter,
+    chatUserUpdate,
     chatUserExit
 }
 export default connect(null, mapDispatchToProps)(Root)
