@@ -2,13 +2,14 @@ import './style.css'
 import React from 'react'
 import Card from "react-bootstrap/Card";
 import Loader from "../../../../../common/Loader";
-import {FaComments} from "react-icons/fa";
+import {FaComments, FaVolumeUp, FaVolumeMute} from "react-icons/fa";
 import {connect} from "react-redux";
 import {printFormatDate} from '../../../../../common/dates';
+import Button from "react-bootstrap/Button";
 
-function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId}) {
+function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, roomIsMuted}) {
     return (
-        <div data-roomid={room.roomId}>
+        <div className="chat-wrapper" data-roomid={room.roomId}>
             <Card className={ 'chat' + (currentRoomId === room.roomId ? ' active' : '') }>
                 {/*<Card.Header>Quote</Card.Header>*/}
                 <Card.Body className='pl-2'>
@@ -29,6 +30,13 @@ function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId}) {
                     </blockquote>
                 </Card.Body>
             </Card>
+            <div className="chat-muted">
+                {
+                    roomIsMuted
+                        ? <FaVolumeMute style={{color: "#6c757d"}} />
+                        : <FaVolumeUp style={{color: "#28a745"}} />
+                }
+            </div>
         </div>
     )
 }

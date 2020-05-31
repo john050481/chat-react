@@ -1,4 +1,4 @@
-import {showLayout, requestRoomIdMessages} from "../../../redux/actions";
+import {showLayout, requestRoomIdMessages, showAlert} from "../../../redux/actions";
 import {REGION_CHAT} from "../../../redux/types";
 
 export const itemsContextMenuForRooms = [
@@ -18,7 +18,7 @@ export const itemsContextMenuForRooms = [
     },
     {
         type: "item",
-        title: "Mute room",
+        title: "Mute on/off",
         data: "room-mute",
         icon: "volume-mute",
         className: "" // this.state.type === "anyType" ? "disabled" : "" /*type, name or value*/
@@ -43,12 +43,15 @@ export function handleClickOnItemRoom({data, roomId, dispatch, chatDb}) {
     };
 
     if (data === 'room-mute') {
-        console.log("!!!!!!!!!!! РЕАЛИЗОВАТЬ !!!!!!!!!!!");
+        chatDb.toggleMuteRoom(roomId)
+            .then( () => dispatch( showAlert({text: 'Done!', options: {variant: 'success'}}) ) )
+            .catch( e => dispatch( showAlert({text: e.message, options: {variant: 'danger'}}) ) );
     };
 
     if (data === 'room-exit') {
         let isLeaveRoom = confirm("Выйти из чата?");
         if (isLeaveRoom)
-            chatDb.leaveRoom(roomId);
+            chatDb.leaveRoom(roomId)
+                .catch( e => dispatch( showAlert({text: e.message, options: {variant: 'danger'}}) ) );
     }
 }

@@ -146,8 +146,22 @@ function useProvideChat() {
 
         return getUserRef(curUserId).set({...data}, { merge: true })
             .then( () => {
-                callback && callback(curUserId)
+                callback && callback(curUserId);
                 return curUserId;
+            })
+    }//*********this
+    function toggleMuteRoom(mutedRoomId, callback) {
+        const roomIsMuted = this.userData.muted.includes(mutedRoomId);
+        let newMutedArray = [];
+        if (roomIsMuted) {
+            newMutedArray = this.userData.muted.filter( roomId => roomId !== mutedRoomId );
+        } else {
+            newMutedArray = [...this.userData.muted, mutedRoomId]
+        }
+        return getUserRef(this.userId).set({muted: newMutedArray}, { merge: true })
+            .then( () => {
+                callback && callback(true);
+                return true;
             })
     }//*********this
     function _deleteUser(userId, callback) {
@@ -479,6 +493,7 @@ function useProvideChat() {
 
         _createUser,
         updateUser,
+        toggleMuteRoom,
         _deleteUser,
 
         _subscribeRoomMessages,

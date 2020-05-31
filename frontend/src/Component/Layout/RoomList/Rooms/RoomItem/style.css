@@ -1,3 +1,7 @@
+.chat-wrapper {
+    position: relative;
+}
+
 .chat {
     cursor: pointer;
 }
@@ -24,4 +28,10 @@
 
 .text-align-end {
     text-align: end;
+}
+
+.chat-muted {
+    position: absolute;
+    top: 1px;
+    right: 1px;
 }
