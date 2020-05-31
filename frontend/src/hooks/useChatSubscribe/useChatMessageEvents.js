@@ -4,26 +4,26 @@ import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import {addNewMessageInCurrentChat, modifyMessageInCurrentChat, removeMessageInCurrentChat, addNewMessageInOtherChat, requestUpdateRoomMetadata} from '../../redux/actions';
 import usePrevious from '../usePrevious';
 
-function useChatMessageSubscribe() {
-    console.log('---useChatMessageSubscribe---');
+function useChatMessageEventsSubscribe() {
+    console.log('---useChatMessageEventsSubscribe---');
 
     const chatDb = useChat();
     const [lastMessageEdit, setLastMessageEdit] = useState();
 
     // ADD/MODIFY/REMOVE (подписка на сообщения)
     useEffect( () => {
-        console.log('---useChatMessageSubscribe---useEffect');
+        console.log('---useChatMessageEventsSubscribe---useEffect');
         function handlerEventMessage ({event, detail}) {
             let roomId = detail.path.split('/')[1];
             setLastMessageEdit({...detail, roomId, event});
-            console.log('---useChatMessageSubscribe---handlerEventMessage, detail message ADD/MODIFY/REMOVE  === ', {...detail, roomId, event});
+            console.log('---useChatMessageEventsSubscribe---handlerEventMessage, detail message ADD/MODIFY/REMOVE  === ', {...detail, roomId, event});
         }
         chatDb.addEventListener('message-add', handlerEventMessage);
         chatDb.addEventListener('message-modify', handlerEventMessage);
         chatDb.addEventListener('message-remove', handlerEventMessage);
 
         return () => {
-            console.log('---useChatMessageSubscribe---useEffect---unmount');
+            console.log('---useChatMessageEventsSubscribe---useEffect---unmount');
             chatDb.removeEventListener('message-add', handlerEventMessage);
             chatDb.removeEventListener('message-modify', handlerEventMessage);
             chatDb.removeEventListener('message-remove', handlerEventMessage);
@@ -37,7 +37,7 @@ export default function useChatMessageEvents() {
     console.log('---useChatMessageEvents---');
 
     const chatDb = useChat();
-    let lastMessageEdit = useChatMessageSubscribe();
+    let lastMessageEdit = useChatMessageEventsSubscribe();
     let prevLastMessageEdit = usePrevious(lastMessageEdit);
 
     const dispatch = useDispatch();
