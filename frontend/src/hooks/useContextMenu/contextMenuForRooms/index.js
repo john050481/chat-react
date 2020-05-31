@@ -47,6 +47,8 @@ export function handleClickOnItemRoom({data, roomId, dispatch, chatDb}) {
     };
 
     if (data === 'room-exit') {
-        chatDb.leaveRoom(roomId);
+        let isLeaveRoom = confirm("Выйти из чата?");
+        if (isLeaveRoom)
+            chatDb.leaveRoom(roomId);
     }
 }
