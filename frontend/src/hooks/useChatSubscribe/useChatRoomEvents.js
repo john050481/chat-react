@@ -9,24 +9,24 @@ import {
 } from '../../redux/actions';
 import usePrevious from "../usePrevious";
 
-function useChatRoomEnterOrExitSubscribe() {
-    console.log('---useChatRoomEnterOrExitSubscribe---');
+function useChatRoomEventsSubscribe() {
+    console.log('---useChatRoomEventsSubscribe---');
 
     const chatDb = useChat();
     const [newEvent, setNewEvent] = useState(null);
 
     //подписка на события с комнатой
     useEffect( () => {
-        console.log('---useChatRoomEnterOrExitSubscribe---useEffect');
+        console.log('---useChatRoomEventsSubscribe---useEffect');
         function handlerRoom(eventObj) {
-            console.log('---useChatRoomEnterOrExitSubscribe---handlerRoom', eventObj);
+            console.log('---useChatRoomEventsSubscribe---handlerRoom', eventObj);
             setNewEvent(eventObj);
         }
         chatDb.addEventListener('room-enter', handlerRoom);
         chatDb.addEventListener('room-exit', handlerRoom);
 
         return () => {
-            console.log('---useChatRoomEnterOrExitSubscribe---useEffect---unmount');
+            console.log('---useChatRoomEventsSubscribe---useEffect---unmount');
             chatDb.removeEventListener('room-enter', handlerRoom);
             chatDb.removeEventListener('room-exit', handlerRoom);
         }
@@ -35,11 +35,11 @@ function useChatRoomEnterOrExitSubscribe() {
     return newEvent;
 }
 
-export default function useChatRoomEnterOrExit() {
-    console.log('---useChatRoomEnterOrExit---');
+export default function useChatRoomEvents() {
+    console.log('---useChatRoomEvents---');
 
 //    const chatDb = useChat();
-    let newEvent = useChatRoomEnterOrExitSubscribe();
+    let newEvent = useChatRoomEventsSubscribe();
     let prevNewEvent = usePrevious(newEvent);
 
     const dispatch = useDispatch();
@@ -49,17 +49,17 @@ export default function useChatRoomEnterOrExit() {
 //    }), shallowEqual);
 
     useEffect( () => {
-        console.log('---useChatRoomEnterOrExit---useEffect');
+        console.log('---useChatRoomEvents---useEffect');
 
         if (!newEvent || prevNewEvent === newEvent)
             return;
 
         if (newEvent.event === 'room-enter') {
-            console.log('---useChatRoomEnterOrExit---useEffect---room-enter');
+            console.log('---useChatRoomEvents---useEffect---room-enter');
             //dispatch(exitRoom(newEvent.detail.roomId));
         }
         if (newEvent.event === 'room-exit') {
-            console.log('---useChatRoomEnterOrExit---useEffect---room-exit');
+            console.log('---useChatRoomEvents---useEffect---room-exit');
             dispatch(exitRoom(newEvent.detail.roomId));
         }
         //dispatch(requestUpdateRoomMetadata(lastMessageEdit.roomId, () => chatDb.getRoomMetadata(lastMessageEdit.roomId)));

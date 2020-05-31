@@ -33,8 +33,8 @@ function useChatMessageSubscribe() {
     return lastMessageEdit;
 }
 
-export default function useChatMessageEdit() {
-    console.log('---useChatMessageEdit---');
+export default function useChatMessageEvents() {
+    console.log('---useChatMessageEvents---');
 
     const chatDb = useChat();
     let lastMessageEdit = useChatMessageSubscribe();
@@ -47,7 +47,7 @@ export default function useChatMessageEdit() {
     }), shallowEqual);
 
     useEffect( () => {
-        console.log('---useChatMessageEdit---useEffect');
+        console.log('---useChatMessageEvents---useEffect');
 
         if (!lastMessageEdit || prevLastMessageEdit === lastMessageEdit)
             return;

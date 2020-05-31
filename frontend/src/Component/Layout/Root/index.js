@@ -13,8 +13,8 @@ import Loader from '../../../common/Loader'
 import NavBarRoot from './Navbar'
 import {REGION_ROOT} from '../../../redux/types'
 import {useChat} from "../../../hooks/useChatFirebase";
-import useChatMessageEdit from "../../../hooks/useChatSubscribe/useChatMessageEdit";
-import useChatRoomEnterOrExit from "../../../hooks/useChatSubscribe/useChatRoomEnterOrExit";
+import useChatMessageEvents from "../../../hooks/useChatSubscribe/useChatMessageEvents";
+import useChatRoomEvents from "../../../hooks/useChatSubscribe/useChatRoomEvents";
 import {chatUserUpdate, chatUserExit} from "../../../redux/actions";
 import {connect} from "react-redux";
 
@@ -24,8 +24,8 @@ function Root({chatUserUpdate, chatUserExit}) {
     console.log('Render Root (ENTRY POINT)');
 
     const chatDb = useChat();
-    const lastMessageEdit = useChatMessageEdit();
-    const lastEventRoom = useChatRoomEnterOrExit();
+    const lastMessageEdit = useChatMessageEvents();
+    const lastEventRoom = useChatRoomEvents();
     useEffect( () => {
         if (chatDb.userData) {
             chatUserUpdate(chatDb);
