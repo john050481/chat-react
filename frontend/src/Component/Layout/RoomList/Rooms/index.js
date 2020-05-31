@@ -64,6 +64,20 @@ function Rooms(props) {
     /////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 
     function handleClick(e) {
+        let curElemMenu = e.target.closest('[data-menu]');
+        if (curElemMenu) {
+            console.log('curElemMenu = ', curElemMenu);
+            let event = new MouseEvent("contextmenu", {
+                bubbles: true,
+                cancelable: true,
+                clientX: e.pageX,
+                clientY: e.pageY
+            });
+            curElemMenu.dispatchEvent(event);
+            e.preventDefault();
+            return;
+        }
+
         let curElemContactId = e.target.closest('[data-contactid]');
         console.log(curElemContactId);
 

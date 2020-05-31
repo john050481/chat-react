@@ -32,6 +32,17 @@
 
 .chat-muted {
     position: absolute;
-    top: 1px;
-    right: 1px;
+    left: 1%;
+    bottom: 1%;
+}
+
+.chat-menu {
+    position: absolute;
+    right: 1%;
+    top: 1%;
+    padding: 2%;
+    cursor: pointer;
+}
+.chat-menu:hover {
+    background: hsla(259, 100%, 95%, 0.85);
 }

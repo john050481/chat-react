@@ -3,9 +3,9 @@ import React from 'react'
 import Card from "react-bootstrap/Card";
 import Loader from "../../../../../common/Loader";
 import {FaComments, FaVolumeUp, FaVolumeMute} from "react-icons/fa";
+import {IoIosArrowDown} from 'react-icons/io';
 import {connect} from "react-redux";
 import {printFormatDate} from '../../../../../common/dates';
-import Button from "react-bootstrap/Button";
 
 function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, roomIsMuted}) {
     return (
@@ -36,6 +36,9 @@ function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, roomIsMu
                         ? <FaVolumeMute style={{color: "#6c757d"}} />
                         : <FaVolumeUp style={{color: "#28a745"}} />
                 }
+            </div>
+            <div className="chat-menu" data-menu={true} hidden={isSmall}>
+                <IoIosArrowDown />
             </div>
         </div>
     )
