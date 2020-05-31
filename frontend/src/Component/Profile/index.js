@@ -28,27 +28,19 @@ function TemplateComponent(props) {
     )
 }
 
-function Profile({showAlert, userId}) {
+function Profile({showAlert, userId, currentContact}) {
     console.log('Render UserProfile Profile', userId)
 
     const chatDb = useChat();
 
     // если есть "userId", то мы хотим посмотреть профиль НЕ нашего юзера, а другого, например из списка контактов
     const itsNotMyUser = userId ? true : false;
-
-    const initChatUserData = userId ? null : {...chatDb.userData, userId: chatDb.userId};
+    const initChatUserData = userId
+                                 ? currentContact
+                                     ? {...currentContact.data, userId: currentContact.userId}
+                                     : null
+                                 : {...chatDb.userData, userId: chatDb.userId};
     const [chatUser, setChatUser] = useState(initChatUserData);
-
-    useEffect( () => {
-        if (userId)
-            chatDb.getUserData(userId)
-                .then( userData => {
-                    setChatUser({...userData, userId})
-                } )
-                .catch( e => {
-                    showAlert({text: e.message, options: {variant: 'danger'}})
-                } )
-    }, [userId])
 
     const [visibleLoader, setVisibleLoader] = useState(false);
 
@@ -102,7 +94,7 @@ function Profile({showAlert, userId}) {
 
     return (
         (!chatUser)
-            ? <SpinnerApp />
+            ? <div>Нет данных! Попробуйте еще раз!</div>
             : <div className='profile-block'>
                 {
                     itsNotMyUser
@@ -150,8 +142,10 @@ function Profile({showAlert, userId}) {
     )
 }
 
-const mapStateToProps = store => {
+const mapStateToProps = (store, ownProps) => {
+    const curContactId = ownProps.userId ? ownProps.userId : null;
     return {
+        currentContact: store.chat.contacts.find( contact => contact.userId === curContactId)
     }
 }
 const mapDispatchToProps = {
