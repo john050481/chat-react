@@ -5,6 +5,7 @@ import sagaWatcherRequestUserRoomsMetadata from './requestUserRoomsMetadata'
 import sagaWatcherRequestRoomIdMessages from './reguestRoomIdMessages'
 import sagaWatcherRequestRoomIdMetadata from './requestRoomIdMetadata'
 import sagaWatcherRequestUserContacts from './requestUserContacts'
+import sagaWatcherAddMessage from './addNewMessage'
 
 //---ROOT---
 export default function* rootSaga() {
@@ -13,6 +14,7 @@ export default function* rootSaga() {
         sagaWatcherRequestUserRoomsMetadata(),
         sagaWatcherRequestRoomIdMessages(),
         sagaWatcherRequestRoomIdMetadata(),
-        sagaWatcherRequestUserContacts()
+        sagaWatcherRequestUserContacts(),
+        sagaWatcherAddMessage()
     ])
 }

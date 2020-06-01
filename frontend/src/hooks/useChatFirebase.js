@@ -54,6 +54,7 @@ function useProvideChat() {
             .onSnapshot(function(DocumentReferenceUser) {
 
                 if (!DocumentReferenceUser.exists) {
+                    //!!!!!!!!!!! иногда удаляет существующего пользователя !!!!!!!!!!!!!!
                     _createUser( auth.user.uid, {email: auth.user.email} );
                     return;
                 }

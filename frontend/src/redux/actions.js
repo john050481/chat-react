@@ -31,8 +31,6 @@ import {
     REQUEST_USER_CONTACTS
 } from './types'
 
-import changeFavicon from '../common/changeFavicon'
-
 let timerIdAlert = null;
 
 //___LAYOUT___
@@ -56,7 +54,6 @@ export function hideLoader() {
 }
 //___ALERT___
 export function showAlert(props = {text: '', options: {}}) {
-    changeFavicon('/favicon-new-message.ico');
     return dispatch => {
         dispatch({
             type: SHOW_ALERT,
@@ -66,7 +63,6 @@ export function showAlert(props = {text: '', options: {}}) {
         clearTimeout(timerIdAlert);
         timerIdAlert = setTimeout(() => {
             dispatch(hideAlert())
-            changeFavicon('/favicon-default.ico');
         }, 10000)
     }
 }
