@@ -31,8 +31,8 @@ export default function useVisibilityChange() {
         }
 
         function handleVisibilityChange(e) {
-            console.log('document.visibilityState === ', document.visibilityState);
-            console.log('document.hidden === ', document.hidden);
+            //console.log('document.visibilityState === ', document.visibilityState);
+            //console.log('document.hidden === ', document.hidden);
             setChatIsVisible(!document.hidden);
         }
 
