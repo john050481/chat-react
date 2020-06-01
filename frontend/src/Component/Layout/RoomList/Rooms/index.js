@@ -64,6 +64,8 @@ function Rooms(props) {
     /////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 
     function handleClick(e) {
+        e.preventDefault();
+
         let curElemMenu = e.target.closest('[data-menu]');
         if (curElemMenu) {
             console.log('curElemMenu = ', curElemMenu);
@@ -74,7 +76,6 @@ function Rooms(props) {
                 clientY: e.pageY
             });
             curElemMenu.dispatchEvent(event);
-            e.preventDefault();
             return;
         }
 
