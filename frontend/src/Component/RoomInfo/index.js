@@ -105,7 +105,7 @@ function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
                     </Form.Row>
                 </AccordionApp>
 
-                <ButtonWithLoader variant="primary" onClick={handlerSave} visibleLoader={visibleLoader}>
+                <ButtonWithLoader variant="primary" onClick={handlerSave} visibleLoader={visibleLoader} disabled = {currentRoom.data.type === 'private'}>
                     Save
                 </ButtonWithLoader>
         </div>
