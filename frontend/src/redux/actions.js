@@ -7,6 +7,8 @@ import {
     SHOW_LOADER,
     HIDE_LOADER,
 
+    VISIBILITY_CHANGE,
+
     USER_LOGIN,
     USER_LOGOUT,
 
@@ -30,6 +32,8 @@ import {
 
     REQUEST_USER_CONTACTS
 } from './types'
+
+import changeFavicon from "../common/changeFavicon";
 
 let timerIdAlert = null;
 
@@ -81,6 +85,16 @@ export function userLogin(user) {
 export function userLogout() {
     return {
         type: USER_LOGOUT,
+    }
+}
+//___VISIBILITY_CHANGE___
+export function visibilityChange(visible) {
+    if (visible)
+        changeFavicon('/favicon-default.ico');
+
+    return {
+        type: VISIBILITY_CHANGE,
+        payload: visible
     }
 }
 //___CHAT_USER_UPDATE___

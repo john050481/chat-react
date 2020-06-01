@@ -29,9 +29,10 @@ function* sagaWorkerAddMessage(action) {
     }
 
     const roomIsMuted = mutedArr.includes(curRoomId);
-    if (!roomIsMuted) {
+    if (!roomIsMuted)
         playAudioAddMessage.play().catch();
-    }
 
-    changeFavicon('/favicon-new-message.ico');
+    const appIsVisible = yield select( store => store.app.appIsVisible );
+    if (!appIsVisible)
+        changeFavicon('/favicon-new-message.ico');
 }

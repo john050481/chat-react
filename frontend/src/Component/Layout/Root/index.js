@@ -15,13 +15,19 @@ import {REGION_ROOT} from '../../../redux/types'
 import {useChat} from "../../../hooks/useChatFirebase";
 import useChatMessageEvents from "../../../hooks/useChatSubscribe/useChatMessageEvents";
 import useChatRoomEvents from "../../../hooks/useChatSubscribe/useChatRoomEvents";
-import {chatUserUpdate, chatUserExit} from "../../../redux/actions";
+import useVisibilityChange from "../../../hooks/useVisibilityChange";
+import {chatUserUpdate, chatUserExit, visibilityChange} from "../../../redux/actions";
 import {connect} from "react-redux";
 
 const region = REGION_ROOT;
 
-function Root({chatUserUpdate, chatUserExit}) {
+function Root({chatUserUpdate, chatUserExit, visibilityChange}) {
     console.log('Render Root (ENTRY POINT)');
+
+    let appIsVisible = useVisibilityChange();
+    useEffect( () => {
+        visibilityChange(appIsVisible);
+    }, [appIsVisible])
 
     const chatDb = useChat();
     const lastMessageEdit = useChatMessageEvents();
@@ -56,6 +62,7 @@ function Root({chatUserUpdate, chatUserExit}) {
 
 const mapDispatchToProps = {
     chatUserUpdate,
-    chatUserExit
+    chatUserExit,
+    visibilityChange
 }
 export default connect(null, mapDispatchToProps)(Root)

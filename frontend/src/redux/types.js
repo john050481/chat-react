@@ -1,3 +1,5 @@
+import useVisibilityChange from "../hooks/useVisibilityChange";
+
 export const SHOW_LOADER = 'APP/SHOW_LOADER'
 export const HIDE_LOADER = 'APP/HIDE_LOADER'
 
@@ -8,6 +10,8 @@ export const SHOW_LAYOUT = 'APP/SHOW_LAYOUT'
 export const REGION_ROOT = 'APP/LAYOUT/REGION_ROOT'
 export const REGION_CHAT = 'APP/LAYOUT/REGION_CHAT'
 export const REGION_ROOMLIST = 'APP/LAYOUT/REGION_ROOMLIST'
+
+export const VISIBILITY_CHANGE = 'APP/VISIBILITY_CHANGE'
 
 export const USER_LOGIN = 'AUTH/LOGIN'
 export const USER_LOGOUT = 'AUTH/LOGOUT/CLEAR_STATE'

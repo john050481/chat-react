@@ -1,6 +1,7 @@
-import {SHOW_LAYOUT, HIDE_ALERT, HIDE_LOADER, SHOW_ALERT, SHOW_LOADER} from './types'
+import {VISIBILITY_CHANGE, SHOW_LAYOUT, HIDE_ALERT, HIDE_LOADER, SHOW_ALERT, SHOW_LOADER} from './types'
 
 const init = {
+    appIsVisible: null,
     loader: {
         visible: false,
         options: {}
@@ -28,6 +29,8 @@ export default function (state = init, action) {
             return {...state, alert: {text: null, options: {}}}
         case SHOW_LAYOUT:
             return {...state, layout: action.payload}
+        case VISIBILITY_CHANGE:
+            return {...state, appIsVisible: action.payload}
         default:
             return state
     }
