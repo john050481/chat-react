@@ -51,11 +51,11 @@ function Rooms(props) {
         if (curElemRoomId) {
             const roomId = curElemRoomId.dataset.roomid;
             itemsContextMenu = itemsContextMenuForRooms;
-            callbackOnClickMenu = (data, parentLiElem) => handleClickOnItemRoom({data, roomId, dispatch, chatDb});
+            callbackOnClickMenu = (event, data) => handleClickOnItemRoom({data, roomId, dispatch, chatDb});
         } else if (curElemContactId) {
             const contactId = curElemContactId.dataset.contactid;
             itemsContextMenu = itemsContextMenuForContacts;
-            callbackOnClickMenu = (data, parentLiElem) => handleClickOnItemContact({data, contactId, dispatch, chatDb});
+            callbackOnClickMenu = (event, data) => handleClickOnItemContact({data, contactId, dispatch, chatDb});
         }
 
         if (curElemRoomId || curElemContactId)

@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "@john0504/react-authform": "^1.0.11",
-    "@john0504/react-contextmenu": "^1.1.9",
+    "@john0504/react-contextmenu": "^2.0.0",
     "bootstrap": "^4.5.0",
-    "firebase": "^7.14.5",
+    "firebase": "^7.14.6",
     "prop-types": "^15.7.2",
     "query-string": "^6.12.1",
     "react": "^16.13.1",
