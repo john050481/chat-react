@@ -4,7 +4,12 @@ import Spinner from "react-bootstrap/Spinner";
 
 export default function ButtonWithLoader({variant, onClick, visibleLoader, children, ...rest}) {
     return (
-        <Button variant={variant} onClick={onClick} {...rest}>
+        <Button
+            disabled={visibleLoader}
+            variant={variant}
+            onClick={onClick}
+            {...rest}
+        >
             {
                 visibleLoader &&
                 <Spinner
