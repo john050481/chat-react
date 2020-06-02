@@ -69,13 +69,13 @@ function Rooms(props) {
         let curElemMenu = e.target.closest('[data-menu]');
         if (curElemMenu) {
             console.log('curElemMenu = ', curElemMenu);
-            let event = new MouseEvent("contextmenu", {
+            let mouseEvent = new MouseEvent("contextmenu", {
                 bubbles: true,
                 cancelable: true,
                 clientX: e.pageX,
                 clientY: e.pageY
             });
-            curElemMenu.dispatchEvent(event);
+            curElemMenu.dispatchEvent(mouseEvent);
             return;
         }
 
