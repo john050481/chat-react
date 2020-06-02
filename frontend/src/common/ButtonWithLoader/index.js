@@ -2,10 +2,10 @@ import React from 'react';
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
-export default function ButtonWithLoader({variant, onClick, visibleLoader, children, ...rest}) {
+export default function ButtonWithLoader({variant, onClick, visibleLoader, children, disabled, ...rest}) {
     return (
         <Button
-            disabled={visibleLoader}
+            disabled={visibleLoader || disabled}
             variant={variant}
             onClick={onClick}
             {...rest}
