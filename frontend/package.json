@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@john0504/react-authform": "^1.0.11",
-    "@john0504/react-contextmenu": "^2.0.0",
+    "@john0504/react-contextmenu": "^2.0.1",
     "bootstrap": "^4.5.0",
     "firebase": "^7.14.6",
     "prop-types": "^15.7.2",
