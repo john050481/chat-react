@@ -39,7 +39,7 @@ export function handleClickOnItemRoom({data, roomId, dispatch, chatDb}) {
         dispatch(showLayout( {region: REGION_CHAT, component: "RoomInfo", props: {roomId: roomId}} ));
     };
     if (data === 'room-open') {
-        dispatch(requestRoomIdMessages( roomId, () => chatDb.getRoomMessages(roomId) ));
+        dispatch(requestRoomIdMessages( roomId, chatDb ));
     };
 
     if (data === 'room-mute') {
