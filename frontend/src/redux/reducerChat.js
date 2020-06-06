@@ -10,6 +10,7 @@ import {
 
     REQUEST_ROOMID_MESSAGES,
     UPDATE_ROOMID_MESSAGES,
+    UPDATE_ROOMID_MESSAGES_STATUSES,
 
     ALL_REQUEST_WITH_THE_CURRENT_ROOM_ARE_COMPLETED,
 
@@ -31,6 +32,7 @@ import {
 const init = {
     user: null,
     messages: [],
+    statuses: [],
     rooms: [],
     contacts: [],
 
@@ -67,6 +69,8 @@ export default function (state = init, action) {
             return { ...state, requestRoomId: action.roomId, messages: [], currentRoomId: null, citation: {id: '', text: '', author: ''} }
         case UPDATE_ROOMID_MESSAGES:
             return { ...state, messages: action.payload}
+        case UPDATE_ROOMID_MESSAGES_STATUSES:
+            return { ...state, statuses: action.payload}
 
         case ALL_REQUEST_WITH_THE_CURRENT_ROOM_ARE_COMPLETED:
             return { ...state, currentRoomId: action.payload}

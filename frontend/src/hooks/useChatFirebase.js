@@ -3,6 +3,7 @@ import React, {useState, useEffect, useRef, createContext, useContext} from "rea
 import {useAuth} from "./useAuth";
 import usersModel from '../model/users';
 import roomMessagesModel from '../model/roomMessages';
+import roomMessagesStatusModel from '../model/roomMessagesStatus';
 import roomMetadataModel from '../model/roomMetadata';
 import {diffArrays} from "../common/arrays";
 import usePrevious from '../hooks/usePrevious';
@@ -31,6 +32,7 @@ function useProvideChat() {
         'message-add',
         'message-modify',
         'message-remove',
+        'message-status-modify',
         'room-invite',
         'room-invite-response'
     ];
@@ -223,6 +225,13 @@ function useProvideChat() {
             citationId
         });
 
+        const docRefRoomMessagesStatus = db.collection('room-messages').doc(roomId).collection('statuses').doc(messageId);
+        batch.set(docRefRoomMessagesStatus, {
+            ...roomMessagesStatusModel,
+            users: [this.userId],
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+
         const docRefRoomMetadata = db.collection('room-metadata').doc(roomId);
         batch.update(docRefRoomMetadata, {
             lastActivity: firebase.firestore.FieldValue.serverTimestamp() // The time at which the room was created.
@@ -244,6 +253,17 @@ function useProvideChat() {
     function updateMessage(roomId, messageId, data, callback) {
         return db.collection('room-messages').doc(roomId).collection('messages').doc(messageId).set({message: data}, {merge: true})
             .then( () => {
+                callback && callback(messageId)
+                return true;
+            })
+    }//*********
+    function updateMessageStatus(roomId, messageId, data, callback) {
+        return db.collection('room-messages').doc(roomId).collection('statuses').doc(messageId)
+            .update({
+                users: firebase.firestore.FieldValue.arrayUnion(...data)
+            })
+            .then( () => {
+                dispatchEvent( {event: 'message-status-modify', detail: {roomId, messageId, data} } );
                 callback && callback(messageId)
                 return true;
             })
@@ -353,6 +373,18 @@ function useProvideChat() {
                 return messages;
         });
     }//*********
+    function getRoomMessagesStatuses(roomId) {
+        return db.collection("room-messages").doc(roomId).collection("statuses")
+            .orderBy("timestamp")
+            .get()
+            .then( querySnapshot => {
+                let messages = [];
+                querySnapshot.forEach(function(doc) {
+                    messages.push({...doc.data(), id: doc.id});
+                });
+                return messages;
+            });
+    }//*********
     function getRoomMessage(roomId, messageId) {
         return db.collection("room-messages").doc(roomId).collection("messages").doc(messageId).get().then( doc => {
             if (doc.exists) {
@@ -361,6 +393,14 @@ function useProvideChat() {
             return false;
         });
     }//*********
+    function getRoomMessageStatus(roomId, messageId) {
+        return db.collection("room-messages").doc(roomId).collection("statuses").doc(messageId).get().then( doc => {
+            if (doc.exists) {
+                return ({...doc.data(), id: doc.id});
+            }
+            return false;
+        });
+    }//
     function enterRoom(roomId, callback) {
         let batch = db.batch(); //выполняет multiple write operations as a single
 
@@ -429,13 +469,14 @@ function useProvideChat() {
     }//*********this
 
     function addEventListener(event, callback) {
-        /* смотри выше: const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-modify', 'message-remove', 'room-invite', 'room-invite-response'];
+        /* смотри выше: const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-modify', 'message-remove', 'message-status-modify', 'room-invite', 'room-invite-response'];
         user-update - Invoked when the user's metadata changes.
         room-enter - Invoked when the user successfully enters a room.
         room-exit - Invoked when the user exists a room.
         message-add - Invoked when a new message is received.
         message-modify - Invoked when a message is modify.
         message-remove - Invoked when a message is deleted.
+        message-status-modify - On message status update.
         room-invite - Invoked when a new room invite is received.
         room-invite-response - Invoked when a response to a previous invite is received.
         */
@@ -501,6 +542,7 @@ function useProvideChat() {
 
         sendMessage,
         updateMessage,
+        updateMessageStatus,
         deleteMessage,
 
         createRoom,
@@ -509,7 +551,9 @@ function useProvideChat() {
         updateRoomMetadata,
         _deleteRoom,
         getRoomMessages,
+        getRoomMessagesStatuses,
         getRoomMessage,
+        getRoomMessageStatus,
         enterRoom,
         leaveRoom,
         getRoomUsers,

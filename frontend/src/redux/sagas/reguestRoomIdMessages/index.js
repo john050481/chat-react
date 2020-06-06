@@ -1,5 +1,5 @@
 import {put, takeLatest, all, call} from 'redux-saga/effects'
-import {REQUEST_ROOMID_MESSAGES, ALL_REQUEST_WITH_THE_CURRENT_ROOM_ARE_COMPLETED, UPDATE_ROOMID_MESSAGES} from '../../types';
+import {REQUEST_ROOMID_MESSAGES, ALL_REQUEST_WITH_THE_CURRENT_ROOM_ARE_COMPLETED, UPDATE_ROOMID_MESSAGES, UPDATE_ROOMID_MESSAGES_STATUSES} from '../../types';
 import {showLoader, hideLoader, showAlert} from '../../actions';
 
 //---REGUEST ONE CHAT (FOR ID)---
@@ -8,16 +8,20 @@ export default function* sagaWatcher() {
 }
 function* sagaWorker(action) {
     const roomId = action.roomId;
-    const functionToGetDataForSaga = action.functionToGetDataForSaga;
+    const chatDbApi = action.chatDbApi;
+    const functionToGetMessages = () => chatDbApi.getRoomMessages(roomId);
+    const functionToGetStatuses = () => chatDbApi.getRoomMessagesStatuses(roomId);
 
     try {
         yield put(showLoader())
 
-        const { currentRoom, messages } = yield all({
-            messages: call(functionToGetDataForSaga)
+        const { messages, statuses } = yield all({
+            messages: call(functionToGetMessages),
+            statuses: call(functionToGetStatuses)
         });
         yield put({ type: ALL_REQUEST_WITH_THE_CURRENT_ROOM_ARE_COMPLETED, payload: roomId });
         yield put({ type: UPDATE_ROOMID_MESSAGES, payload: messages });
+        yield put({ type: UPDATE_ROOMID_MESSAGES_STATUSES, payload: statuses });
 
         yield put(hideLoader());
         yield put(showAlert({text: 'FETCH ROOM & MASSAGES DONE!!!', options: {variant: 'success'}}))

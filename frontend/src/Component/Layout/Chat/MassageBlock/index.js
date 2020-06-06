@@ -1,10 +1,11 @@
 import './style.css'
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Citation from '../Citation'
 import {connect} from "react-redux";
 import ChatMessage from '../ChatMessage'
 import SpinnerApp from "../../../../common/Spinner";
 import {setCitation} from "../../../../redux/actions";
+import StatusedAndGoEnd from './StatusedAndGoEnd'
 
 function MessageBlock(props) {
     console.log('Render MessageBlock');
@@ -14,7 +15,11 @@ function MessageBlock(props) {
         console.log('###messageBlockScroll### === ', messageBlockScroll);
         if (!messageBlockScroll.current) return;
         messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
-    })
+    }, []);
+
+    useEffect( () => {
+        handleScroll();
+    }, [props.messages])
 
     function handleClick(e) {
         let target = e.target;
@@ -25,9 +30,21 @@ function MessageBlock(props) {
         }
     }
 
+    const [isScrollEnd, setIsScrollEnd] = useState(null);
+    function handleScroll(e) {
+        if (!messageBlockScroll.current) return;
+
+        const {scrollTop, scrollHeight, clientHeight} = messageBlockScroll.current;
+        if (scrollTop + clientHeight >= scrollHeight) {
+            setIsScrollEnd(true);
+        } else {
+            isScrollEnd && setIsScrollEnd(false);
+        }
+    }
+
     return (
         <main className="content message-block-wrapper" onClick={handleClick} >
-            <div ref={messageBlockScroll} className='content message-block-scroll'>
+            <div ref={messageBlockScroll} className='content message-block-scroll' onScroll={handleScroll}>
                 <div id='message-block' className='content message-block p-1'>
                     {   (!props.messages.length && props.requestRoomId)
                         ? <SpinnerApp />
@@ -47,6 +64,7 @@ function MessageBlock(props) {
                     <Citation />
                 </div>
             }
+            <StatusedAndGoEnd messageBlockScroll={messageBlockScroll} isScrollEnd={isScrollEnd} />
         </main>
     )
 }

@@ -1,8 +1,9 @@
 import './style.css';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import Toast from 'react-bootstrap/Toast'
 import {connect} from "react-redux";
 import {useChat} from "../../../../hooks/useChatFirebase";
+import useOnScreenUnReadMessage from "../../../../hooks/useOnScreenUnReadMessage";
 import {printFormatDate, diffDateInDays, printFormatDaysAgo} from '../../../../common/dates';
 
 function ChatMessage(props) {
@@ -22,12 +23,19 @@ function ChatMessage(props) {
             })()
     }, [])
 
+    const chatMessageBlock = useRef();
+    const {isIntersecting, isRead} = useOnScreenUnReadMessage(chatMessageBlock, chatDb, message, currentRoomId);
+    useEffect( () => {
+        console.log('isIntersecting ###@@@$$$%%%^^^&&& = ', isIntersecting, isRead, message.id);
+//        chatDb.updateMessageStatus(currentRoomId, message.id, [chatDb.userId]);
+    }, [isIntersecting, isRead]);
+
     let milliseconds = message.timestamp ? message.timestamp.seconds*1000 : NaN;
     const itsMe = chatDb.userId === message.userId;
     const daysAgo = diffDateInDays(Date.now(), milliseconds);
 
     return (
-        <Toast className={'chat-message' + (itsMe ? ' my' : ' notMy')}>
+        <Toast ref={chatMessageBlock} className={'chat-message' + (itsMe ? ' my' : ' notMy')}>
             <Toast.Header closeButton={false}>
                 <strong className="mr-auto">
                     {itsMe ? "Вы" : message.name }
@@ -52,7 +60,7 @@ function ChatMessage(props) {
 
 const mapStateToProps = store => {
     return {
-        currentRoomId: store.chat.currentRoomId
+        currentRoomId: store.chat.currentRoomId,
     }
 }
 const mapDispatchToProps = {

@@ -13,6 +13,9 @@ function useChatMessageEventsSubscribe() {
     // ADD/MODIFY/REMOVE (подписка на сообщения)
     useEffect( () => {
         console.log('---useChatMessageEventsSubscribe---useEffect');
+        function handlerEventStatusMessage({event, detail}) {
+            console.log(event, detail);
+        }
         function handlerEventMessage ({event, detail}) {
             let roomId = detail.path.split('/')[1];
             setLastMessageEdit({...detail, roomId, event});
@@ -21,12 +24,14 @@ function useChatMessageEventsSubscribe() {
         chatDb.addEventListener('message-add', handlerEventMessage);
         chatDb.addEventListener('message-modify', handlerEventMessage);
         chatDb.addEventListener('message-remove', handlerEventMessage);
+        chatDb.addEventListener('message-status-modify', handlerEventStatusMessage);
 
         return () => {
             console.log('---useChatMessageEventsSubscribe---useEffect---unmount');
             chatDb.removeEventListener('message-add', handlerEventMessage);
             chatDb.removeEventListener('message-modify', handlerEventMessage);
             chatDb.removeEventListener('message-remove', handlerEventMessage);
+            chatDb.removeEventListener('message-status-modify', handlerEventStatusMessage);
         }
     }, [chatDb.userId]);
 
@@ -60,6 +65,8 @@ export default function useChatMessageEvents() {
                 dispatch(modifyMessageInCurrentChat(lastMessageEdit.message));
             } else if (lastMessageEdit.event === 'message-remove') {
                 dispatch(removeMessageInCurrentChat(lastMessageEdit.message));
+            } else if (lastMessageEdit.event === 'message-status-modify') {
+                console.log('message-status-modify');
             }
         } else {
             // сообщение пришло в НЕ активную комнату
@@ -67,6 +74,7 @@ export default function useChatMessageEvents() {
                 dispatch(addNewMessageInOtherChat(lastMessageEdit.roomId));
             } else if (lastMessageEdit.event === 'message-modify') {
             } else if (lastMessageEdit.event === 'message-remove') {
+            } else if (lastMessageEdit.event === 'message-status-modify') {
             }
         }
         dispatch(requestUpdateRoomMetadata(lastMessageEdit.roomId, () => chatDb.getRoomMetadata(lastMessageEdit.roomId)));

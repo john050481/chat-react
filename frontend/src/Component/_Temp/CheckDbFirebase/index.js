@@ -109,6 +109,9 @@ export default function (props) {
     async function handlerSearchUserEmail(e) {
         console.log( await chatDb.searchUserEmail(userEmailElem.value) );
     }//*********
+    function handelUpdateMessageStatus(e) {
+        chatDb.updateMessageStatus('room1', 'Rzh4e3e93kifCL4OY2Lu', ['123', '456']);
+    }
 
     return (
         <div>
@@ -154,6 +157,8 @@ export default function (props) {
             <label>user email: <input id={'userEmailElem'} /></label>
             <br />
             <button onClick={handlerSearchUserEmail} className={'btn btn-outline-success'}>search user email</button>
+            <hr />
+            <button onClick={handelUpdateMessageStatus} className={'btn btn-outline-success'}>updateMessageStatus</button>
         </div>
     )
 }
