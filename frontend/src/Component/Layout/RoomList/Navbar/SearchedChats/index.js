@@ -33,7 +33,7 @@ function SearchedChats(props) {
         if (curElemRoomId)
             curElemRoomId.scrollIntoView(); /* elemInWindow(curElemRoomId, null, target => target.scrollIntoView() ); */
 
-        props.requestRoomIdMessages( roomId, () => chatDb.getRoomMessages(roomId) );
+        props.requestRoomIdMessages( roomId, chatDb );
         props.setIsShowSearchedChat(false);
     }
 

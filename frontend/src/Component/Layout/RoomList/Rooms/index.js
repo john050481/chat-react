@@ -86,7 +86,7 @@ function Rooms(props) {
         if (curElemRoomId) {
             let roomId = curElemRoomId.dataset.roomid;
             if ( roomId !== (currentRoomId ? currentRoomId : null) ) {
-                requestRoomIdMessages( roomId, () => chatDb.getRoomMessages(roomId) );
+                requestRoomIdMessages( roomId, chatDb );
             }
         }
     }
