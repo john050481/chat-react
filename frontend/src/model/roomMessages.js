@@ -1,6 +1,6 @@
 /*
 https://firechat.firebaseapp.com/docs/
-on Firebase: room-messages/<room-id>/<message-id>
+on Firebase: room-messages/<room-id>/<messages>/<message-id>
 */
 export default {
     userId: "", // The id of the user that sent the message.
