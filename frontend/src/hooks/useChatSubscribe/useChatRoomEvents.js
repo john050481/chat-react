@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {useChat} from "../useChatFirebase";
-import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import {
-    addNewMessageInCurrentChat, addNewMessageInOtherChat,
-    exitRoom,
-    modifyMessageInCurrentChat,
-    removeMessageInCurrentChat, requestUpdateRoomMetadata
-} from '../../redux/actions';
+import { useDispatch } from 'react-redux';
+import {exitRoom} from '../../redux/actions';
 import usePrevious from "../usePrevious";
 
 function useChatRoomEventsSubscribe() {
