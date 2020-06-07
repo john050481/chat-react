@@ -17,9 +17,8 @@ export default function useOnScreenUnReadMessage(ref, chatDb, message, currentRo
         if (!chatDb.userId || !message || !statuses.length)
             return;
 
-        console.log(statuses, message);
         const messageStatus = statuses.find( messageStatus => messageStatus.id === message.id);
-        console.log('messageStatusmessageStatusmessageStatus = ', messageStatus);
+        console.log('messageStatusmessageStatusmessageStatus = ', statuses, message, messageStatus);
         if (!messageStatus)
             return;
 
@@ -34,8 +33,11 @@ export default function useOnScreenUnReadMessage(ref, chatDb, message, currentRo
         const observer = new IntersectionObserver(
             ([entry]) => {
                 // Update our state when observer callback fires
+                console.log("observer = new IntersectionObserver");
                 setIntersecting(entry.isIntersecting);
-                chatDb.updateMessageStatus(currentRoomId, message.id, [chatDb.userId]);
+                chatDb.updateMessageStatus(currentRoomId, message.id, [chatDb.userId])
+                    .then( () => observer.observe(ref.current) )
+                    .catch( e => console.log('!!!!!!!! ERROR !!!!!!!!'));
             },
             {
                 rootMargin
