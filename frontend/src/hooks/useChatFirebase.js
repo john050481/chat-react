@@ -180,7 +180,7 @@ function useProvideChat() {
     function _subscribeRoomMessages(roomId) {
         let firstRun = true;
         const unsubscribe = db.collection("room-messages").doc(roomId).collection("messages").onSnapshot(function (snapshot){
-            console.log('---------------useChatFirebase---------------');
+            console.log('---------------_subscribeRoomMessages---------------');
             console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId} --- firstRun: ${firstRun} ---`);
 
             let source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
