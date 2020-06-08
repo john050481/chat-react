@@ -273,11 +273,18 @@ function useProvideChat() {
             })
     }//*********
     function deleteMessage(roomId, messageId, callback) {
-        return db.collection('room-messages').doc(roomId).collection('messages').doc(messageId).delete()
-            .then( () => {
-                callback && callback(messageId)
+        let batch = db.batch(); //выполняет multiple write operations as a single
+
+        const messageRef = db.collection('room-messages').doc(roomId).collection('messages').doc(messageId)
+        batch.delete(messageRef);
+        const statusRef = db.collection('room-messages').doc(roomId).collection('statuses').doc(messageId)
+        batch.delete(statusRef);
+
+        return batch.commit()
+            .then(function () {
+                callback && callback(messageId);
                 return true;
-            })
+            });
     }//*********
 
     function createRoom(roomName, roomType, callback) {

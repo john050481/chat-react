@@ -65,8 +65,12 @@ export default function useChatMessageEvents() {
                 dispatch(modifyMessageInCurrentChat(lastMessageEdit.message));
             } else if (lastMessageEdit.event === 'messages-removed') {
                 dispatch(removeMessageInCurrentChat(lastMessageEdit.message));
+            } else if (lastMessageEdit.event === 'statuses-added') {
+                console.log('statuses-added');
             } else if (lastMessageEdit.event === 'statuses-modified') {
                 console.log('statuses-modified');
+            } else if (lastMessageEdit.event === 'statuses-removed') {
+                console.log('statuses-removed');
             }
         } else {
             // сообщение пришло в НЕ активную комнату
@@ -74,7 +78,9 @@ export default function useChatMessageEvents() {
                 dispatch(addNewMessageInOtherChat(lastMessageEdit.roomId));
             } else if (lastMessageEdit.event === 'messages-modified') {
             } else if (lastMessageEdit.event === 'messages-removed') {
+            } else if (lastMessageEdit.event === 'statuses-added') {
             } else if (lastMessageEdit.event === 'statuses-modified') {
+            } else if (lastMessageEdit.event === 'statuses-removed') {
             }
         }
         dispatch(requestUpdateRoomMetadata(lastMessageEdit.roomId, () => chatDb.getRoomMetadata(lastMessageEdit.roomId)));
