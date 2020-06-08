@@ -29,10 +29,12 @@ function useProvideChat() {
         'user-update',
         'room-enter',
         'room-exit',
-        'message-add',
-        'message-modify',
-        'message-remove',
-        'message-status-modify',
+        'messages-added',
+        'messages-modified',
+        'messages-removed',
+        'statuses-added',
+        'statuses-modified',
+        'statuses-removed',
         'room-invite',
         'room-invite-response'
     ];
@@ -93,15 +95,17 @@ function useProvideChat() {
         // ОТПИСЫВАЕМСЯ
         subscribersUserRooms.current = subscribersUserRooms.current.filter( subscriber => {
             if ( needUnsubscribe.find( unsubscribeRoomId => unsubscribeRoomId === subscriber.roomId) ) {
-                subscriber.unsubscribe();
+                subscriber.unsubscribeMessages();
+                subscriber.unsubscribeStatuses();
                 return false;
             }
             return true;
         } );
         // ПОДПИСЫВАЕМСЯ
         needSubscribe.forEach( roomId => {
-            const unsubscribe = _subscribeRoomMessages(roomId);
-            subscribersUserRooms.current.push({roomId, unsubscribe});
+            const unsubscribeMessages = _subscribeRoomMessages(roomId, "messages");
+            const unsubscribeStatuses = _subscribeRoomMessages(roomId, "statuses");
+            subscribersUserRooms.current.push({roomId, unsubscribeMessages, unsubscribeStatuses});
         } );
     }, [userData] );
     //---------------------------------------------------------------
@@ -128,7 +132,10 @@ function useProvideChat() {
             console.log('ОТПИСКА от subscribersUserRooms = ', [...subscribersUserRooms.current]);
             console.log('*************************************************************************************');
             */
-            subscribersUserRooms.current.forEach( item => item.unsubscribe() );
+            subscribersUserRooms.current.forEach( subscriber => {
+                subscriber.unsubscribeMessages();
+                subscriber.unsubscribeStatuses();
+            } );
             subscribersUserRooms.current.length = 0;
         }
     }, [userId]);
@@ -177,11 +184,11 @@ function useProvideChat() {
             })
     }//*********this
 
-    function _subscribeRoomMessages(roomId) {
+    function _subscribeRoomMessages(roomId, collection) {
         let firstRun = true;
-        const unsubscribe = db.collection("room-messages").doc(roomId).collection("messages").onSnapshot(function (snapshot){
+        const unsubscribe = db.collection("room-messages").doc(roomId).collection(collection).onSnapshot(function (snapshot){
             console.log('---------------_subscribeRoomMessages---------------');
-            console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId} --- firstRun: ${firstRun} ---`);
+            console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId}/${collection} --- firstRun: ${firstRun} ---`);
 
             let source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
             console.log('source = ', source);
@@ -192,20 +199,17 @@ function useProvideChat() {
             }
             snapshot.docChanges().forEach(function(change) {
                 //console.log('path array === ', change.doc.ref.path.split('/'));
-                if (change.type === "added") {
-                    console.log("added! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
-                    dispatchEvent( {event: 'message-add', detail: {message: {...change.doc.data(), id: change.doc.id}, path: change.doc.ref.path} } );
-                }
-                if (change.type === "modified") {
-                    console.log("modified! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
-                    dispatchEvent( {event: 'message-modify', detail: {message: {...change.doc.data(), id: change.doc.id}, path: change.doc.ref.path} } );
-                }
-                if (change.type === "removed") {
-                    console.log("removed! ", "id: ", change.doc.id, "data.message: ", change.doc.data().message);
-                    dispatchEvent( {event: 'message-remove', detail: {message: {...change.doc.data(), id: change.doc.id}, path: change.doc.ref.path} } );
+                if ( ["added", "modified", "removed"].includes(change.type) ) {
+                    const detail = {
+                        message: {...change.doc.data(), id: change.doc.id},
+                        path: change.doc.ref.path
+                    };
+
+                    console.log(change.type, "detail: ", detail);
+                    dispatchEvent( {event: `${collection}-${change.type}`, detail} );
                 }
             });
-            console.log('---------------useChatFirebase---------------');
+            console.log('---------------_subscribeRoomMessages---------------');
         });
         return unsubscribe;
     }//*********
@@ -251,7 +255,8 @@ function useProvideChat() {
             });
     }//*********
     function updateMessage(roomId, messageId, data, callback) {
-        return db.collection('room-messages').doc(roomId).collection('messages').doc(messageId).set({message: data}, {merge: true})
+        return db.collection('room-messages').doc(roomId).collection('messages').doc(messageId)
+            .set({message: data}, {merge: true})
             .then( () => {
                 callback && callback(messageId)
                 return true;
@@ -263,7 +268,6 @@ function useProvideChat() {
                 users: firebase.firestore.FieldValue.arrayUnion(...data)
             })
             .then( () => {
-                dispatchEvent( {event: 'message-status-modify', detail: {roomId, messageId, data} } );
                 callback && callback(messageId)
                 return true;
             })
@@ -469,14 +473,16 @@ function useProvideChat() {
     }//*********this
 
     function addEventListener(event, callback) {
-        /* смотри выше: const events = ['user-update', 'room-enter', 'room-exit', 'message-add', 'message-modify', 'message-remove', 'message-status-modify', 'room-invite', 'room-invite-response'];
+        /* смотри выше: const events = ['user-update', 'room-enter', 'room-exit', 'messages-added', 'messages-modified', 'messages-removed', 'statuses-added', 'statuses-modified', 'statuses-removed', 'room-invite', 'room-invite-response'];
         user-update - Invoked when the user's metadata changes.
         room-enter - Invoked when the user successfully enters a room.
         room-exit - Invoked when the user exists a room.
-        message-add - Invoked when a new message is received.
-        message-modify - Invoked when a message is modify.
-        message-remove - Invoked when a message is deleted.
-        message-status-modify - On message status update.
+        messages-added - Invoked when a new message is received.
+        messages-modified - Invoked when a message is modify.
+        messages-removed - Invoked when a message is deleted.
+        statuses-added - ... added
+        statuses-modified - On message status update.
+        statuses-removed - ... remove
         room-invite - Invoked when a new room invite is received.
         room-invite-response - Invoked when a response to a previous invite is received.
         */
