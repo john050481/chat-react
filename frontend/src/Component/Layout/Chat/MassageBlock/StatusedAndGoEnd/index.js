@@ -1,22 +1,21 @@
 import './style.css'
-import React, {useEffect, useRef} from 'react'
+import React from 'react'
 import {IoIosArrowDown} from 'react-icons/io';
-import {connect} from "react-redux";
-import {useChat} from "../../../../../hooks/useChatFirebase";
+import useCountUnReadMessage from '../../../../../hooks/useCountUnReadMessage'
 
-function StatusedAndGoEnd(props) {
+export default function StatusedAndGoEnd(props) {
     console.log('Render StatusedAndGoEnd');
 
-    const {messageBlockScroll, isScrollEnd, statuses} = props;
+    const {messageBlockScroll, isScrollEnd} = props;
 
-    const chatDb = useChat();
+    const countUnReadMessage = useCountUnReadMessage();
 
     function handleClick(e) {
         if (!messageBlockScroll.current) return;
+        //!!!!!!!!!!!! ПРОЧИТАТЬ ВСЕ СООБЩЕНИЯ !!!!!!!!!!!!!
+        //!!!!!!!!!!!! setReadAllMessageInCurrentChat( ... ) !!!!!!!!!!!!!
         messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
     }
-
-    const countUnReadMessage = statuses.filter( messageStatus => !messageStatus.users.includes(chatDb.userId) ).length;
 
     return (
             isScrollEnd
@@ -36,12 +35,3 @@ function StatusedAndGoEnd(props) {
             </div>
     )
 }
-
-const mapStateToProps = store => {
-    return {
-        statuses: store.chat.statuses
-    }
-}
-const mapDispatchToProps = {}
-
-export default connect(mapStateToProps, mapDispatchToProps)(StatusedAndGoEnd)

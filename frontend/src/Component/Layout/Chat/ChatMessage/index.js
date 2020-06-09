@@ -43,7 +43,10 @@ function ChatMessage(props) {
                 <small className='ml-3'>
                     {printFormatDate(milliseconds)}
                 </small>
-                <FaCircle style={{color: isRead ? 'green' : 'orange', marginLeft: '5px'}} />
+                <FaCircle
+                    style={{color: isRead ? 'green' : 'orange', marginLeft: '5px'}}
+                    title={isRead ? 'Прочитано' : 'Не прочитано'}
+                />
             </Toast.Header>
             <Toast.Body>
                 {
