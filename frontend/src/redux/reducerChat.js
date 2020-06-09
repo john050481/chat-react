@@ -20,7 +20,16 @@ import {
     ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
     MODIFY_MESSAGE_IN_CURRENT_CHAT,
     REMOVE_MESSAGE_IN_CURRENT_CHAT,
-    ADD_NEW_MESSAGE_IN_OTHER_CHAT,
+//    ADD_NEW_MESSAGE_IN_OTHER_CHAT,
+//    MODIFY_MESSAGE_IN_OTHER_CHAT,
+//    REMOVE_MESSAGE_IN_OTHER_CHAT,
+
+    ADD_NEW_MESSAGE_STATUS_IN_CURRENT_CHAT,
+    MODIFY_MESSAGE_STATUS_IN_CURRENT_CHAT,
+    REMOVE_MESSAGE_STATUS_IN_CURRENT_CHAT,
+//    ADD_NEW_MESSAGE_STATUS_IN_OTHER_CHAT,
+//    MODIFY_MESSAGE_STATUS_IN_OTHER_CHAT,
+//    REMOVE_MESSAGE_STATUS_IN_OTHER_CHAT,
 
     /*ENTER_ROOM*/
     EXIT_ROOM,
@@ -83,20 +92,16 @@ export default function (state = init, action) {
         case ADD_NEW_MESSAGE_IN_CURRENT_CHAT:
             return { ...state, messages: [...state.messages, action.payload]}
         case MODIFY_MESSAGE_IN_CURRENT_CHAT:
-            // !!!!!!!!!!!! нужно сортировать, но можно и удалить, где находится сообщение, и туда же вставить, хз что быстрее!!!!!
-            let arrOfMessages = [action.payload, ...state.messages.filter( message => message.id !== action.payload.id)];
-            arrOfMessages.sort( (a, b) => a.timestamp - b.timestamp );
-            return { ...state, messages: arrOfMessages }
+            return { ...state, messages: state.messages.map( message => message.id !== action.payload.id ? message : action.payload ) }
         case REMOVE_MESSAGE_IN_CURRENT_CHAT:
             return { ...state, messages: [...state.messages.filter( message => message.id !== action.payload.id)]}
-        case ADD_NEW_MESSAGE_IN_OTHER_CHAT:
-            return {...state, rooms: [...state.rooms.map( room => {
-                    if (room.roomId === action.payload)
-                        return {...room, addNewMessage: true};
-                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!! продумать с таблицей со статусами
-                    return room;
-                } ) ]
-            }
+
+        case ADD_NEW_MESSAGE_STATUS_IN_CURRENT_CHAT:
+            return { ...state, statuses: [...state.statuses, action.payload]}
+        case MODIFY_MESSAGE_STATUS_IN_CURRENT_CHAT:
+            return { ...state, statuses: state.statuses.map( status => status.id !== action.payload.id ? status : action.payload ) }
+        case REMOVE_MESSAGE_STATUS_IN_CURRENT_CHAT:
+            return { ...state, statuses: [...state.statuses.filter( status => status.id !== action.payload.id)]}
 
         /*
         case ENTER_ROOM:

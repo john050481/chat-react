@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {useChat} from "../useChatFirebase";
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import {addNewMessageInCurrentChat, modifyMessageInCurrentChat, removeMessageInCurrentChat, addNewMessageInOtherChat, requestUpdateRoomMetadata} from '../../redux/actions';
+import {requestUpdateRoomMetadata} from '../../redux/actions';
+import {addNewMessageInCurrentChat, modifyMessageInCurrentChat, removeMessageInCurrentChat, addNewMessageInOtherChat} from '../../redux/actions/messagesActions';
+import {addNewMessageStatusInCurrentChat, modifyMessageStatusInCurrentChat, removeMessageStatusInCurrentChat, addNewMessageStatusInOtherChat} from '../../redux/actions/statusesActions';
 import usePrevious from '../usePrevious';
 
 function useChatMessageEventsSubscribe() {
@@ -13,25 +15,26 @@ function useChatMessageEventsSubscribe() {
     // ADD/MODIFY/REMOVE (подписка на сообщения)
     useEffect( () => {
         console.log('---useChatMessageEventsSubscribe---useEffect');
-        function handlerEventStatusMessage({event, detail}) {
-            console.log(event, detail);
-        }
-        function handlerEventMessage ({event, detail}) {
+        function handlerEvent ({event, detail}) {
             let roomId = detail.path.split('/')[1];
             setLastMessageEdit({...detail, roomId, event});
             console.log('---useChatMessageEventsSubscribe---handlerEventMessage, detail message ADD/MODIFY/REMOVE  === ', {...detail, roomId, event});
         }
-        chatDb.addEventListener('messages-added', handlerEventMessage);
-        chatDb.addEventListener('messages-modified', handlerEventMessage);
-        chatDb.addEventListener('messages-removed', handlerEventMessage);
-        chatDb.addEventListener('statuses-modified', handlerEventStatusMessage);
+        chatDb.addEventListener('messages-added', handlerEvent);
+        chatDb.addEventListener('messages-modified', handlerEvent);
+        chatDb.addEventListener('messages-removed', handlerEvent);
+        chatDb.addEventListener('statuses-added', handlerEvent);
+        chatDb.addEventListener('statuses-modified', handlerEvent);
+        chatDb.addEventListener('statuses-removed', handlerEvent);
 
         return () => {
             console.log('---useChatMessageEventsSubscribe---useEffect---unmount');
-            chatDb.removeEventListener('messages-added', handlerEventMessage);
-            chatDb.removeEventListener('messages-modified', handlerEventMessage);
-            chatDb.removeEventListener('messages-removed', handlerEventMessage);
-            chatDb.removeEventListener('statuses-modified', handlerEventStatusMessage);
+            chatDb.removeEventListener('messages-added', handlerEvent);
+            chatDb.removeEventListener('messages-modified', handlerEvent);
+            chatDb.removeEventListener('messages-removed', handlerEvent);
+            chatDb.removeEventListener('statuses-added', handlerEvent);
+            chatDb.removeEventListener('statuses-modified', handlerEvent);
+            chatDb.removeEventListener('statuses-removed', handlerEvent);
         }
     }, [chatDb.userId]);
 
@@ -66,11 +69,11 @@ export default function useChatMessageEvents() {
             } else if (lastMessageEdit.event === 'messages-removed') {
                 dispatch(removeMessageInCurrentChat(lastMessageEdit.message));
             } else if (lastMessageEdit.event === 'statuses-added') {
-                console.log('statuses-added');
+                dispatch(addNewMessageStatusInCurrentChat(lastMessageEdit.message));
             } else if (lastMessageEdit.event === 'statuses-modified') {
-                console.log('statuses-modified');
+                dispatch(modifyMessageStatusInCurrentChat(lastMessageEdit.message));
             } else if (lastMessageEdit.event === 'statuses-removed') {
-                console.log('statuses-removed');
+                dispatch(removeMessageStatusInCurrentChat(lastMessageEdit.message));
             }
         } else {
             // сообщение пришло в НЕ активную комнату
@@ -79,6 +82,7 @@ export default function useChatMessageEvents() {
             } else if (lastMessageEdit.event === 'messages-modified') {
             } else if (lastMessageEdit.event === 'messages-removed') {
             } else if (lastMessageEdit.event === 'statuses-added') {
+                dispatch(addNewMessageStatusInOtherChat(lastMessageEdit.roomId));
             } else if (lastMessageEdit.event === 'statuses-modified') {
             } else if (lastMessageEdit.event === 'statuses-removed') {
             }

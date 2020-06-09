@@ -22,18 +22,13 @@ import {
     CITATION_SET,
     CITATION_CLEAR,
 
-    ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
-    MODIFY_MESSAGE_IN_CURRENT_CHAT,
-    REMOVE_MESSAGE_IN_CURRENT_CHAT,
-    ADD_NEW_MESSAGE_IN_OTHER_CHAT,
-
     /*ENTER_ROOM,*/
     EXIT_ROOM,
 
     REQUEST_USER_CONTACTS
-} from './types'
+} from '../types'
 
-import changeFavicon from "../common/changeFavicon";
+import changeFavicon from "../../common/changeFavicon";
 
 let timerIdAlert = null;
 
@@ -144,34 +139,6 @@ export function setCitation(id, text, author) {
 export function clearCitation() {
     return {
         type: CITATION_CLEAR
-    }
-}
-//___ADD_NEW_MESSAGE_IN_CURRENT_CHAT___
-export function addNewMessageInCurrentChat(message) {
-    return {
-        type: ADD_NEW_MESSAGE_IN_CURRENT_CHAT,
-        payload: message
-    }
-}
-//___MODIFY_MESSAGE_IN_CURRENT_CHAT___
-export function modifyMessageInCurrentChat(message) {
-    return {
-        type: MODIFY_MESSAGE_IN_CURRENT_CHAT,
-        payload: message
-    }
-}
-//___REMOVE_MESSAGE_IN_CURRENT_CHAT___
-export function removeMessageInCurrentChat(message) {
-    return {
-        type: REMOVE_MESSAGE_IN_CURRENT_CHAT,
-        payload: message
-    }
-}
-//___ADD_NEW_MESSAGE_IN_OTHER_CHAT___
-export function addNewMessageInOtherChat(roomId) {
-    return {
-        type: ADD_NEW_MESSAGE_IN_OTHER_CHAT,
-        payload: roomId
     }
 }
 //___ENTER_ROOM___

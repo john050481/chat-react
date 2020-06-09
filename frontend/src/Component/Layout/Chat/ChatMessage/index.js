@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {useChat} from "../../../../hooks/useChatFirebase";
 import useOnScreenUnReadMessage from "../../../../hooks/useOnScreenUnReadMessage";
 import {printFormatDate, diffDateInDays, printFormatDaysAgo} from '../../../../common/dates';
+import {FaCircle} from "react-icons/fa";
 
 function ChatMessage(props) {
     const {currentRoomId, message, messageBlockScroll} = props;
@@ -24,11 +25,10 @@ function ChatMessage(props) {
     }, [])
 
     const chatMessageBlock = useRef();
-    const {isIntersecting, isRead} = useOnScreenUnReadMessage(chatMessageBlock, chatDb, message, currentRoomId);
+    const isRead = useOnScreenUnReadMessage(chatMessageBlock, chatDb, message);
     useEffect( () => {
-        console.log('isIntersecting ###@@@$$$%%%^^^&&& = ', isIntersecting, isRead, message.id);
-//        chatDb.updateMessageStatus(currentRoomId, message.id, [chatDb.userId]);
-    }, [isIntersecting, isRead]);
+        console.log('isRead ###@@@$$$%%%^^^&&& = ', isRead, message.id);
+    }, [isRead]);
 
     let milliseconds = message.timestamp ? message.timestamp.seconds*1000 : NaN;
     const itsMe = chatDb.userId === message.userId;
@@ -43,6 +43,7 @@ function ChatMessage(props) {
                 <small className='ml-3'>
                     {printFormatDate(milliseconds)}
                 </small>
+                <FaCircle style={{color: isRead ? 'green' : 'orange', marginLeft: '5px'}} />
             </Toast.Header>
             <Toast.Body>
                 {
