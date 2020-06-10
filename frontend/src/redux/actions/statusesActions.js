@@ -3,9 +3,11 @@ import {
     MODIFY_MESSAGE_STATUS_IN_CURRENT_CHAT,
     REMOVE_MESSAGE_STATUS_IN_CURRENT_CHAT,
 
-    ADD_NEW_MESSAGE_STATUS_IN_OTHER_CHAT,
+    //ADD_NEW_MESSAGE_STATUS_IN_OTHER_CHAT,
     //MODIFY_MESSAGE_STATUS_IN_OTHER_CHAT,
     //REMOVE_MESSAGE_STATUS_IN_OTHER_CHAT
+
+    REQUEST_NUMBER_UNREAD_MESSAGE_FOR_ROOMID
 } from '../types';
 
 /*
@@ -35,14 +37,14 @@ export function removeMessageStatusInCurrentChat(messageStatus) {
     }
 }
 /*
-###############################
-#### MESSAGE_IN_OTHER_CHAT ####
-###############################
+##########################################
+#### UPDATE UNREAD MESSAGE FOR ROOMID ####
+##########################################
 */
-//___ADD_NEW_MESSAGE_STATUS_IN_OTHER_CHAT___
-export function addNewMessageStatusInOtherChat(roomId) {
+export function requestNumberUnreadMessageForRoomId(roomId, chatDbApi) {
     return {
-        type: ADD_NEW_MESSAGE_STATUS_IN_OTHER_CHAT,
-        payload: roomId
+        type: REQUEST_NUMBER_UNREAD_MESSAGE_FOR_ROOMID,
+        roomId,
+        chatDbApi
     }
 }

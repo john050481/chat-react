@@ -30,12 +30,15 @@ import {
 //    ADD_NEW_MESSAGE_STATUS_IN_OTHER_CHAT,
 //    MODIFY_MESSAGE_STATUS_IN_OTHER_CHAT,
 //    REMOVE_MESSAGE_STATUS_IN_OTHER_CHAT,
+    UPDATE_NUMBER_UNREAD_MESSAGE_FOR_ROOMID,
+
+    UPDATE_USERROOMS_UNREAD_MESSAGES,
 
     /*ENTER_ROOM*/
     EXIT_ROOM,
 
     REQUEST_USER_CONTACTS,
-    UPDATE_USER_CONTACTS, UPDATE_USERROOMS_UNREAD_MESSAGES
+    UPDATE_USER_CONTACTS
 } from './types'
 
 const init = {
@@ -73,10 +76,14 @@ export default function (state = init, action) {
             return ...
         */
         case UPDATE_ROOMID_METADATA:
-            return {...state, rooms: [action.payload, ...state.rooms.filter( room => room.roomId !== action.payload.roomId)]}
+            return {
+                ...state,
+                rooms: [action.payload, ...state.rooms.filter( room => room.roomId !== action.payload.roomId)]
+                    .sort( (roomA, roomB) => roomB.data.lastActivity.seconds - roomA.data.lastActivity.seconds )
+            }
 
         case REQUEST_ROOMID_MESSAGES:
-            return { ...state, requestRoomId: action.roomId, messages: [], currentRoomId: null, citation: {id: '', text: '', author: ''} }
+            return { ...state, requestRoomId: action.roomId, messages: [], statuses: [], currentRoomId: null, citation: {id: '', text: '', author: ''} }
         case UPDATE_ROOMID_MESSAGES:
             return { ...state, messages: action.payload}
         case UPDATE_ROOMID_MESSAGES_STATUSES:
@@ -104,6 +111,9 @@ export default function (state = init, action) {
         case REMOVE_MESSAGE_STATUS_IN_CURRENT_CHAT:
             return { ...state, statuses: [...state.statuses.filter( status => status.id !== action.payload.id)]}
 
+        case UPDATE_NUMBER_UNREAD_MESSAGE_FOR_ROOMID:
+            return { ...state, roomsUnreadMessage: state.roomsUnreadMessage.map( unreadMessage => unreadMessage.roomId !== action.payload.roomId ? unreadMessage : action.payload )}
+
         case UPDATE_USERROOMS_UNREAD_MESSAGES:
             return { ...state, roomsUnreadMessage: action.payload }
 
@@ -113,7 +123,7 @@ export default function (state = init, action) {
         */
         case EXIT_ROOM:
             if (action.payload === state.currentRoomId) // если выход из активной комнаты
-                return {...state, requestRoomId: null, currentRoomId: null, messages: []}
+                return {...state, requestRoomId: null, currentRoomId: null, messages: [], statuses: []}
             return state; // если из НЕ активной
 
         case REQUEST_USER_CONTACTS:

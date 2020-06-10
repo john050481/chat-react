@@ -3,7 +3,7 @@ import {useChat} from "../useChatFirebase";
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import {requestUpdateRoomMetadata} from '../../redux/actions';
 import {addNewMessageInCurrentChat, modifyMessageInCurrentChat, removeMessageInCurrentChat, addNewMessageInOtherChat} from '../../redux/actions/messagesActions';
-import {addNewMessageStatusInCurrentChat, modifyMessageStatusInCurrentChat, removeMessageStatusInCurrentChat, addNewMessageStatusInOtherChat} from '../../redux/actions/statusesActions';
+import {addNewMessageStatusInCurrentChat, modifyMessageStatusInCurrentChat, removeMessageStatusInCurrentChat, requestNumberUnreadMessageForRoomId} from '../../redux/actions/statusesActions';
 import usePrevious from '../usePrevious';
 
 function useChatMessageEventsSubscribe() {
@@ -70,10 +70,13 @@ export default function useChatMessageEvents() {
                 dispatch(removeMessageInCurrentChat(lastMessageEdit.message));
             } else if (lastMessageEdit.event === 'statuses-added') {
                 dispatch(addNewMessageStatusInCurrentChat(lastMessageEdit.message));
+                dispatch(requestNumberUnreadMessageForRoomId(lastMessageEdit.roomId, chatDb));
             } else if (lastMessageEdit.event === 'statuses-modified') {
                 dispatch(modifyMessageStatusInCurrentChat(lastMessageEdit.message));
+                dispatch(requestNumberUnreadMessageForRoomId(lastMessageEdit.roomId, chatDb));
             } else if (lastMessageEdit.event === 'statuses-removed') {
                 dispatch(removeMessageStatusInCurrentChat(lastMessageEdit.message));
+                dispatch(requestNumberUnreadMessageForRoomId(lastMessageEdit.roomId, chatDb));
             }
         } else {
             // сообщение пришло в НЕ активную комнату
@@ -82,9 +85,11 @@ export default function useChatMessageEvents() {
             } else if (lastMessageEdit.event === 'messages-modified') {
             } else if (lastMessageEdit.event === 'messages-removed') {
             } else if (lastMessageEdit.event === 'statuses-added') {
-                dispatch(addNewMessageStatusInOtherChat(lastMessageEdit.roomId));
+                dispatch(requestNumberUnreadMessageForRoomId(lastMessageEdit.roomId, chatDb));
             } else if (lastMessageEdit.event === 'statuses-modified') {
+                dispatch(requestNumberUnreadMessageForRoomId(lastMessageEdit.roomId, chatDb));
             } else if (lastMessageEdit.event === 'statuses-removed') {
+                dispatch(requestNumberUnreadMessageForRoomId(lastMessageEdit.roomId, chatDb));
             }
         }
         dispatch(requestUpdateRoomMetadata(lastMessageEdit.roomId, () => chatDb.getRoomMetadata(lastMessageEdit.roomId)));

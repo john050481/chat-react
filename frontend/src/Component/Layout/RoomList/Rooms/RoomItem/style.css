@@ -46,3 +46,11 @@
 .chat-menu:hover {
     background: hsla(259, 100%, 95%, 0.85);
 }
+.chat-numberUnreadMessage {
+    position: absolute;
+    left: 1%;
+    top: 1%;
+    background-color: orange;
+    border-radius: 0.5rem;
+    padding: 0 0.3rem 0 0.3rem;
+}

@@ -8,7 +8,6 @@ import {connect} from "react-redux";
 import {printFormatDate} from '../../../../../common/dates';
 
 function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, roomIsMuted, numberUnreadMessage}) {
-    console.log("numberUnreadMessagenumberUnreadMessagenumberUnreadMessagenumberUnreadMessage", numberUnreadMessage);
     return (
         <div className="chat-wrapper" data-roomid={room.roomId}>
             <Card className={ 'chat' + (currentRoomId === room.roomId ? ' active' : '') }>
@@ -32,13 +31,19 @@ function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, roomIsMu
                 </Card.Body>
             </Card>
             <div className="chat-muted">
-                {`UNREAD: ${numberUnreadMessage}   `}
                 {
                     roomIsMuted
-                        ? <FaVolumeMute style={{color: "#6c757d"}} />
-                        : <FaVolumeUp style={{color: "#28a745"}} />
+                    ? <FaVolumeMute style={{color: "#6c757d"}} />
+                    : <FaVolumeUp style={{color: "#28a745"}} />
                 }
             </div>
+            {
+                !numberUnreadMessage
+                ? null
+                : <div className="chat-numberUnreadMessage" title="unread message">
+                      {numberUnreadMessage}
+                  </div>
+            }
             <div className="chat-menu" data-menu={true} hidden={isSmall}>
                 <IoIosArrowDown />
             </div>

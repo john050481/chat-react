@@ -16,12 +16,12 @@ export default function useOnScreenUnReadMessage(ref, chatDb, message, rootMargi
             return;
 
         const messageStatus = statuses.find( messageStatus => messageStatus.id === message.id);
-        console.log('messageStatusmessageStatusmessageStatus = ', message, messageStatus);
+        //console.log('messageStatusmessageStatusmessageStatus = ', message, messageStatus);
         if (!messageStatus)
             return;
 
         const messageIsRead = messageStatus.users.includes(chatDb.userId);
-        console.log('isReadisReadisReadisReadisReadisRead === ', messageIsRead);
+        //console.log('isReadisReadisReadisReadisReadisRead === ', messageIsRead);
         setIsRead(messageIsRead);
         if (messageIsRead) return;
 
