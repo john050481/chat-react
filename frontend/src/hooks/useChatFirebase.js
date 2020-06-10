@@ -412,6 +412,39 @@ function useProvideChat() {
             return false;
         });
     }//
+    async function getNumberOfUnreadMessagesForRoom(roomId, userId) {
+        const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
+
+        const statusesCollectionsRef = db.collection("room-messages").doc(roomId).collection("statuses");
+        const querySnapshotAllCollection = await statusesCollectionsRef.get();
+        const querySnapshotReadStatuses = await statusesCollectionsRef.where("users", "array-contains", curUserId).get();
+
+        const numberAllMessages = querySnapshotAllCollection.size;
+        const numberReadMessages = querySnapshotReadStatuses.size;
+        const numberUnreadMessages = numberAllMessages - numberReadMessages;
+
+        return numberUnreadMessages;
+    }//*********this
+    async function getNumberOfUnreadMessagesForAllRoom(userId) {
+        const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
+        const curUserData = await getUserData(curUserId);
+
+        if (!curUserData) return false;
+
+        if (!curUserData.rooms.length) return Promise.resolve([])
+
+        return Promise.allSettled(curUserData.rooms.map( async (roomId) => {
+            const numberUnreadMessages = await getNumberOfUnreadMessagesForRoom(roomId, curUserId);
+            return {roomId, numberUnreadMessages}
+        } ))
+            .then( results => results.map( (result, i) => {
+                if (result.status === "fulfilled") {
+                    return result.value
+                } else {
+                    return {roomId: curUserData.rooms[i], numberUnreadMessages: 0}
+                }
+            } ) );
+    }//*********this
     function enterRoom(roomId, callback) {
         let batch = db.batch(); //выполняет multiple write operations as a single
 
@@ -567,6 +600,8 @@ function useProvideChat() {
         getRoomMessagesStatuses,
         getRoomMessage,
         getRoomMessageStatus,
+        getNumberOfUnreadMessagesForRoom,
+        getNumberOfUnreadMessagesForAllRoom,
         enterRoom,
         leaveRoom,
         getRoomUsers,

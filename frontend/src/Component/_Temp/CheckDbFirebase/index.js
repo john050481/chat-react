@@ -112,6 +112,14 @@ export default function (props) {
     function handelUpdateMessageStatus(e) {
         chatDb.updateMessageStatus('room1', 'Rzh4e3e93kifCL4OY2Lu', ['123', '456']);
     }
+    async function handleCountUnreadMessage(e) {
+        const numberUnreadMessage = await chatDb.getNumberOfUnreadMessagesForRoom("room1", "JrdremgStrhMrv956wwyxLvWDSE3");
+        console.log("numberUnreadMessage for room: room1 & userId: JrdremgStrhMrv956wwyxLvWDSE3 === ", numberUnreadMessage);
+    }
+    async function handelGetNumberOfUnreadMessagesForAllRoom(e) {
+        let res = await chatDb.getNumberOfUnreadMessagesForAllRoom();
+        console.log("handelGetNumberOfUnreadMessagesForAllRoom = ", res);
+    }
 
     return (
         <div>
@@ -158,7 +166,10 @@ export default function (props) {
             <br />
             <button onClick={handlerSearchUserEmail} className={'btn btn-outline-success'}>search user email</button>
             <hr />
-            <button onClick={handelUpdateMessageStatus} className={'btn btn-outline-success'}>updateMessageStatus</button>
+            <button onClick={handelUpdateMessageStatus} className={'btn btn-outline-success'}>update Message Status</button>
+            <hr />
+            <button onClick={handleCountUnreadMessage} className={'btn btn-outline-success'}>handle Count Unread Message</button>
+            <button onClick={handelGetNumberOfUnreadMessagesForAllRoom} className={'btn btn-outline-success'}>handel Get Number Of Unread Messages For All Room</button>
         </div>
     )
 }

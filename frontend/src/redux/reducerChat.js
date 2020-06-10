@@ -35,7 +35,7 @@ import {
     EXIT_ROOM,
 
     REQUEST_USER_CONTACTS,
-    UPDATE_USER_CONTACTS
+    UPDATE_USER_CONTACTS, UPDATE_USERROOMS_UNREAD_MESSAGES
 } from './types'
 
 const init = {
@@ -43,6 +43,7 @@ const init = {
     messages: [],
     statuses: [],
     rooms: [],
+    roomsUnreadMessage: [],
     contacts: [],
 
     requestRoomId: null,
@@ -102,6 +103,9 @@ export default function (state = init, action) {
             return { ...state, statuses: state.statuses.map( status => status.id !== action.payload.id ? status : action.payload ) }
         case REMOVE_MESSAGE_STATUS_IN_CURRENT_CHAT:
             return { ...state, statuses: [...state.statuses.filter( status => status.id !== action.payload.id)]}
+
+        case UPDATE_USERROOMS_UNREAD_MESSAGES:
+            return { ...state, roomsUnreadMessage: action.payload }
 
         /*
         case ENTER_ROOM:

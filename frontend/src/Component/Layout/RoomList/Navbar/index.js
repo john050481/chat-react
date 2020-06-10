@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import './style.css'
-import {requestUserRoomsMetadata, requestUserContacts} from "../../../../redux/actions";
+import {requestUserRoomsMetadata, requestUserContacts, requestUserRoomsUnreadMessage} from "../../../../redux/actions";
 import {connect} from "react-redux";
 import Button from "react-bootstrap/Button";
 import {FaRedo, FaArrowLeft, FaArrowRight, FaPlus} from "react-icons/fa";
@@ -57,6 +57,7 @@ function NavBarSidebar(props) {
                         onClick={(e)=>{
                             props.requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() );
                             props.requestUserContacts( () => chatDb.getUserContacts() );
+                            props.requestUserRoomsUnreadMessage(chatDb);
                         }}
                     >
                         <FaRedo />
@@ -93,7 +94,8 @@ const mapStateToProps = store => {
 }
 const mapDispatchToProps = {
     requestUserRoomsMetadata,
-    requestUserContacts
+    requestUserContacts,
+    requestUserRoomsUnreadMessage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBarSidebar)

@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import './style.css';
 import {connect, useDispatch} from "react-redux";
-import {requestRoomIdMessages, requestUserContacts, requestUserRoomsMetadata} from "../../../../redux/actions";
+import {requestRoomIdMessages, requestUserContacts, requestUserRoomsMetadata, requestUserRoomsUnreadMessage} from "../../../../redux/actions";
 import SpinnerApp from "../../../../common/Spinner";
 import RoomItem from './RoomItem';
 import {useChat} from "../../../../hooks/useChatFirebase";
@@ -17,7 +17,7 @@ import {itemsContextMenuForContacts, handleClickOnItemContact} from '../../../..
 function Rooms(props) {
     console.log('Render Rooms');
 
-    const {isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages, requestUserRoomsMetadata, requestUserContacts} = props;
+    const {isSmall, rooms, contacts, currentRoomId, requestRoomIdMessages, requestUserRoomsMetadata, requestUserContacts, requestUserRoomsUnreadMessage} = props;
 
     const chatDb = useChat();
 
@@ -27,11 +27,12 @@ function Rooms(props) {
 
         if (!equalArrays(chatDb.userData.rooms, chatDb.prevUserData ? chatDb.prevUserData.rooms : null)) {
             requestUserRoomsMetadata( () => chatDb.getUserRoomsMetadata() );
+            requestUserRoomsUnreadMessage(chatDb);
         } // rooms
         if (!equalArrays(chatDb.userData.contacts, chatDb.prevUserData ? chatDb.prevUserData.contacts : null)) {
             requestUserContacts( () => chatDb.getUserContacts() );
         } // contacts
-    }, [chatDb.userData])
+    }, [chatDb.userData]);
 
     //////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!! ContextMenu
     // доработать, возможно вынести на уроввень выше и использовать там data-contextmenu
@@ -132,7 +133,8 @@ const mapStateToProps = store => {
 const mapDispatchToProps = {
     requestUserRoomsMetadata,
     requestUserContacts,
-    requestRoomIdMessages
+    requestRoomIdMessages,
+    requestUserRoomsUnreadMessage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Rooms)

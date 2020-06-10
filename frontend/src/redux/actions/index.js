@@ -22,6 +22,8 @@ import {
     CITATION_SET,
     CITATION_CLEAR,
 
+    REQUEST_USERROOMS_UNREAD_MESSAGES,
+
     /*ENTER_ROOM,*/
     EXIT_ROOM,
 
@@ -139,6 +141,13 @@ export function setCitation(id, text, author) {
 export function clearCitation() {
     return {
         type: CITATION_CLEAR
+    }
+}
+//___REQUEST_USERROOMS_UNREAD_MESSAGES___
+export function requestUserRoomsUnreadMessage(chatDbApi) {
+    return {
+        type: REQUEST_USERROOMS_UNREAD_MESSAGES,
+        chatDbApi
     }
 }
 //___ENTER_ROOM___
