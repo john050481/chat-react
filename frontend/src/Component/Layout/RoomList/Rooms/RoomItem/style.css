@@ -26,14 +26,26 @@
     justify-content: flex-start;
 }
 
-.text-align-end {
+.chat-lastMessage {
+    white-space: nowrap; /* Отменяем перенос текста */
+    overflow: hidden; /* Обрезаем содержимое */
+    padding: 5px; /* Поля */
+    text-overflow: ellipsis; /* Многоточие */
     text-align: end;
-}
+ }
 
 .chat-muted {
     position: absolute;
     left: 1%;
     bottom: 1%;
+}
+
+.chat-lastActivity {
+    position: absolute;
+    right: 1%;
+    bottom: 1%;
+    font-size: 80%;
+    color: #6c757d;
 }
 
 .chat-menu {
@@ -46,6 +58,7 @@
 .chat-menu:hover {
     background: hsla(259, 100%, 95%, 0.85);
 }
+
 .chat-numberUnreadMessage {
     position: absolute;
     left: 1%;

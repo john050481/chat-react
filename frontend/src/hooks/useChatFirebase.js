@@ -238,7 +238,8 @@ function useProvideChat() {
 
         const docRefRoomMetadata = db.collection('room-metadata').doc(roomId);
         batch.update(docRefRoomMetadata, {
-            lastActivity: firebase.firestore.FieldValue.serverTimestamp() // The time at which the room was created.
+            lastActivity: firebase.firestore.FieldValue.serverTimestamp(), // The time at which the room was created.
+            lastMessageId: messageId
         });
 
         // ПРОИСХОДИТ ПОДПИСКА И ОТПИСКА НА ROOMS в UseEffect !!!!!!!!!! сравнивать массив rooms!?

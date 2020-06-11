@@ -1,13 +1,36 @@
 import './style.css'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Card from "react-bootstrap/Card";
 import Loader from "../../../../../common/Loader";
 import {FaComments, FaVolumeUp, FaVolumeMute} from "react-icons/fa";
 import {IoIosArrowDown} from 'react-icons/io';
 import {connect} from "react-redux";
 import {printFormatDate} from '../../../../../common/dates';
+import {useChat} from "../../../../../hooks/useChatFirebase";
 
-function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, roomIsMuted, numberUnreadMessage}) {
+function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, numberUnreadMessage}) {
+    console.log("Render RoomItem");
+
+    const chatDb = useChat();
+
+    const lastMessageId = room?.data?.lastMessageId;
+    const [lastMessage, setLastMessage] = useState(null);
+    useEffect( () => {
+        (async () => {
+            if (!lastMessageId || !room.roomId) return;
+            const lastMessageOnDb = await chatDb.getRoomMessage(room.roomId, lastMessageId);
+            setLastMessage(lastMessageOnDb?.message);
+        })()
+    }, [lastMessageId, room.roomId])
+
+    const userMutedArr = chatDb?.userData?.muted;
+    const [roomIsMuted, setRoomIsMuted] = useState(undefined);
+    useEffect( () => {
+        if (!userMutedArr || !room.roomId) return;
+        const roomIsMutedOnDb = chatDb.userData.muted.includes(room.roomId);
+        setRoomIsMuted(roomIsMutedOnDb);
+    }, [userMutedArr, room.roomId])
+
     return (
         <div className="chat-wrapper" data-roomid={room.roomId}>
             <Card className={ 'chat' + (currentRoomId === room.roomId ? ' active' : '') }>
@@ -24,8 +47,8 @@ function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, roomIsMu
                                         {room.data.name}
                                       </span>
                         </div>
-                        <footer className="blockquote-footer text-align-end" hidden={isSmall}>
-                            {printFormatDate(room.data.lastActivity ? room.data.lastActivity.seconds*1000 : NaN)}
+                        <footer className="blockquote-footer chat-lastMessage" hidden={isSmall}>
+                            {lastMessage ? lastMessage : "Нет сообщений..."}
                         </footer>
                     </blockquote>
                 </Card.Body>
@@ -36,6 +59,9 @@ function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, roomIsMu
                     ? <FaVolumeMute style={{color: "#6c757d"}} />
                     : <FaVolumeUp style={{color: "#28a745"}} />
                 }
+            </div>
+            <div className="chat-lastActivity" hidden={isSmall}>
+                {printFormatDate(room.data.lastActivity ? room.data.lastActivity.seconds*1000 : NaN)}
             </div>
             {
                 !numberUnreadMessage

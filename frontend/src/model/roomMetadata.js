@@ -10,4 +10,5 @@ export default {
     name: "", // The public display name of the room.
     type: "private", // The type of room, public or private.
     lastActivity: "", // The time at last activity. // firebase.firestore.FieldValue.serverTimestamp()
+    lastMessageId: "" // Last message ID send in room
 }

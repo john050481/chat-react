@@ -98,7 +98,7 @@ function Rooms(props) {
                 {   (!rooms.length)
                     ? <SpinnerApp />
                     : rooms.map(room =>
-                        <RoomItem key={room.roomId} room={room} isSmall={isSmall} roomIsMuted={chatDb.userData.muted.includes(room.roomId)} />
+                        <RoomItem key={room.roomId} room={room} isSmall={isSmall} />
                     )
                 }
             </AccordionApp>

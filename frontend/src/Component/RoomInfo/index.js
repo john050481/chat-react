@@ -103,6 +103,16 @@ function RoomInfo({currentRoom, showAlert, requestUpdateRoomMetadata}) {
                             />
                         </Form.Group>
                     </Form.Row>
+                    <Form.Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>Last message ID</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={currentRoom?.data?.lastMessageId ? currentRoom.data.lastMessageId : ""}
+                                disabled
+                            />
+                        </Form.Group>
+                    </Form.Row>
                 </AccordionApp>
 
                 <ButtonWithLoader variant="primary" onClick={handlerSave} visibleLoader={visibleLoader} disabled = {currentRoom.data.type === 'private'}>
