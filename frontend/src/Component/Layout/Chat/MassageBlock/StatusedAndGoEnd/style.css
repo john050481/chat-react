@@ -13,8 +13,8 @@
 
 .block-statusedAndGoEnd-unread {
     position: absolute;
-    top: -25%;
+    top: -20%;
     background-color: orange;
     border-radius: 0.5rem;
-    padding: 10%;
+    padding: 0 0.3rem 0 0.3rem;
 }

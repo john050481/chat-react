@@ -2,7 +2,7 @@
     border-right: #969497 solid 3px;
 }
 
-.sidebar-rooms.small {width: 50px;} /*виден при ширине экрана от 500 до 1000 px*/
+.sidebar-rooms.small {width: 4rem;} /*виден при ширине экрана от 500 до 1000 px*/
 
 /*виден при ширине экрана от 500 до 600 px*/
 /*@media (min-width: 500px) and (max-width: 600px) {
