@@ -37,10 +37,10 @@ function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, numberUn
                 {/*<Card.Header>Quote</Card.Header>*/}
                 <Card.Body className='pl-2'>
                     <blockquote className="blockquote mb-0">
-                        <div className='chat-header'>
+                        <div className='chat-header' title={room.data.name}>
                             {loader && requestRoomId === room.roomId && currentRoomId !== requestRoomId
                                 ? <Loader className='mr-2' />
-                                : <FaComments title={room.data.name} className='mr-2' size='2em'/>
+                                : <FaComments className='mr-2' size='2em'/>
                             }
 
                             <span className={'chat__name'} hidden={isSmall}>
@@ -60,7 +60,7 @@ function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, numberUn
                     : <FaVolumeUp style={{color: "#28a745"}} title="mute off" />
                 }
             </div>
-            <div className="chat-lastActivity" hidden={isSmall}>
+            <div className="chat-lastActivity" hidden={isSmall} title="last activity">
                 {printFormatDate(room.data.lastActivity ? room.data.lastActivity.seconds*1000 : NaN)}
             </div>
             {
