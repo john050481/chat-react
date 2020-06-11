@@ -47,32 +47,32 @@ function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, numberUn
                                         {room.data.name}
                                       </span>
                         </div>
-                        <footer className="blockquote-footer chat-lastMessage" hidden={isSmall}>
+                        <footer className="blockquote-footer chat-lastMessage" hidden={isSmall} title="last message">
                             {lastMessage ? lastMessage : "Нет сообщений..."}
                         </footer>
                     </blockquote>
                 </Card.Body>
-            </Card>
-            <div className="chat-muted">
+                <div className="chat-muted chat-cursor-help">
+                    {
+                        roomIsMuted
+                            ? <FaVolumeMute style={{color: "#6c757d"}} title="mute on" />
+                            : <FaVolumeUp style={{color: "#28a745"}} title="mute off" />
+                    }
+                </div>
+                <div className="chat-lastActivity chat-cursor-help" hidden={isSmall} title="last activity">
+                    {printFormatDate(room.data.lastActivity ? room.data.lastActivity.seconds*1000 : NaN)}
+                </div>
                 {
-                    roomIsMuted
-                    ? <FaVolumeMute style={{color: "#6c757d"}} title="mute on" />
-                    : <FaVolumeUp style={{color: "#28a745"}} title="mute off" />
+                    !numberUnreadMessage
+                        ? null
+                        : <div className="chat-numberUnreadMessage chat-cursor-help" title="unread message">
+                            {numberUnreadMessage}
+                        </div>
                 }
-            </div>
-            <div className="chat-lastActivity" hidden={isSmall} title="last activity">
-                {printFormatDate(room.data.lastActivity ? room.data.lastActivity.seconds*1000 : NaN)}
-            </div>
-            {
-                !numberUnreadMessage
-                ? null
-                : <div className="chat-numberUnreadMessage" title="unread message">
-                      {numberUnreadMessage}
-                  </div>
-            }
-            <div className="chat-menu" data-menu={true} hidden={isSmall}>
-                <IoIosArrowDown />
-            </div>
+                <div className="chat-menu chat-cursor-help" data-menu={true} hidden={isSmall}>
+                    <IoIosArrowDown />
+                </div>
+            </Card>
         </div>
     )
 }
