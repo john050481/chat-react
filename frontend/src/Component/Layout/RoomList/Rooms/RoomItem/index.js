@@ -56,8 +56,8 @@ function RoomItem({room, isSmall, requestRoomId, loader, currentRoomId, numberUn
             <div className="chat-muted">
                 {
                     roomIsMuted
-                    ? <FaVolumeMute style={{color: "#6c757d"}} />
-                    : <FaVolumeUp style={{color: "#28a745"}} />
+                    ? <FaVolumeMute style={{color: "#6c757d"}} title="mute on" />
+                    : <FaVolumeUp style={{color: "#28a745"}} title="mute off" />
                 }
             </div>
             <div className="chat-lastActivity" hidden={isSmall}>
