@@ -7,7 +7,9 @@ import {
     //MODIFY_MESSAGE_STATUS_IN_OTHER_CHAT,
     //REMOVE_MESSAGE_STATUS_IN_OTHER_CHAT
 
-    REQUEST_NUMBER_UNREAD_MESSAGE_FOR_ROOMID
+    REQUEST_NUMBER_UNREAD_MESSAGE_FOR_ROOMID,
+
+    REQUEST_READ_ALL_MESSAGES
 } from '../types';
 
 /*
@@ -44,6 +46,18 @@ export function removeMessageStatusInCurrentChat(messageStatus) {
 export function requestNumberUnreadMessageForRoomId(roomId, chatDbApi) {
     return {
         type: REQUEST_NUMBER_UNREAD_MESSAGE_FOR_ROOMID,
+        roomId,
+        chatDbApi
+    }
+}
+/*
+##########################################
+########## SET READ ALL MESSAGE ##########
+##########################################
+*/
+export function requestToSetReadAllMessages(roomId, chatDbApi) {
+    return {
+        type: REQUEST_READ_ALL_MESSAGES,
         roomId,
         chatDbApi
     }

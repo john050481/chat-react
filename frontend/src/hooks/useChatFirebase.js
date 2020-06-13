@@ -273,6 +273,25 @@ function useProvideChat() {
                 return true;
             })
     }//*********
+    async function setAllMessageRead(roomId, userId, callback) {
+        const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
+        let batch = db.batch(); //выполняет multiple write operations as a single
+
+        const statusesCollectionsRef = db.collection("room-messages").doc(roomId).collection("statuses");
+        const querySnapshotAllCollection = await statusesCollectionsRef.get();
+        querySnapshotAllCollection.forEach( doc => {
+            const statusMessage = doc.data();
+            if (!statusMessage.users.includes(curUserId)) {
+                batch.update(doc.ref, {users: firebase.firestore.FieldValue.arrayUnion(curUserId)});
+            }
+        } )
+
+        return batch.commit()
+            .then(function () {
+                callback && callback(true)
+                return true;
+            });
+    }//*********this
     function deleteMessage(roomId, messageId, callback) {
         let batch = db.batch(); //выполняет multiple write operations as a single
 
@@ -590,6 +609,7 @@ function useProvideChat() {
         sendMessage,
         updateMessage,
         updateMessageStatus,
+        setAllMessageRead,
         deleteMessage,
 
         createRoom,

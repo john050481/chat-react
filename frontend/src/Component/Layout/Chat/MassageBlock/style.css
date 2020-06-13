@@ -5,6 +5,7 @@
 
 .message-block-scroll {
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .message-block {

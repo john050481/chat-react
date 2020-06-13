@@ -8,6 +8,7 @@ import sagaWatcherRequestUserContacts from './requestUserContacts'
 import sagaWatcherAddMessage from './addNewMessage'
 import sagaWatcherRequestUserRoomsUnreadMessage from './requestUserRoomsUnreadMessage'
 import sagaWatcherRequestNumberUnreadMessageForRoomId from './requestNumberUnreadMessageForRoomId'
+import sagaWatcherRequestToSetReadAllMessages from './requestToSetReadAllMessages'
 
 //---ROOT---
 export default function* rootSaga() {
@@ -19,6 +20,7 @@ export default function* rootSaga() {
         sagaWatcherRequestUserContacts(),
         sagaWatcherAddMessage(),
         sagaWatcherRequestUserRoomsUnreadMessage(),
-        sagaWatcherRequestNumberUnreadMessageForRoomId()
+        sagaWatcherRequestNumberUnreadMessageForRoomId(),
+        sagaWatcherRequestToSetReadAllMessages()
     ])
 }

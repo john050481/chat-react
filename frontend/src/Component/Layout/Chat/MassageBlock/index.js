@@ -5,10 +5,23 @@ import {connect} from "react-redux";
 import ChatMessage from '../ChatMessage'
 import SpinnerApp from "../../../../common/Spinner";
 import {setCitation} from "../../../../redux/actions";
+import {requestToSetReadAllMessages} from "../../../../redux/actions/statusesActions";
 import StatusedAndGoEnd from './StatusedAndGoEnd'
+import {useChat} from "../../../../hooks/useChatFirebase";
 
 function MessageBlock(props) {
     console.log('Render MessageBlock');
+
+    const {citation, messages, requestRoomId, currentRoomId, setCitation, requestToSetReadAllMessages} = props;
+
+    const chatDb = useChat();
+
+    const [firstUnreadMessage, setFirstUnreadMessage] = useState(null);
+    let unreadBlock = useRef(null);
+    useEffect( () => {
+        unreadBlock.current = null;
+        setFirstUnreadMessage(null);
+    }, [currentRoomId]);
 
     let messageBlockScroll = useRef(null);
     useEffect( () => {
@@ -19,18 +32,23 @@ function MessageBlock(props) {
 
     useEffect( () => {
         handleScroll();
-    }, [props.messages])
+    }, [messages])
 
     function handleClick(e) {
         let target = e.target;
         let messageElem = target.closest('[data-message]')
         if (messageElem) {
             const {id, message, author} = messageElem.dataset;
-            props.setCitation(id, message, author);
+            setCitation(id, message, author);
         }
     }
 
     const [isScrollEnd, setIsScrollEnd] = useState(null);
+    useEffect( () => {
+        if (isScrollEnd) {
+            requestToSetReadAllMessages(currentRoomId, chatDb)
+        }
+    }, [isScrollEnd])
     function handleScroll(e) {
         if (!messageBlockScroll.current) return;
 
@@ -46,20 +64,22 @@ function MessageBlock(props) {
         <main className="content message-block-wrapper" onClick={handleClick} >
             <div ref={messageBlockScroll} className='content message-block-scroll' onScroll={handleScroll}>
                 <div id='message-block' className='content message-block p-1'>
-                    {   (!props.messages.length && props.requestRoomId)
+                    {   (!messages.length && requestRoomId)
                         ? <SpinnerApp />
-                        : props.messages.map( message =>
+                        : messages.map( message =>
                             <ChatMessage
                                 key={message.id}
                                 message={message}
-                                messageBlockScroll={messageBlockScroll}
+                                unreadBlock={unreadBlock}
+                                firstUnreadMessage={firstUnreadMessage}
+                                setFirstUnreadMessage={setFirstUnreadMessage}
                             />
                           )
                     }
                 </div>
             </div>
             {
-                props.citation.text &&
+                citation.text &&
                 <div className='message-block-citation'>
                     <Citation />
                 </div>
@@ -73,11 +93,13 @@ const mapStateToProps = store => {
     return {
         citation: store.chat.citation,
         messages: store.chat.messages,
-        requestRoomId: store.chat.requestRoomId
+        requestRoomId: store.chat.requestRoomId,
+        currentRoomId: store.chat.currentRoomId
     }
 }
 const mapDispatchToProps = {
-    setCitation
+    setCitation,
+    requestToSetReadAllMessages
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageBlock)

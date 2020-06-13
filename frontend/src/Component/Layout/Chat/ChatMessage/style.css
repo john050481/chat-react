@@ -31,3 +31,15 @@ p[data-message] {
     background-color: #ededed;
     border-radius: 5px;
 }
+
+.chat-message-unread--hr {
+    width: 100%;
+}
+.chat-message-unread--hr:after {
+    content: "unread";
+    position: relative;
+    top: -0.8em;
+    margin-left: 50%;
+    margin-right: 50%;
+    background-color: white;
+}

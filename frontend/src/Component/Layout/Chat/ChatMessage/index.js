@@ -8,19 +8,18 @@ import {printFormatDate, diffDateInDays, printFormatDaysAgo} from '../../../../c
 import {FaCircle} from "react-icons/fa";
 
 function ChatMessage(props) {
-    const {currentRoomId, message, messageBlockScroll} = props;
+    console.log('Render ChatMessage');
 
-    const [citationComp, setCitationComp] = useState(null);
+    const {currentRoomId, message, unreadBlock, firstUnreadMessage, setFirstUnreadMessage} = props;
 
     const chatDb = useChat();
 
+    const [citationComp, setCitationComp] = useState(null);
     useEffect( () => {
         if (message.citationId)
             (async () => {
                 const citationOnDb = await chatDb.getRoomMessage(currentRoomId, message.citationId);
                 setCitationComp(citationOnDb);
-                if (!messageBlockScroll.current) return;
-                messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
             })()
     }, [])
 
@@ -28,6 +27,8 @@ function ChatMessage(props) {
     const isRead = useOnScreenUnReadMessage(chatMessageBlock, chatDb, message);
     useEffect( () => {
         console.log('isRead ###@@@$$$%%%^^^&&& = ', isRead, message.id);
+        if (!firstUnreadMessage && isRead === false)
+            setFirstUnreadMessage(message.id);
     }, [isRead]);
 
     let milliseconds = message.timestamp ? message.timestamp.seconds*1000 : NaN;
@@ -35,30 +36,40 @@ function ChatMessage(props) {
     const daysAgo = diffDateInDays(Date.now(), milliseconds);
 
     return (
-        <Toast ref={chatMessageBlock} className={'chat-message' + (itsMe ? ' my' : ' notMy')}>
-            <Toast.Header closeButton={false}>
-                <strong className="mr-auto">
-                    {itsMe ? "Вы" : message.name }
-                </strong>
-                <small className='ml-3'>
-                    {printFormatDate(milliseconds)}
-                </small>
-                <FaCircle
-                    style={{color: isRead ? 'green' : 'orange', marginLeft: '5px'}}
-                    title={isRead ? 'Прочитано' : 'Не прочитано'}
-                />
-            </Toast.Header>
-            <Toast.Body>
-                {
-                    citationComp &&
-                    <div className='chat-message--citation m-1 p-2'>
-                        <small><i>{citationComp.message}</i></small>
-                    </div>
-                }
-                <p data-message={message.message} data-author={message.name} data-id={message.id}>{message.message}</p>
-            </Toast.Body>
-            <small className='chat-message--time'>{printFormatDaysAgo(daysAgo)}</small>
-        </Toast>
+        <>
+            {
+                (!unreadBlock.current && !isRead) || (firstUnreadMessage === message.id)
+                ? <div ref={unreadBlock} className="chat-message-unread">
+                      <hr className="chat-message-unread--hr" />
+                  </div>
+                : null
+            }
+
+            <Toast ref={chatMessageBlock} className={'chat-message' + (itsMe ? ' my' : ' notMy')}>
+                <Toast.Header closeButton={false}>
+                    <strong className="mr-auto">
+                        {itsMe ? "Вы" : message.name }
+                    </strong>
+                    <small className='ml-3'>
+                        {printFormatDate(milliseconds)}
+                    </small>
+                    <FaCircle
+                        style={{color: isRead ? 'green' : 'orange', marginLeft: '5px'}}
+                        title={isRead ? 'Прочитано' : 'Не прочитано'}
+                    />
+                </Toast.Header>
+                <Toast.Body>
+                    {
+                        citationComp &&
+                        <div className='chat-message--citation m-1 p-2'>
+                            <small><i>{citationComp.message}</i></small>
+                        </div>
+                    }
+                    <p data-message={message.message} data-author={message.name} data-id={message.id}>{message.message}</p>
+                </Toast.Body>
+                <small className='chat-message--time'>{printFormatDaysAgo(daysAgo)}</small>
+            </Toast>
+        </>
     )
 }
 
