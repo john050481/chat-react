@@ -50,7 +50,10 @@ function MessageBlock(props) {
             requestToSetReadAllMessages(
                 currentRoomId,
                 chatDb,
-                ()=>{ unreadBlock.current = null; setFirstUnreadMessage(null) }
+                ()=>{
+                    unreadBlock.current = null;
+                    setFirstUnreadMessage(null);
+                }
             );
         }
     }, [isScrollEnd])
