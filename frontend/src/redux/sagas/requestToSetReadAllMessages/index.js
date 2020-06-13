@@ -9,6 +9,7 @@ export default function* sagaWatcher() {
 function* sagaWorker(action) {
     const roomId = action.roomId;
     const chatDbApi = action.chatDbApi;
+    const callback = action.callback;
     const functionToSetAllMessageRead = () => chatDbApi.setAllMessageRead(roomId);
 
     try {
@@ -24,6 +25,7 @@ function* sagaWorker(action) {
         if (isUnreadMessage)
             yield call(functionToSetAllMessageRead);
 
+        callback && callback();
     } catch(e) {
         yield put(showAlert({text: e.message, options: {variant: 'danger'}}));
     }

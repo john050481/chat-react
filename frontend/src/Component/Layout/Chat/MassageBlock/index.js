@@ -16,14 +16,15 @@ function MessageBlock(props) {
 
     const chatDb = useChat();
 
-    const [firstUnreadMessage, setFirstUnreadMessage] = useState(null);
     let unreadBlock = useRef(null);
+    const [firstUnreadMessage, setFirstUnreadMessage] = useState(null);
     useEffect( () => {
         unreadBlock.current = null;
         setFirstUnreadMessage(null);
     }, [currentRoomId]);
 
     let messageBlockScroll = useRef(null);
+    /* !!!!!!!!! позиционировать скролл на unreadBlock !!!!!!!!! */
     useEffect( () => {
         console.log('###messageBlockScroll### === ', messageBlockScroll);
         if (!messageBlockScroll.current) return;
@@ -46,7 +47,11 @@ function MessageBlock(props) {
     const [isScrollEnd, setIsScrollEnd] = useState(null);
     useEffect( () => {
         if (isScrollEnd) {
-            requestToSetReadAllMessages(currentRoomId, chatDb)
+            requestToSetReadAllMessages(
+                currentRoomId,
+                chatDb,
+                ()=>{ unreadBlock.current = null; setFirstUnreadMessage(null) }
+            );
         }
     }, [isScrollEnd])
     function handleScroll(e) {
@@ -64,7 +69,7 @@ function MessageBlock(props) {
         <main className="content message-block-wrapper" onClick={handleClick} >
             <div ref={messageBlockScroll} className='content message-block-scroll' onScroll={handleScroll}>
                 <div id='message-block' className='content message-block p-1'>
-                    {   (!messages.length && requestRoomId)
+                    {   !currentRoomId && requestRoomId
                         ? <SpinnerApp />
                         : messages.map( message =>
                             <ChatMessage

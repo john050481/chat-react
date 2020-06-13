@@ -55,10 +55,11 @@ export function requestNumberUnreadMessageForRoomId(roomId, chatDbApi) {
 ########## SET READ ALL MESSAGE ##########
 ##########################################
 */
-export function requestToSetReadAllMessages(roomId, chatDbApi) {
+export function requestToSetReadAllMessages(roomId, chatDbApi, callback) {
     return {
         type: REQUEST_READ_ALL_MESSAGES,
         roomId,
-        chatDbApi
+        chatDbApi,
+        callback
     }
 }
