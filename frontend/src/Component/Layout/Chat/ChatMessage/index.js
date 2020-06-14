@@ -27,7 +27,12 @@ function ChatMessage(props) {
     const isRead = useOnScreenUnReadMessage(chatMessageRef, chatDb, message);
     useEffect( () => {
         if (!firstUnreadMessage && isRead === false)
-            setFirstUnreadMessage(message.id);
+            setFirstUnreadMessage( prevMessageId => {
+                if (!prevMessageId)
+                    return message.id;
+
+                return prevMessageId;
+            });
     }, [isRead]);
 
     let milliseconds = message.timestamp ? message.timestamp.seconds*1000 : NaN;
