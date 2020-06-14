@@ -26,7 +26,6 @@ function MessageBlock(props) {
     let messageBlockScroll = useRef(null);
     /* !!!!!!!!! позиционировать скролл на unreadBlock !!!!!!!!! */
     useEffect( () => {
-        console.log('###messageBlockScroll### === ', messageBlockScroll);
         if (!messageBlockScroll.current) return;
         messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
     }, []);
