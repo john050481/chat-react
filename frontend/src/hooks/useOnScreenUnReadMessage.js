@@ -12,16 +12,14 @@ export default function useOnScreenUnReadMessage(ref, chatDb, message, rootMargi
 
     useEffect(() => {
 
-        if (!chatDb.userId || !message || !statuses.length)
+        if (!chatDb.userId || !message || !statuses?.length)
             return;
 
         const messageStatus = statuses.find( messageStatus => messageStatus.id === message.id);
-        //console.log('messageStatusmessageStatusmessageStatus = ', message, messageStatus);
         if (!messageStatus)
             return;
 
         const messageIsRead = messageStatus.users.includes(chatDb.userId);
-        //console.log('isReadisReadisReadisReadisReadisRead === ', messageIsRead);
         setIsRead(messageIsRead);
         if (messageIsRead) return;
 
@@ -34,7 +32,8 @@ export default function useOnScreenUnReadMessage(ref, chatDb, message, rootMargi
                         .catch( e => console.log('!!!!!!!! ERROR !!!!!!!!'));
             },
             {
-                rootMargin
+                rootMargin,
+                threshold: 0.5
             }
         );
         if (ref.current) {

@@ -32,14 +32,15 @@ p[data-message] {
     border-radius: 5px;
 }
 
+.chat-message-unread {
+    text-align: center;
+}
+.chat-message-unread:after {
+    content: "last unread";
+    position: relative;
+    top: -1.8em;
+    background-color: white;
+}
 .chat-message-unread--hr {
     width: 100%;
-}
-.chat-message-unread--hr:after {
-    content: "unread";
-    position: relative;
-    top: -0.8em;
-    margin-left: 50%;
-    margin-right: 50%;
-    background-color: white;
 }

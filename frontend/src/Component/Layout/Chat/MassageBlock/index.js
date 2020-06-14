@@ -16,23 +16,47 @@ function MessageBlock(props) {
 
     const chatDb = useChat();
 
-    let unreadBlock = useRef(null);
+    useEffect( () => {
+        handleScroll();
+    }, [])
+
+    const unreadBlock = useRef(null);
     const [firstUnreadMessage, setFirstUnreadMessage] = useState(null);
     useEffect( () => {
-        unreadBlock.current = null;
         setFirstUnreadMessage(null);
     }, [currentRoomId]);
 
-    let messageBlockScroll = useRef(null);
-    /* !!!!!!!!! позиционировать скролл на unreadBlock !!!!!!!!! */
+    const messageBlockScroll = useRef(null);
     useEffect( () => {
-        if (!messageBlockScroll.current) return;
-        messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
-    }, []);
+        if (firstUnreadMessage && unreadBlock.current) {
+            unreadBlock.current.scrollIntoView();
+        } else if (messageBlockScroll.current) {
+            messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
+        }
 
+        if (messages?.length) {
+            const lastMessage = messages[messages.length-1];
+            const itsMyMessage = chatDb.userId === lastMessage.userId;
+            if (itsMyMessage)
+                setFirstUnreadMessage(null);
+        }
+    }, [firstUnreadMessage, messages]);
+
+    const [isScrollEnd, setIsScrollEnd] = useState(null);
     useEffect( () => {
-        handleScroll();
-    }, [messages])
+        if (isScrollEnd)
+            requestToSetReadAllMessages(currentRoomId, chatDb);
+    }, [isScrollEnd])
+    function handleScroll(e) {
+        if (!messageBlockScroll.current) return;
+
+        const {scrollTop, scrollHeight, clientHeight} = messageBlockScroll.current;
+        if ( Math.ceil(scrollTop + clientHeight) >= Math.floor(scrollHeight) ) {
+            setIsScrollEnd(true);
+        } else {
+            isScrollEnd && setIsScrollEnd(false);
+        }
+    }
 
     function handleClick(e) {
         let target = e.target;
@@ -40,30 +64,6 @@ function MessageBlock(props) {
         if (messageElem) {
             const {id, message, author} = messageElem.dataset;
             setCitation(id, message, author);
-        }
-    }
-
-    const [isScrollEnd, setIsScrollEnd] = useState(null);
-    useEffect( () => {
-        if (isScrollEnd) {
-            requestToSetReadAllMessages(
-                currentRoomId,
-                chatDb,
-                ()=>{
-                    unreadBlock.current = null;
-                    setFirstUnreadMessage(null);
-                }
-            );
-        }
-    }, [isScrollEnd])
-    function handleScroll(e) {
-        if (!messageBlockScroll.current) return;
-
-        const {scrollTop, scrollHeight, clientHeight} = messageBlockScroll.current;
-        if (scrollTop + clientHeight >= scrollHeight) {
-            setIsScrollEnd(true);
-        } else {
-            isScrollEnd && setIsScrollEnd(false);
         }
     }
 

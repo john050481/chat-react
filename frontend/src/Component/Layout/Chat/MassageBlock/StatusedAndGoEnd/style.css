@@ -1,7 +1,9 @@
 .block-statusedAndGoEnd {
     position: absolute;
     bottom: 1%;
-    margin: 0px 50% 0px 50%;
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
 }
 
 .block-statusedAndGoEnd-button {
@@ -13,7 +15,6 @@
 
 .block-statusedAndGoEnd-unread {
     position: absolute;
-    top: -20%;
     background-color: orange;
     border-radius: 0.5rem;
     padding: 0 0.3rem 0 0.3rem;

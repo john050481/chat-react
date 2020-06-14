@@ -23,16 +23,15 @@ function ChatMessage(props) {
             })()
     }, [])
 
-    const chatMessageBlock = useRef();
-    const isRead = useOnScreenUnReadMessage(chatMessageBlock, chatDb, message);
+    const chatMessageRef = useRef();
+    const isRead = useOnScreenUnReadMessage(chatMessageRef, chatDb, message);
     useEffect( () => {
-        console.log('isRead ###@@@$$$%%%^^^&&& = ', isRead, message.id);
         if (!firstUnreadMessage && isRead === false)
             setFirstUnreadMessage(message.id);
     }, [isRead]);
 
     let milliseconds = message.timestamp ? message.timestamp.seconds*1000 : NaN;
-    const itsMe = chatDb.userId === message.userId;
+    const itsMyMessage = chatDb.userId === message.userId;
     const daysAgo = diffDateInDays(Date.now(), milliseconds);
 
     return (
@@ -45,10 +44,10 @@ function ChatMessage(props) {
                 : null
             }
 
-            <Toast ref={chatMessageBlock} className={'chat-message' + (itsMe ? ' my' : ' notMy')}>
+            <Toast ref={chatMessageRef} className={'chat-message' + (itsMyMessage ? ' my' : ' notMy')}>
                 <Toast.Header closeButton={false}>
                     <strong className="mr-auto">
-                        {itsMe ? "Вы" : message.name }
+                        {itsMyMessage ? "Вы" : message.name }
                     </strong>
                     <small className='ml-3'>
                         {printFormatDate(milliseconds)}

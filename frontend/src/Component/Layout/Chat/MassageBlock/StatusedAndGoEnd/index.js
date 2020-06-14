@@ -11,9 +11,9 @@ export default function StatusedAndGoEnd(props) {
     const countUnReadMessage = useCountUnReadMessage();
 
     function handleClick(e) {
-        if (!messageBlockScroll.current) return;
-        //!!!!!!!!!!!! ПРОЧИТАТЬ ВСЕ СООБЩЕНИЯ !!!!!!!!!!!!!
-        //!!!!!!!!!!!! setReadAllMessageInCurrentChat( ... ) !!!!!!!!!!!!!
+        if (!messageBlockScroll.current)
+            return;
+
         messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
     }
 
@@ -24,9 +24,9 @@ export default function StatusedAndGoEnd(props) {
                   {
                       !countUnReadMessage
                       ? null
-                      : <div className="block-statusedAndGoEnd-unread">
+                      : <span className="block-statusedAndGoEnd-unread">
                               {countUnReadMessage}
-                        </div>
+                        </span>
                   }
 
                   <button className="block-statusedAndGoEnd-button" onClick={handleClick}>
