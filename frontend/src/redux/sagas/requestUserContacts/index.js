@@ -14,8 +14,9 @@ function* sagaWorker(action) {
         let contacts = yield call(functionToGetDataForSaga);
         yield put({ type: UPDATE_USER_CONTACTS, payload: contacts });
         yield put(hideLoader());
-        yield put(showAlert({text: 'FETCH CONTACTS DONE!!!', options: {variant: 'success'}}))
+        //yield put(showAlert({text: 'FETCH CONTACTS DONE!!!', options: {variant: 'success'}}))
     } catch(e) {
+        console.error("SAGA/REQUEST_USER_CONTACTS: ", e);
         yield put(showAlert({text: e.message, options: {variant: 'danger'}}));
         yield put(hideLoader())
     }

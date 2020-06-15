@@ -17,8 +17,9 @@ function* sagaWorker(action) {
         yield put({ type: UPDATE_ROOMID_METADATA, payload: {roomId, data: roomMetadata} });
 
         yield put(hideLoader());
-        yield put(showAlert({text: 'FETCH ROOM META DONE!!!', options: {variant: 'success'}}))
+        //yield put(showAlert({text: 'FETCH ROOM META DONE!!!', options: {variant: 'success'}}))
     } catch(e) {
+        console.error("SAGA/REQUEST_ROOMID_METADATA: ", e);
         yield put(hideLoader());
         yield put(showAlert({text: e.message, options: {variant: 'danger'}}));
     }

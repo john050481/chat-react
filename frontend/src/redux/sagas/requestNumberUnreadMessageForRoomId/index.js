@@ -18,8 +18,9 @@ function* sagaWorker(action) {
         yield put({ type: UPDATE_NUMBER_UNREAD_MESSAGE_FOR_ROOMID, payload: {roomId, numberUnreadMessages} });
 
         yield put(hideLoader());
-        yield put(showAlert({text: 'FETCH UNREAD MESSAGE DONE!!!', options: {variant: 'success'}}))
+        //yield put(showAlert({text: 'FETCH UNREAD MESSAGE DONE!!!', options: {variant: 'success'}}))
     } catch(e) {
+        console.error("SAGA/REQUEST_NUMBER_UNREAD_MESSAGE_FOR_ROOMID: ", e);
         yield put(hideLoader());
         yield put(showAlert({text: e.message, options: {variant: 'danger'}}));
     }

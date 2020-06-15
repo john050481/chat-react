@@ -24,8 +24,9 @@ function* sagaWorker(action) {
         yield put({ type: UPDATE_ROOMID_MESSAGES_STATUSES, payload: statuses });
 
         yield put(hideLoader());
-        yield put(showAlert({text: 'FETCH ROOM & MASSAGES DONE!!!', options: {variant: 'success'}}))
+        //yield put(showAlert({text: 'FETCH ROOM & MASSAGES DONE!!!', options: {variant: 'success'}}))
     } catch(e) {
+        console.error("SAGA/REQUEST_ROOMID_MESSAGES: ", e);
         yield put(hideLoader());
         yield put(showAlert({text: e.message, options: {variant: 'danger'}}));
     }

@@ -14,8 +14,9 @@ function* sagaWorker(action) {
         let rooms = yield call(functionToGetDataForSaga);
         yield put({ type: UPDATE_USERROOMS_METADATA, payload: rooms });
         yield put(hideLoader());
-        yield put(showAlert({text: 'FETCH ROOMS METADATA DONE!!!', options: {variant: 'success'}}))
+        //yield put(showAlert({text: 'FETCH ROOMS METADATA DONE!!!', options: {variant: 'success'}}))
     } catch(e) {
+        console.error("SAGA/REQUEST_USERROOMS_METADATA: ", e);
         yield put(showAlert({text: e.message, options: {variant: 'danger'}}));
         yield put(hideLoader())
     }

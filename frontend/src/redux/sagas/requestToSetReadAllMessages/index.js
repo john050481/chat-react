@@ -27,6 +27,7 @@ function* sagaWorker(action) {
 
         callback && callback();
     } catch(e) {
+        console.error("SAGA/REQUEST_READ_ALL_MESSAGES: ", e);
         yield put(showAlert({text: e.message, options: {variant: 'danger'}}));
     }
 }
