@@ -110,7 +110,7 @@ export default function (props) {
         console.log( await chatDb.searchUserEmail(userEmailElem.value) );
     }//*********
     function handelUpdateMessageStatus(e) {
-        chatDb.updateMessageStatus('room1', 'Rzh4e3e93kifCL4OY2Lu', ['123', '456']);
+        chatDb.userIsReadMessage('room1', 'Rzh4e3e93kifCL4OY2Lu', '123');
     }
     async function handleCountUnreadMessage(e) {
         const numberUnreadMessage = await chatDb.getNumberOfUnreadMessagesForRoom("room1", "JrdremgStrhMrv956wwyxLvWDSE3");

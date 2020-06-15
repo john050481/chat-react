@@ -10,5 +10,5 @@ export default function useCountUnReadMessage(props) {
         statuses: store.chat.statuses
     }), shallowEqual);
 
-    return statuses.filter( messageStatus => !messageStatus.users.includes(chatDb.userId) ).length;
+    return statuses.filter( messageStatus => messageStatus.usersWhoNotRead.includes(chatDb.userId) ).length;
 }

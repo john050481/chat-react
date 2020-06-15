@@ -187,6 +187,7 @@ function useProvideChat() {
     function _subscribeRoomMessages(roomId, collection) {
         let firstRun = true;
         const unsubscribe = db.collection("room-messages").doc(roomId).collection(collection).onSnapshot(function (snapshot){
+            //!!!!!!!!!! припервом запросе происходит чтение ВСЕХ документов в коллекции - ПЛОХО !!!!!!!!!!
             console.log('---------------_subscribeRoomMessages---------------');
             console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId}/${collection} --- firstRun: ${firstRun} ---`);
 
@@ -214,7 +215,7 @@ function useProvideChat() {
         return unsubscribe;
     }//*********
 
-    function sendMessage(roomId, messageContent, messageType='default', forwarded=false, citationId='', callback) {
+    async function sendMessage(roomId, messageContent, messageType='default', forwarded=false, citationId='', callback) {
         let batch = db.batch(); //выполняет multiple write operations as a single
 
         const docRefRoomMessages = db.collection('room-messages').doc(roomId).collection('messages').doc();
@@ -229,10 +230,12 @@ function useProvideChat() {
             citationId
         });
 
+        const roomUsers = await getRoomUsers(roomId);
         const docRefRoomMessagesStatus = db.collection('room-messages').doc(roomId).collection('statuses').doc(messageId);
         batch.set(docRefRoomMessagesStatus, {
             ...roomMessagesStatusModel,
-            users: [this.userId],
+            usersWhoRead: [this.userId],
+            usersWhoNotRead: roomUsers.filter(user => user.id !== this.userId).map(user => user.id),
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
@@ -263,10 +266,13 @@ function useProvideChat() {
                 return true;
             })
     }//*********
-    function updateMessageStatus(roomId, messageId, data, callback) {
-        return db.collection('room-messages').doc(roomId).collection('statuses').doc(messageId)
+    async function userIsReadMessage(roomId, messageId, userId, callback) {
+        const messageStatusRef = db.collection('room-messages').doc(roomId).collection('statuses').doc(messageId);
+        const usersWhoNotRead = await messageStatusRef.get().then( doc => doc.data()?.usersWhoNotRead );
+        return messageStatusRef
             .update({
-                users: firebase.firestore.FieldValue.arrayUnion(...data)
+                usersWhoRead: firebase.firestore.FieldValue.arrayUnion(userId),
+                usersWhoNotRead: usersWhoNotRead?.length ? usersWhoNotRead.filter( user => user !== userId) : []
             })
             .then( () => {
                 callback && callback(messageId)
@@ -278,11 +284,16 @@ function useProvideChat() {
         let batch = db.batch(); //выполняет multiple write operations as a single
 
         const statusesCollectionsRef = db.collection("room-messages").doc(roomId).collection("statuses");
-        const querySnapshotAllCollection = await statusesCollectionsRef.get();
-        querySnapshotAllCollection.forEach( doc => {
+        const querySnapshotUnreadMessagesForUserId = await statusesCollectionsRef.where("usersWhoNotRead", "array-contains", curUserId).get();
+        querySnapshotUnreadMessagesForUserId.forEach( doc => {
             const statusMessage = doc.data();
-            if (!statusMessage.users.includes(curUserId)) {
-                batch.update(doc.ref, {users: firebase.firestore.FieldValue.arrayUnion(curUserId)});
+            const usersWhoNotRead = statusMessage.usersWhoNotRead;
+            console.log("%%% === ", usersWhoNotRead);
+            if (statusMessage.usersWhoNotRead.includes(curUserId)) {
+                batch.update(doc.ref, {
+                    usersWhoRead: firebase.firestore.FieldValue.arrayUnion(curUserId),
+                    usersWhoNotRead: usersWhoNotRead.filter( user => user !== curUserId)
+                })
             }
         } )
 
@@ -436,12 +447,8 @@ function useProvideChat() {
         const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
 
         const statusesCollectionsRef = db.collection("room-messages").doc(roomId).collection("statuses");
-        const querySnapshotAllCollection = await statusesCollectionsRef.get();
-        const querySnapshotReadStatuses = await statusesCollectionsRef.where("users", "array-contains", curUserId).get();
-
-        const numberAllMessages = querySnapshotAllCollection.size;
-        const numberReadMessages = querySnapshotReadStatuses.size;
-        const numberUnreadMessages = numberAllMessages - numberReadMessages;
+        const querySnapshotUnreadMessagesForUserId = await statusesCollectionsRef.where("usersWhoNotRead", "array-contains", curUserId).get();
+        const numberUnreadMessages = querySnapshotUnreadMessagesForUserId.size;
 
         return numberUnreadMessages;
     }//*********this
@@ -608,7 +615,7 @@ function useProvideChat() {
 
         sendMessage,
         updateMessage,
-        updateMessageStatus,
+        userIsReadMessage,
         setAllMessageRead,
         deleteMessage,
 

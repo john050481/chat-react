@@ -17,7 +17,7 @@ function* sagaWorker(action) {
 
         let isUnreadMessage = false;
         statuses.forEach( statusMessage => {
-            if ( !statusMessage.users.includes(chatDbApi.userId) ) {
+            if ( statusMessage.usersWhoNotRead.includes(chatDbApi.userId) ) {
                 isUnreadMessage = true;
                 return;
             }
