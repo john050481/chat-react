@@ -10,7 +10,7 @@ import {FaCircle} from "react-icons/fa";
 function ChatMessage(props) {
     console.log('Render ChatMessage');
 
-    const {currentRoomId, message, unreadBlock, firstUnreadMessageId} = props;
+    const {currentRoomId, message, unreadElement} = props;
 
     const chatDb = useChat();
 
@@ -32,13 +32,7 @@ function ChatMessage(props) {
 
     return (
         <>
-            {
-                firstUnreadMessageId === message.id
-                ? <div ref={unreadBlock} className="chat-message-unread">
-                      <hr className="chat-message-unread--hr" />
-                  </div>
-                : null
-            }
+            {unreadElement}
 
             <Toast ref={chatMessageRef} className={'chat-message' + (itsMyMessage ? ' my' : ' notMy')}>
                 <Toast.Header closeButton={false}>

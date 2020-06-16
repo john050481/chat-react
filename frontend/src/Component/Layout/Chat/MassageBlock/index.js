@@ -81,14 +81,21 @@ function MessageBlock(props) {
                 <div id='message-block' className='content message-block p-1'>
                     {   !currentRoomId && requestRoomId
                         ? <SpinnerApp />
-                        : messages.map( message =>
-                            <ChatMessage
-                                key={message.id}
-                                message={message}
-                                unreadBlock={unreadBlock}
-                                firstUnreadMessageId={firstUnreadMessageId}
-                            />
-                          )
+                        : messages.map( message => {
+
+                                const unreadElement = firstUnreadMessageId === message.id
+                                    ? <div ref={unreadBlock} className="chat-message-unread">
+                                          <hr className="chat-message-unread--hr" />
+                                      </div>
+                                    : null
+
+                                return <ChatMessage
+                                    key={message.id}
+                                    message={message}
+                                    unreadElement={unreadElement}
+                                />
+                            }
+                        )
                     }
                 </div>
             </div>
