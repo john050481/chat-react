@@ -38,7 +38,7 @@ export default function useOnScreenUnReadMessage(ref, chatDb, message, rootMargi
         return () => {
             observer.unobserve(ref.current);
         };
-    }, [chatDb.userId, message, messageStatus]); // Empty array ensures that effect is only run on mount and unmount
+    }, [chatDb.userId, message, messageStatus, currentRoomId]); // Empty array ensures that effect is only run on mount and unmount
 
     return isRead;
 }
