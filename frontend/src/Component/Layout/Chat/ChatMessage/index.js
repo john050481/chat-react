@@ -10,7 +10,7 @@ import {FaCircle} from "react-icons/fa";
 function ChatMessage(props) {
     console.log('Render ChatMessage');
 
-    const {currentRoomId, message, unreadBlock, firstUnreadMessage, setFirstUnreadMessage} = props;
+    const {currentRoomId, message, unreadBlock, firstUnreadMessageId} = props;
 
     const chatDb = useChat();
 
@@ -25,15 +25,6 @@ function ChatMessage(props) {
 
     const chatMessageRef = useRef();
     const isRead = useOnScreenUnReadMessage(chatMessageRef, chatDb, message);
-    useEffect( () => {
-        if (!firstUnreadMessage && isRead === false)
-            setFirstUnreadMessage( prevMessageId => {
-                if (!prevMessageId)
-                    return message.id;
-
-                return prevMessageId;
-            });
-    }, [isRead]);
 
     let milliseconds = message.timestamp ? message.timestamp.seconds*1000 : NaN;
     const itsMyMessage = chatDb.userId === message.userId;
@@ -42,7 +33,7 @@ function ChatMessage(props) {
     return (
         <>
             {
-                (!unreadBlock.current && !isRead) || (firstUnreadMessage === message.id)
+                firstUnreadMessageId === message.id
                 ? <div ref={unreadBlock} className="chat-message-unread">
                       <hr className="chat-message-unread--hr" />
                   </div>

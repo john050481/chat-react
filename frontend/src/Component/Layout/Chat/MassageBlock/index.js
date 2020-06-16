@@ -12,7 +12,7 @@ import {useChat} from "../../../../hooks/useChatFirebase";
 function MessageBlock(props) {
     console.log('Render MessageBlock');
 
-    const {citation, messages, requestRoomId, currentRoomId, setCitation, requestToSetReadAllMessages} = props;
+    const {citation, messages, statuses, requestRoomId, currentRoomId, setCitation, requestToSetReadAllMessages} = props;
 
     const chatDb = useChat();
 
@@ -21,14 +21,19 @@ function MessageBlock(props) {
     }, [])
 
     const unreadBlock = useRef(null);
-    const [firstUnreadMessage, setFirstUnreadMessage] = useState(null);
+    const [firstUnreadMessageId, setFirstUnreadMessageId] = useState(null);
     useEffect( () => {
-        setFirstUnreadMessage(null);
-    }, [currentRoomId]);
+        if (currentRoomId !== requestRoomId)
+            return setFirstUnreadMessageId(null);
+
+        if (!firstUnreadMessageId)
+            setFirstUnreadMessageId( statuses.find( messageStatus => messageStatus.usersWhoNotRead.includes(chatDb.userId))?.id );
+        console.log('statuses.find( messageStatus => messageStatus.usersWhoNotRead.includes(chatDb.userId))?.id = ', firstUnreadMessageId, statuses.find( messageStatus => messageStatus.usersWhoNotRead.includes(chatDb.userId))?.id);
+    }, [currentRoomId, requestRoomId, statuses, firstUnreadMessageId]);
 
     const messageBlockScroll = useRef(null);
     useEffect( () => {
-        if (firstUnreadMessage && unreadBlock.current) {
+        if (firstUnreadMessageId && unreadBlock.current) {
             unreadBlock.current.scrollIntoView();
         } else if (messageBlockScroll.current) {
             messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
@@ -38,9 +43,9 @@ function MessageBlock(props) {
             const lastMessage = messages[messages.length-1];
             const itsMyMessage = chatDb.userId === lastMessage.userId;
             if (itsMyMessage)
-                setFirstUnreadMessage(null);
+                setFirstUnreadMessageId(null);
         }
-    }, [firstUnreadMessage, messages]);
+    }, [firstUnreadMessageId, messages]);
 
     const [isScrollEnd, setIsScrollEnd] = useState(null);
     useEffect( () => {
@@ -59,8 +64,7 @@ function MessageBlock(props) {
     }
 
     function handleClick(e) {
-        let target = e.target;
-        let messageElem = target.closest('[data-message]')
+        let messageElem = e.target.closest('[data-message]');
         if (messageElem) {
             const {id, message, author} = messageElem.dataset;
             setCitation(id, message, author);
@@ -78,8 +82,7 @@ function MessageBlock(props) {
                                 key={message.id}
                                 message={message}
                                 unreadBlock={unreadBlock}
-                                firstUnreadMessage={firstUnreadMessage}
-                                setFirstUnreadMessage={setFirstUnreadMessage}
+                                firstUnreadMessageId={firstUnreadMessageId}
                             />
                           )
                     }
@@ -100,6 +103,7 @@ const mapStateToProps = store => {
     return {
         citation: store.chat.citation,
         messages: store.chat.messages,
+        statuses: store.chat.statuses,
         requestRoomId: store.chat.requestRoomId,
         currentRoomId: store.chat.currentRoomId
     }
