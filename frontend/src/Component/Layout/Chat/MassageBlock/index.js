@@ -9,6 +9,17 @@ import {requestToSetReadAllMessages} from "../../../../redux/actions/statusesAct
 import StatusedAndGoEnd from './StatusedAndGoEnd'
 import {useChat} from "../../../../hooks/useChatFirebase";
 
+function scrollIsEnd(elem) {
+    if (!elem)
+        return null;
+
+    const {scrollTop, scrollHeight, clientHeight} = elem;
+    if ( Math.ceil(scrollTop + clientHeight) >= Math.floor(scrollHeight) )
+        return true;
+
+    return false;
+}
+
 function MessageBlock(props) {
     console.log('Render MessageBlock');
 
@@ -17,20 +28,20 @@ function MessageBlock(props) {
     const chatDb = useChat();
 
     useEffect( () => {
-        handleScroll();
-    }, [])
+        setIsScrollEnd( scrollIsEnd(messageBlockScroll.current) );
+    }, [messages])
 
-    const unreadBlock = useRef(null);
     const [firstUnreadMessageId, setFirstUnreadMessageId] = useState(null);
     useEffect( () => {
         if (currentRoomId !== requestRoomId)
-            return setFirstUnreadMessageId(null);
-
+            setFirstUnreadMessageId(null);
+    }, [currentRoomId, requestRoomId]);
+    useEffect( () => {
         if (!firstUnreadMessageId)
             setFirstUnreadMessageId( statuses.find( messageStatus => messageStatus.usersWhoNotRead.includes(chatDb.userId))?.id );
-        console.log('statuses.find( messageStatus => messageStatus.usersWhoNotRead.includes(chatDb.userId))?.id = ', firstUnreadMessageId, statuses.find( messageStatus => messageStatus.usersWhoNotRead.includes(chatDb.userId))?.id);
-    }, [currentRoomId, requestRoomId, statuses, firstUnreadMessageId]);
+    }, [statuses, firstUnreadMessageId]);
 
+    const unreadBlock = useRef(null);
     const messageBlockScroll = useRef(null);
     useEffect( () => {
         if (firstUnreadMessageId && unreadBlock.current) {
@@ -53,14 +64,7 @@ function MessageBlock(props) {
             requestToSetReadAllMessages(currentRoomId, chatDb);
     }, [isScrollEnd])
     function handleScroll(e) {
-        if (!messageBlockScroll.current) return;
-
-        const {scrollTop, scrollHeight, clientHeight} = messageBlockScroll.current;
-        if ( Math.ceil(scrollTop + clientHeight) >= Math.floor(scrollHeight) ) {
-            setIsScrollEnd(true);
-        } else {
-            isScrollEnd && setIsScrollEnd(false);
-        }
+        setIsScrollEnd( scrollIsEnd(messageBlockScroll.current) );
     }
 
     function handleClick(e) {

@@ -268,11 +268,10 @@ function useProvideChat() {
     }//*********
     async function userIsReadMessage(roomId, messageId, userId, callback) {
         const messageStatusRef = db.collection('room-messages').doc(roomId).collection('statuses').doc(messageId);
-        const usersWhoNotRead = await messageStatusRef.get().then( doc => doc.data()?.usersWhoNotRead );
         return messageStatusRef
             .update({
                 usersWhoRead: firebase.firestore.FieldValue.arrayUnion(userId),
-                usersWhoNotRead: usersWhoNotRead?.length ? usersWhoNotRead.filter( user => user !== userId) : []
+                usersWhoNotRead: firebase.firestore.FieldValue.arrayRemove(userId)
             })
             .then( () => {
                 callback && callback(messageId)
@@ -287,12 +286,10 @@ function useProvideChat() {
         const querySnapshotUnreadMessagesForUserId = await statusesCollectionsRef.where("usersWhoNotRead", "array-contains", curUserId).get();
         querySnapshotUnreadMessagesForUserId.forEach( doc => {
             const statusMessage = doc.data();
-            const usersWhoNotRead = statusMessage.usersWhoNotRead;
-            console.log("%%% === ", usersWhoNotRead);
             if (statusMessage.usersWhoNotRead.includes(curUserId)) {
                 batch.update(doc.ref, {
                     usersWhoRead: firebase.firestore.FieldValue.arrayUnion(curUserId),
-                    usersWhoNotRead: usersWhoNotRead.filter( user => user !== curUserId)
+                    usersWhoNotRead: firebase.firestore.FieldValue.arrayRemove(curUserId)
                 })
             }
         } )

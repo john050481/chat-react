@@ -79,7 +79,7 @@ export default function (state = init, action) {
             return {
                 ...state,
                 rooms: [action.payload, ...state.rooms.filter( room => room.roomId !== action.payload.roomId)]
-                    .sort( (roomA, roomB) => roomB.data.lastActivity.seconds - roomA.data.lastActivity.seconds )
+                    .sort( (roomA, roomB) => roomB.data.lastActivity?.seconds - roomA.data.lastActivity?.seconds )
             }
 
         case REQUEST_ROOMID_MESSAGES:

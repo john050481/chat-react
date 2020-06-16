@@ -5,23 +5,19 @@ import { useSelector, shallowEqual } from 'react-redux';
 export default function useOnScreenUnReadMessage(ref, chatDb, message, rootMargin = '0px') {
     const [isRead, setIsRead] = useState(null);
 
-    const { statuses, currentRoomId } = useSelector(store => ({
-        statuses: store.chat.statuses,
+    const { messageStatus, currentRoomId } = useSelector(store => ({
+        messageStatus: store.chat.statuses.find( messageStatus => messageStatus.id === message.id),
         currentRoomId: store.chat.currentRoomId
     }), shallowEqual);
 
     useEffect(() => {
-
-        if (!chatDb.userId || !message || !statuses?.length)
-            return;
-
-        const messageStatus = statuses.find( messageStatus => messageStatus.id === message.id);
-        if (!messageStatus)
+        if (!chatDb.userId || !message || !messageStatus)
             return;
 
         const messageIsRead = messageStatus.usersWhoRead.includes(chatDb.userId);
         setIsRead(messageIsRead);
-        if (messageIsRead) return;
+        if (messageIsRead)
+            return;
 
         const observer = new IntersectionObserver(
             ([entry]) => {
@@ -42,7 +38,7 @@ export default function useOnScreenUnReadMessage(ref, chatDb, message, rootMargi
         return () => {
             observer.unobserve(ref.current);
         };
-    }, [chatDb.userId, message, statuses]); // Empty array ensures that effect is only run on mount and unmount
+    }, [chatDb.userId, message, messageStatus]); // Empty array ensures that effect is only run on mount and unmount
 
     return isRead;
 }

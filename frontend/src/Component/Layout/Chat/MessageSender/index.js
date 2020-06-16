@@ -16,8 +16,11 @@ function MessageSender(props) {
 
     const [caretPos, setCaretPos] = useState(null);
     const [useEmojiComponent, setUseEmojiComponent] = useState(false);
+    const [sendingMessage, setSendingMessage] = useState(false);
 
     function handleClickSend(e) {
+        if (sendingMessage) return;
+
         if (!enterFieldElement.current) return;
 
         if (!enterFieldElement.current.innerText) {
@@ -26,11 +29,15 @@ function MessageSender(props) {
             return
         };
 
+        setSendingMessage(true);
         chatDb.sendMessage(
             props.currentRoomId,
             enterFieldElement.current.innerText,
             'default', false, props.citation.id
         )
+            .finally( () => {
+                setSendingMessage(false);
+            })
             .then( messageId => {
                 props.clearCitation();
                 if (enterFieldElement.current)
