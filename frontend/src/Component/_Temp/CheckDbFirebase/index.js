@@ -59,8 +59,8 @@ export default function (props) {
         console.log(messages);
     }//*********
     async function handlergetRoomUsers(e) {
-        let users = await chatDb.getRoomUsers(roomIdElem.value);
-        console.log('room users = ', users);
+        let usersIds = await chatDb.getRoomUsersIds(roomIdElem.value);
+        console.log('room users = ', usersIds);
     }//*********
     async function handlercreateRoom(e) {
         const result = chatDb.createRoom('roomCreate', 'private', console.log);

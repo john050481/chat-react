@@ -230,12 +230,12 @@ function useProvideChat() {
             citationId
         });
 
-        const roomUsers = await getRoomUsers(roomId);
+        const roomUsersIds = await getRoomUsersIds(roomId);
         const docRefRoomMessagesStatus = db.collection('room-messages').doc(roomId).collection('statuses').doc(messageId);
         batch.set(docRefRoomMessagesStatus, {
             ...roomMessagesStatusModel,
             usersWhoRead: [this.userId],
-            usersWhoNotRead: roomUsers.filter(user => user.id !== this.userId).map(user => user.id),
+            usersWhoNotRead: roomUsersIds.filter(userId => userId !== this.userId),
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
@@ -472,8 +472,8 @@ function useProvideChat() {
     function enterRoom(roomId, callback) {
         let batch = db.batch(); //выполняет multiple write operations as a single
 
-        const docRefRoomUsers = db.collection('room-users').doc(roomId).collection('users').doc(this.userId);
-        batch.set(docRefRoomUsers, {id: this.userId});
+        const docRefRoomUsers = db.collection('room-users').doc(roomId);
+        batch.update(docRefRoomUsers, {users: firebase.firestore.FieldValue.arrayUnion(this.userId)});
 
         const docRefUsers = db.collection('users').doc(this.userId);
         batch.update(docRefUsers, {rooms: firebase.firestore.FieldValue.arrayUnion(roomId)});
@@ -487,8 +487,8 @@ function useProvideChat() {
     function leaveRoom(roomId, callback) {
         let batch = db.batch(); //выполняет multiple write operations as a single
 
-        const docRefRoomUsers = db.collection('room-users').doc(roomId).collection('users').doc(this.userId);
-        batch.delete(docRefRoomUsers);
+        const docRefRoomUsers = db.collection('room-users').doc(roomId);
+        batch.update(docRefRoomUsers, {users: firebase.firestore.FieldValue.arrayRemove(this.userId)});
 
         const docRefUsers = db.collection('users').doc(this.userId);
         batch.update(docRefUsers, {rooms: firebase.firestore.FieldValue.arrayRemove(roomId)});
@@ -499,13 +499,12 @@ function useProvideChat() {
                 callback && callback(true);
             });
     }//*********
-    function getRoomUsers(roomId) {
-        return db.collection('room-users').doc(roomId).collection('users').get().then( querySnapshot => {
-            let users = [];
-            querySnapshot.forEach(function(doc) {
-                users.push({...doc.data(), id: doc.id});
-            });
-            return users;
+    function getRoomUsersIds(roomId) {
+        return db.collection('room-users').doc(roomId).get().then( doc => {
+            if (doc.exists) {
+                return doc.data().users;
+            }
+            return [];
         });
     }//*********
 
@@ -629,7 +628,7 @@ function useProvideChat() {
         getNumberOfUnreadMessagesForAllRoom,
         enterRoom,
         leaveRoom,
-        getRoomUsers,
+        getRoomUsersIds,
 
         getUserData,
         getUserRef,
