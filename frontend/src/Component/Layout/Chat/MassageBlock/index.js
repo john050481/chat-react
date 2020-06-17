@@ -56,7 +56,7 @@ function MessageBlock(props) {
             if (itsMyMessage)
                 setFirstUnreadMessageId(null);
         }
-    }, [firstUnreadMessageId, messages]);
+    }, [firstUnreadMessageId, messages, appIsVisible]);
 
     const [isScrollEnd, setIsScrollEnd] = useState(null);
     useEffect( () => {
