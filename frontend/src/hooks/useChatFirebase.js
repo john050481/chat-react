@@ -103,8 +103,8 @@ function useProvideChat() {
         } );
         // ПОДПИСЫВАЕМСЯ
         needSubscribe.forEach( roomId => {
-            const unsubscribeMessages = _subscribeRoomMessages(roomId, "messages");
-            const unsubscribeStatuses = _subscribeRoomMessages(roomId, "statuses");
+            const unsubscribeMessages = _subscribeRoomMessages(roomId, "messages", userData);
+            const unsubscribeStatuses = _subscribeRoomMessages(roomId, "statuses", userData);
             subscribersUserRooms.current.push({roomId, unsubscribeMessages, unsubscribeStatuses});
         } );
     }, [userData] );
@@ -184,10 +184,16 @@ function useProvideChat() {
             })
     }//*********this
 
-    function _subscribeRoomMessages(roomId, collection) {
+    function _subscribeRoomMessages(roomId, collection, userData) {
         let firstRun = true;
-        const unsubscribe = db.collection("room-messages").doc(roomId).collection(collection).onSnapshot(function (snapshot){
+        const curUserData = userData || this?.userData; //если нет "userData", то берем "this.userData";
+        const startDataOnSnapshot = curUserData?.lastActivity ? curUserData?.lastActivity : Date.now();
+        const unsubscribe = db.collection("room-messages").doc(roomId).collection(collection)
+                            .where("timestamp", ">=", startDataOnSnapshot)
+                            .onSnapshot(function (snapshot){
             //!!!!!!!!!! припервом запросе происходит чтение ВСЕХ документов в коллекции - ПЛОХО !!!!!!!!!!
+            //поэтому, добавил в запрос ".where("timestamp", ">=", startDataOnSnapshot)"
+            //т.е. я подписываюсь на последние сообщения с момента активности user-а или с текущего времени
             console.log('---------------_subscribeRoomMessages---------------');
             console.log(`--- ИЗМЕНЕНИЯ В СООБЩЕНИЯХ ${roomId}/${collection} --- firstRun: ${firstRun} ---`);
 
