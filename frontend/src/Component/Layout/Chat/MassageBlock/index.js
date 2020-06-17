@@ -23,7 +23,7 @@ function scrollIsEnd(elem) {
 function MessageBlock(props) {
     console.log('Render MessageBlock');
 
-    const {citation, messages, statuses, requestRoomId, currentRoomId, setCitation, requestToSetReadAllMessages} = props;
+    const {citation, messages, statuses, requestRoomId, currentRoomId, setCitation, appIsVisible, requestToSetReadAllMessages} = props;
 
     const chatDb = useChat();
 
@@ -44,7 +44,7 @@ function MessageBlock(props) {
     const unreadBlock = useRef(null);
     const messageBlockScroll = useRef(null);
     useEffect( () => {
-        if (firstUnreadMessageId && unreadBlock.current) {
+        if (firstUnreadMessageId && unreadBlock.current && !appIsVisible) {
             unreadBlock.current.scrollIntoView();
         } else if (messageBlockScroll.current) {
             messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
@@ -116,7 +116,8 @@ const mapStateToProps = store => {
         messages: store.chat.messages,
         statuses: store.chat.statuses,
         requestRoomId: store.chat.requestRoomId,
-        currentRoomId: store.chat.currentRoomId
+        currentRoomId: store.chat.currentRoomId,
+        appIsVisible: store.app.appIsVisible
     }
 }
 const mapDispatchToProps = {
