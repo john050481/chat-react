@@ -84,8 +84,8 @@ function MessageBlock(props) {
                         : messages.map( message => {
 
                                 const unreadElement = firstUnreadMessageId === message.id
-                                    ? <div ref={unreadBlock} className="chat-message-unread">
-                                          <hr className="chat-message-unread--hr" />
+                                    ? <div ref={unreadBlock} className="message-block-unread">
+                                          <hr className="message-block-unread--hr" />
                                       </div>
                                     : null
 

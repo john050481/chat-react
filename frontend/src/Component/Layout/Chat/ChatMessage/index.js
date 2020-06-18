@@ -10,18 +10,24 @@ import {FaCircle} from "react-icons/fa";
 function ChatMessage(props) {
     console.log('Render ChatMessage');
 
-    const {currentRoomId, message, unreadElement} = props;
+    const {currentRoomId, citationMessageInStore, message, unreadElement} = props;
 
     const chatDb = useChat();
 
-    const [citationComp, setCitationComp] = useState(null);
+    const [citationMessage, setCitationMessage] = useState(null);
     useEffect( () => {
-        if (message.citationId)
-            (async () => {
-                const citationOnDb = await chatDb.getRoomMessage(currentRoomId, message.citationId);
-                setCitationComp(citationOnDb);
-            })()
-    }, [])
+        console.log("citationMessageInStore", citationMessageInStore);
+        if (message.citationId) {
+            if (citationMessageInStore) {
+                setCitationMessage(citationMessageInStore);
+            } else {
+                (async () => {
+                    const citationMessageOnDb = await chatDb.getRoomMessage(currentRoomId, message.citationId);
+                    setCitationMessage(citationMessageOnDb);
+                })()
+            }
+        }
+    }, [citationMessageInStore])
 
     const chatMessageRef = useRef();
     const isRead = useOnScreenUnReadMessage(chatMessageRef, chatDb, message);
@@ -49,9 +55,9 @@ function ChatMessage(props) {
                 </Toast.Header>
                 <Toast.Body>
                     {
-                        citationComp &&
-                        <div className='chat-message--citation m-1 p-2'>
-                            <small><i>{citationComp.message}</i></small>
+                        citationMessage &&
+                        <div className='chat-message--citation in-one-row-with-ellipsis m-1 p-2'>
+                            <small title={citationMessage.message} data-citationid={citationMessage.id}><i>{citationMessage.message}</i></small>
                         </div>
                     }
                     <p data-message={message.message} data-author={message.name} data-id={message.id}>{message.message}</p>
@@ -62,9 +68,10 @@ function ChatMessage(props) {
     )
 }
 
-const mapStateToProps = store => {
+const mapStateToProps = (store, ownProps) => {
     return {
         currentRoomId: store.chat.currentRoomId,
+        citationMessageInStore: ownProps?.message?.citationId ? store.chat.messages.find( message => message.id === ownProps.message.citationId) : false
     }
 }
 const mapDispatchToProps = {

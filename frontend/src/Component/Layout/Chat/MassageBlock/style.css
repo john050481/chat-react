@@ -30,3 +30,16 @@
     max-height: 110px;
     word-break: break-all;
 }
+
+.message-block-unread {
+    text-align: center;
+}
+.message-block-unread:after {
+    content: "last unread";
+    position: relative;
+    top: -1.8em;
+    background-color: white;
+}
+.message-block-unread--hr {
+    width: 100%;
+}

@@ -32,15 +32,10 @@ p[data-message] {
     border-radius: 5px;
 }
 
-.chat-message-unread {
-    text-align: center;
-}
-.chat-message-unread:after {
-    content: "last unread";
-    position: relative;
-    top: -1.8em;
-    background-color: white;
-}
-.chat-message-unread--hr {
-    width: 100%;
+.chat-message--citation.in-one-row-with-ellipsis {
+    white-space: nowrap; /* Отменяем перенос текста */
+    overflow: hidden; /* Обрезаем содержимое */
+    padding: 5px; /* Поля */
+    text-overflow: ellipsis; /* Многоточие */
+    text-align: end;
 }
