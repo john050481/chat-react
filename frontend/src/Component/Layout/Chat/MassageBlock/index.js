@@ -8,6 +8,7 @@ import {setCitation} from "../../../../redux/actions";
 import {requestToSetReadAllMessages} from "../../../../redux/actions/statusesActions";
 import StatusedAndGoEnd from './StatusedAndGoEnd'
 import {useChat} from "../../../../hooks/useChatFirebase";
+import isElementInViewport from '../../../../common/isElementInViewport'
 
 let isBlinking = false;
 
@@ -86,7 +87,9 @@ function MessageBlock(props) {
                 if (isBlinking) return;
 
                 citationMessageElem.classList.add('citation-message-blinking');
-                citationMessageElem.scrollIntoView();
+                if ( !isElementInViewport(citationMessageElem) ) {
+                    citationMessageElem.scrollIntoView();
+                }
                 isBlinking = setTimeout( () => {
                     console.log('isBlinkingEnd');
                     citationMessageElem.classList.remove('citation-message-blinking');

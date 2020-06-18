@@ -45,19 +45,18 @@
 }
 
 .citation-message-blinking {
-    border-width: 3px;
     position: relative;
     animation-name: blinking-citation;
     animation-duration: 0.7s;
     animation-iteration-count: 3
 }
 @keyframes blinking-citation {
-    0%{border-color: inherit; left: 0px; background-color: inherit}
-    50%{border-color: #ff0000; left: -10px; background-color: #00d8ff}
-    100%{border-color: inherit; left: 0px; background-color: inherit}
+    0%{left: 0px; background-color: inherit}
+    50%{left: -10px; background-color: #00d8ff}
+    100%{left: 0px; background-color: inherit}
 }
 @-webkit-keyframes blinking-citation {
-    0%{border-color: inherit; left: 0px; background-color: inherit}
-    50%{border-color: #ff0000; left: -10px; background-color: #00d8ff}
-    100%{border-color: inherit; left: 0px; background-color: inherit}
+    0%{left: 0px; background-color: inherit}
+    50%{left: -10px; background-color: #00d8ff}
+    100%{left: 0px; background-color: inherit}
 }
