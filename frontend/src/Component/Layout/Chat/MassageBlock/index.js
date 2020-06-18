@@ -9,6 +9,8 @@ import {requestToSetReadAllMessages} from "../../../../redux/actions/statusesAct
 import StatusedAndGoEnd from './StatusedAndGoEnd'
 import {useChat} from "../../../../hooks/useChatFirebase";
 
+let isBlinking = false;
+
 function scrollIsEnd(elem) {
     if (!elem)
         return null;
@@ -68,6 +70,8 @@ function MessageBlock(props) {
     }
 
     function handleClick(e) {
+        e.preventDefault();
+
         let messageElem = e.target.closest('[data-message]');
         if (messageElem) {
             const {id, message, author} = messageElem.dataset;
@@ -79,9 +83,15 @@ function MessageBlock(props) {
         if (citationId) {
             const citationMessageElem = messageBlockScroll.current?.querySelector(`[data-id=\"${citationId}\"]`)?.closest('.chat-message');
             if(citationMessageElem) {
+                if (isBlinking) return;
+
                 citationMessageElem.classList.add('citation-message-blinking');
                 citationMessageElem.scrollIntoView();
-                setTimeout( () => { citationMessageElem.classList.remove('citation-message-blinking'); }, 2000)
+                isBlinking = setTimeout( () => {
+                    console.log('isBlinkingEnd');
+                    citationMessageElem.classList.remove('citation-message-blinking');
+                    isBlinking = false;
+                }, 2000)
             }
         }
     }
