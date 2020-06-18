@@ -16,7 +16,7 @@
     background-color: hsla(113, 100%, 89%, 0.85);
 }
 
-p[data-message] {
+p[data-message], div[data-citationid] {
     cursor: pointer;
 }
 

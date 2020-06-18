@@ -57,7 +57,7 @@ function ChatMessage(props) {
                     {
                         citationMessage &&
                         <div className='chat-message--citation in-one-row-with-ellipsis m-1 p-2'>
-                            <small title={citationMessage.message} data-citationid={citationMessage.id}><i>{citationMessage.message}</i></small>
+                            <div title={citationMessage.message} data-citationid={citationMessage.id}><i>{citationMessage.message}</i></div>
                         </div>
                     }
                     <p data-message={message.message} data-author={message.name} data-id={message.id}>{message.message}</p>

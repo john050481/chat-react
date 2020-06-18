@@ -72,6 +72,17 @@ function MessageBlock(props) {
         if (messageElem) {
             const {id, message, author} = messageElem.dataset;
             setCitation(id, message, author);
+            return;
+        }
+
+        const citationId = e.target.closest('[data-citationid]')?.dataset?.citationid;
+        if (citationId) {
+            const citationMessageElem = messageBlockScroll.current?.querySelector(`[data-id=\"${citationId}\"]`)?.closest('.chat-message');
+            if(citationMessageElem) {
+                citationMessageElem.classList.add('citation-message-blinking');
+                citationMessageElem.scrollIntoView();
+                setTimeout( () => { citationMessageElem.classList.remove('citation-message-blinking'); }, 2000)
+            }
         }
     }
 
