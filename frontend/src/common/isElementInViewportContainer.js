@@ -9,12 +9,12 @@ export default function isElementInViewportContainer(elem, container) {
     const rectContainer = container.getBoundingClientRect();
 
     const result = {
-        top: rectElem.top >= rectContainer.top,
-        left: rectElem.left >= rectContainer.left,
-        bottom: rectElem.bottom <= rectContainer.bottom,
-        right: rectElem.right <= rectContainer.right
+        top: rectElem.top >= rectContainer.top,          // если false - элемент вылез за пределы контейнера сверху
+        left: rectElem.left >= rectContainer.left,       // если false - элемент вылез за пределы контейнера слева
+        bottom: rectElem.bottom <= rectContainer.bottom, // если false - элемент вылез за пределы контейнера снизу
+        right: rectElem.right <= rectContainer.right     // если false - элемент вылез за пределы контейнера справа
     };
-    result.elemIsInsideContainer = result.top && result.left && result.bottom && result.right;
+    result.elemIsInsideContainer = result.top && result.left && result.bottom && result.right; // итог, если хоть что-то из верхнего false - элемент НЕ в контейнере
 
     return result
 }
