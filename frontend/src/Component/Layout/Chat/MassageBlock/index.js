@@ -1,14 +1,14 @@
-import './style.css'
-import React, {useEffect, useRef, useState} from 'react'
-import Citation from '../Citation'
+import './style.css';
+import React, {useEffect, useRef, useState} from 'react';
+import Citation from '../Citation';
 import {connect} from "react-redux";
-import ChatMessage from '../ChatMessage'
+import ChatMessage from '../ChatMessage';
 import SpinnerApp from "../../../../common/Spinner";
 import {setCitation} from "../../../../redux/actions";
 import {requestToSetReadAllMessages} from "../../../../redux/actions/statusesActions";
-import StatusedAndGoEnd from './StatusedAndGoEnd'
+import StatusedAndGoEnd from './StatusedAndGoEnd';
 import {useChat} from "../../../../hooks/useChatFirebase";
-import isElementInViewport from '../../../../common/isElementInViewport'
+import isElementInViewportContainer from '../../../../common/isElementInViewportContainer';
 
 let isBlinking = false;
 
@@ -86,12 +86,12 @@ function MessageBlock(props) {
             if(citationMessageElem) {
                 if (isBlinking) return;
 
-                citationMessageElem.classList.add('citation-message-blinking');
-                if ( !isElementInViewport(citationMessageElem) ) {
+                if ( !isElementInViewportContainer(citationMessageElem, messageBlockScroll.current)?.elemIsInsideContainer ) {
                     citationMessageElem.scrollIntoView();
                 }
+
+                citationMessageElem.classList.add('citation-message-blinking');
                 isBlinking = setTimeout( () => {
-                    console.log('isBlinkingEnd');
                     citationMessageElem.classList.remove('citation-message-blinking');
                     isBlinking = false;
                 }, 2000)

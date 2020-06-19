@@ -31,7 +31,7 @@ function SearchedChats(props) {
         //прокручиваем элемент, если он не виден
         let curElemRoomId = document.querySelector(`[data-roomid=\"${roomId}\"]`);
         if (curElemRoomId)
-            curElemRoomId.scrollIntoView(); /* elemInWindow(curElemRoomId, null, target => target.scrollIntoView() ); */
+            curElemRoomId.scrollIntoView();
 
         props.requestRoomIdMessages( roomId, chatDb );
         props.setIsShowSearchedChat(false);
