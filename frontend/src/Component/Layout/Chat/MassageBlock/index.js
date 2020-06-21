@@ -8,7 +8,7 @@ import {setCitation} from "../../../../redux/actions";
 import {requestToSetReadAllMessages} from "../../../../redux/actions/statusesActions";
 import StatusedAndGoEnd from './StatusedAndGoEnd';
 import {useChat} from "../../../../hooks/useChatFirebase";
-import isElementInViewportContainer from '../../../../common/isElementInViewportContainer';
+import {isElementInViewportContainer} from '../../../../common/inViewport';
 
 let isBlinking = false;
 
