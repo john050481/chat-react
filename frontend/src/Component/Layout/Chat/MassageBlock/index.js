@@ -6,7 +6,7 @@ import ChatMessage from '../ChatMessage';
 import SpinnerApp from "../../../../common/Spinner";
 import {setCitation} from "../../../../redux/actions";
 import {requestToSetReadAllMessages} from "../../../../redux/actions/statusesActions";
-import StatusedAndGoEnd from './StatusedAndGoEnd';
+import GoEndButton from './GoEndButton';
 import {useChat} from "../../../../hooks/useChatFirebase";
 import {isElementInViewportContainer} from '../../../../common/inViewport';
 
@@ -129,7 +129,7 @@ function MessageBlock(props) {
                     <Citation />
                 </div>
             }
-            <StatusedAndGoEnd messageBlockScroll={messageBlockScroll} isScrollEnd={isScrollEnd} />
+            <GoEndButton messageBlockScroll={messageBlockScroll} isScrollEnd={isScrollEnd} />
         </main>
     )
 }

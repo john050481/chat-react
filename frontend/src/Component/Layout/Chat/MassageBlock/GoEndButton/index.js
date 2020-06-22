@@ -3,8 +3,8 @@ import React from 'react'
 import {IoIosArrowDown} from 'react-icons/io';
 import useCountUnReadMessage from '../../../../../hooks/useCountUnReadMessage'
 
-export default function StatusedAndGoEnd(props) {
-    console.log('Render StatusedAndGoEnd');
+export default function GoEndButton(props) {
+    console.log('Render GoEndButton');
 
     const {messageBlockScroll, isScrollEnd} = props;
 
@@ -20,16 +20,16 @@ export default function StatusedAndGoEnd(props) {
     return (
             isScrollEnd
             ? null
-            : <div className="block-statusedAndGoEnd">
+            : <div className="block-GoEndButton">
                   {
                       !countUnReadMessage
                       ? null
-                      : <span className="block-statusedAndGoEnd-unread">
+                      : <span className="block-GoEndButton-unread">
                               {countUnReadMessage}
                         </span>
                   }
 
-                  <button className="block-statusedAndGoEnd-button" onClick={handleClick}>
+                  <button className="block-GoEndButton-button" onClick={handleClick}>
                       <IoIosArrowDown />
                   </button>
             </div>
