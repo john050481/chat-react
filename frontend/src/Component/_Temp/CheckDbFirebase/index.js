@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {useChat} from "../../../hooks/useChatFirebase"
+import {useAuth} from "../../../hooks/useAuth";
 
 let roomIdElem = null;
 let userIdElem = null;
@@ -11,7 +12,9 @@ let userEmailElem = null;
 export default function (props) {
     console.log('Render Profile');
 
+    const auth = useAuth();
     const chatDb = useChat();
+    const db = auth.firebase.firestore();
 
     const noop = useRef( (event) => console.log('EVENT: ', event) );
 
@@ -120,6 +123,39 @@ export default function (props) {
         let res = await chatDb.getNumberOfUnreadMessagesForAllRoom();
         console.log("handelGetNumberOfUnreadMessagesForAllRoom = ", res);
     }
+    async function handelPaginateQuery(e) {
+        let lastVisible = -1;
+
+        async function* getNextMessages() {
+            while (lastVisible) {
+                const next = db.collection("room-messages").doc("room1").collection("messages")
+                    .orderBy("timestamp")
+                    .startAfter(lastVisible)
+                    .limit(5);
+
+                yield next.get().then(function (documentSnapshots) {
+                    lastVisible = documentSnapshots.docs[documentSnapshots.docs.length-1];
+                    console.log("last", lastVisible);
+                    return documentSnapshots;
+                });
+            }
+        }
+
+        // for await (let documentSnapshots of getNextMessages()) {
+        //     documentSnapshots.forEach( documentSnapshots => {
+        //         console.log(documentSnapshots.id);
+        //     })
+        // }
+        /* или */
+        const generator = getNextMessages();
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+    }
 
     return (
         <div>
@@ -170,6 +206,8 @@ export default function (props) {
             <hr />
             <button onClick={handleCountUnreadMessage} className={'btn btn-outline-success'}>handle Count Unread Message</button>
             <button onClick={handelGetNumberOfUnreadMessagesForAllRoom} className={'btn btn-outline-success'}>handel Get Number Of Unread Messages For All Room</button>
+            <hr />
+            <button onClick={handelPaginateQuery}>handelPaginateQuery</button>
         </div>
     )
 }
