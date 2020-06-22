@@ -1,9 +1,7 @@
 .block-GoEndButton {
     position: absolute;
     bottom: 1%;
-    text-align: center;
-    width: 100%;
-    overflow: hidden;
+    margin-left: calc(50% - 20px);
 }
 
 .block-GoEndButton-button {
