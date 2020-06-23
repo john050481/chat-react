@@ -15,6 +15,7 @@ export default function (props) {
     const auth = useAuth();
     const chatDb = useChat();
     const db = auth.firebase.firestore();
+    const firebase = auth.firebase;
 
     const noop = useRef( (event) => console.log('EVENT: ', event) );
 
@@ -124,39 +125,75 @@ export default function (props) {
         console.log("handelGetNumberOfUnreadMessagesForAllRoom = ", res);
     }
     async function handelPaginateQuery(e) {
-        let lastVisible = -1;
+        let lastVisible = new firebase.firestore.Timestamp.fromDate(new Date('2020', '05', '19'));
+
+        console.log("lastVisible/init = ", lastVisible);
 
         async function* getNextMessages() {
-            while (lastVisible) {
-                const next = db.collection("room-messages").doc("room1").collection("messages")
-                    .orderBy("timestamp")
+            while (lastVisible !== undefined) {
+                yield db.collection("room-messages").doc("room1").collection("messages")
+                    .orderBy("timestamp", "desc")
                     .startAfter(lastVisible)
-                    .limit(5);
-
-                yield next.get().then(function (documentSnapshots) {
-                    lastVisible = documentSnapshots.docs[documentSnapshots.docs.length-1];
-                    console.log("last", lastVisible);
-                    return documentSnapshots;
-                });
+                    .limit(5)
+                    .get()
+                    .then(function (documentSnapshots) {
+                        lastVisible = documentSnapshots.docs[documentSnapshots.docs.length-1];
+                        console.log("last", documentSnapshots.size, lastVisible);
+                        return documentSnapshots;
+                    });
             }
         }
 
-        // for await (let documentSnapshots of getNextMessages()) {
-        //     documentSnapshots.forEach( documentSnapshots => {
-        //         console.log(documentSnapshots.id);
-        //     })
-        // }
+        for await (let documentSnapshots of getNextMessages()) {
+            documentSnapshots.forEach( documentSnapshots => {
+                console.log(documentSnapshots.id, documentSnapshots.data()?.timestamp);
+            })
+        }
         /* или */
-        const generator = getNextMessages();
-        console.log(await generator.next());
-        console.log(await generator.next());
-        console.log(await generator.next());
-        console.log(await generator.next());
-        console.log(await generator.next());
-        console.log(await generator.next());
-        console.log(await generator.next());
+        // const generator = getNextMessages();
+        // console.log(await generator.next());
+        // console.log(await generator.next());
+        // console.log(await generator.next());
+        // console.log(await generator.next());
+        // console.log(await generator.next());
+        // console.log(await generator.next());
+        // console.log(await generator.next());
     }
+    async function handelPaginateQuery2(e) {
+        let lastVisible = null;
 
+        async function* getNextMessages() {
+            const refCollection = db.collection("room-messages").doc("room1").collection("messages").orderBy("timestamp", "desc");
+            /**/
+            yield refCollection
+                .limit(5)
+                .get()
+                .then( documentSnapshots => {
+                    lastVisible = documentSnapshots.docs[documentSnapshots.docs.length-1];
+                    console.log("last/first", lastVisible);
+                    return documentSnapshots;
+                });
+
+            while (lastVisible) {
+                yield refCollection
+                    .startAfter(lastVisible)
+                    .limit(5)
+                    .get()
+                    .then(function (documentSnapshots) {
+                        lastVisible = documentSnapshots.docs[documentSnapshots.docs.length-1];
+                        console.log("last/next", lastVisible);
+                        return documentSnapshots;
+                    });
+            /**/
+            }
+        }
+
+        for await (let documentSnapshots of getNextMessages()) {
+            documentSnapshots.forEach( documentSnapshots => {
+                console.log(documentSnapshots.id);
+            })
+        }
+    }
     return (
         <div>
             <h1>Здесь будет профиль!!!</h1>
