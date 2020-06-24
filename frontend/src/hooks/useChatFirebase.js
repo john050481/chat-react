@@ -416,7 +416,7 @@ function useProvideChat() {
                     messages.push({...doc.data(), id: doc.id});
                 });
                 return messages;
-        });
+            });
     }//*********
     function getRoomMessagesStatuses(roomId) {
         return db.collection("room-messages").doc(roomId).collection("statuses")
@@ -445,6 +445,53 @@ function useProvideChat() {
             }
             return false;
         });
+    }//
+    function getMessagesAndStatusesWithLimit(roomId, limit) {
+        let lastVisible = null;
+
+        async function handlerDocumentSnapshots(documentSnapshots) {
+            lastVisible = documentSnapshots.docs[documentSnapshots.docs.length-1];
+
+            const messages = [];
+            const statuses = [];
+
+            let promise = new Promise( (res, rej) => {
+                if (documentSnapshots.empty) {
+                    res();
+                    return;
+                }
+
+                const size = documentSnapshots.size;
+                let count = 0;
+                documentSnapshots.forEach( async (doc) => {
+                    const status = await getRoomMessageStatus("room1", doc.id);
+                    messages.push({...doc.data(), id: doc.id});
+                    statuses.push(status);
+                    count++;
+                    if (count === size)
+                        res();
+                });
+            });
+            await promise;
+
+            return {messages: messages.reverse(), statuses: statuses.reverse(), lastVisible};
+        };
+
+        return (async function* getNextMessages() {
+            const refCollection = db.collection("room-messages").doc(roomId).collection("messages").orderBy("timestamp", "desc");
+            yield refCollection
+                .limit(limit)
+                .get()
+                .then( handlerDocumentSnapshots );
+
+            while (lastVisible) {
+                yield refCollection
+                    .startAfter(lastVisible)
+                    .limit(limit)
+                    .get()
+                    .then( handlerDocumentSnapshots );
+            }
+        })();
     }//
     async function getNumberOfUnreadMessagesForRoom(roomId, userId) {
         const curUserId = userId || this.userId; //если нет "userId", то берем "this.userId"
@@ -630,6 +677,7 @@ function useProvideChat() {
         getRoomMessagesStatuses,
         getRoomMessage,
         getRoomMessageStatus,
+        getMessagesAndStatusesWithLimit,
         getNumberOfUnreadMessagesForRoom,
         getNumberOfUnreadMessagesForAllRoom,
         enterRoom,

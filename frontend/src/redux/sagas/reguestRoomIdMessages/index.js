@@ -1,27 +1,38 @@
-import {put, takeLatest, all, call} from 'redux-saga/effects'
-import {REQUEST_ROOMID_MESSAGES, ALL_REQUEST_WITH_THE_CURRENT_ROOM_ARE_COMPLETED, UPDATE_ROOMID_MESSAGES, UPDATE_ROOMID_MESSAGES_STATUSES} from '../../types';
+import {put, takeLeading, all, call, select} from 'redux-saga/effects'
+import {REQUEST_ROOMID_MESSAGES, ALL_REQUEST_WITH_THE_CURRENT_ROOM_ARE_COMPLETED, UPDATE_ROOMID_MESSAGES, UPDATE_ROOMID_MESSAGES_STATUSES, UPDATE_GET_NEXT_MESSAGES_AND_STATUSES} from '../../types';
 import {showLoader, hideLoader, showAlert} from '../../actions';
 
 //---REGUEST ONE CHAT (FOR ID)---
 export default function* sagaWatcher() {
-    yield takeLatest(REQUEST_ROOMID_MESSAGES, sagaWorker);
+    yield takeLeading(REQUEST_ROOMID_MESSAGES, sagaWorker);
 }
 function* sagaWorker(action) {
     const roomId = action.roomId;
     const chatDbApi = action.chatDbApi;
-    const functionToGetMessages = () => chatDbApi.getRoomMessages(roomId);
-    const functionToGetStatuses = () => chatDbApi.getRoomMessagesStatuses(roomId);
+    const isFirstRequest = action.isFirstRequest;
 
     try {
         yield put(showLoader())
 
-        const { messages, statuses } = yield all({
-            messages: call(functionToGetMessages),
-            statuses: call(functionToGetStatuses)
-        });
+        let getNextMessagesAndStatuses;
+        if (isFirstRequest) {
+            getNextMessagesAndStatuses = chatDbApi.getMessagesAndStatusesWithLimit(roomId, 20);
+        } else {
+            getNextMessagesAndStatuses = yield select( store => store.chat.getNextMessagesAndStatuses );
+        }
+        const {value, done} = yield call( () => getNextMessagesAndStatuses.next() );
+        if (!done) {
+            const {messages, statuses, lastVisible} = value;
+            if (messages.length) {
+                yield put({ type: UPDATE_ROOMID_MESSAGES, payload: messages });
+            }
+            if (statuses.length) {
+                yield put({ type: UPDATE_ROOMID_MESSAGES_STATUSES, payload: statuses });
+            }
+        }
+
+        yield put({type: UPDATE_GET_NEXT_MESSAGES_AND_STATUSES, payload: getNextMessagesAndStatuses});
         yield put({ type: ALL_REQUEST_WITH_THE_CURRENT_ROOM_ARE_COMPLETED, payload: roomId });
-        yield put({ type: UPDATE_ROOMID_MESSAGES, payload: messages });
-        yield put({ type: UPDATE_ROOMID_MESSAGES_STATUSES, payload: statuses });
 
         yield put(hideLoader());
         //yield put(showAlert({text: 'FETCH ROOM & MASSAGES DONE!!!', options: {variant: 'success'}}))

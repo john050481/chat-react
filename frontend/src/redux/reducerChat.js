@@ -8,6 +8,8 @@ import {
     /*REQUEST_ROOMID_METADATA,*/
     UPDATE_ROOMID_METADATA,
 
+    UPDATE_GET_NEXT_MESSAGES_AND_STATUSES,
+
     REQUEST_ROOMID_MESSAGES,
     UPDATE_ROOMID_MESSAGES,
     UPDATE_ROOMID_MESSAGES_STATUSES,
@@ -56,7 +58,9 @@ const init = {
         id: '',
         text: '',
         author: ''
-    }
+    },
+
+    getNextMessagesAndStatuses: null
 }
 
 export default function (state = init, action) {
@@ -82,12 +86,19 @@ export default function (state = init, action) {
                     .sort( (roomA, roomB) => roomB.data.lastActivity?.seconds - roomA.data.lastActivity?.seconds )
             }
 
+        case UPDATE_GET_NEXT_MESSAGES_AND_STATUSES:
+            return { ...state, getNextMessagesAndStatuses: action.payload}
+
         case REQUEST_ROOMID_MESSAGES:
-            return { ...state, requestRoomId: action.roomId, messages: [], statuses: [], currentRoomId: null, citation: {id: '', text: '', author: ''} }
+            if (action.isFirstRequest) {
+                return { ...state, requestRoomId: action.roomId, messages: [], statuses: [], currentRoomId: null, citation: {id: '', text: '', author: ''}, getNextMessagesAndStatuses: null }
+            } else {
+                return { ...state }
+            }
         case UPDATE_ROOMID_MESSAGES:
-            return { ...state, messages: action.payload}
+            return { ...state, messages: [...action.payload, ...state.messages]}
         case UPDATE_ROOMID_MESSAGES_STATUSES:
-            return { ...state, statuses: action.payload}
+            return { ...state, statuses: [...action.payload, ...state.statuses]}
 
         case ALL_REQUEST_WITH_THE_CURRENT_ROOM_ARE_COMPLETED:
             return { ...state, currentRoomId: action.payload}
@@ -123,7 +134,7 @@ export default function (state = init, action) {
         */
         case EXIT_ROOM:
             if (action.payload === state.currentRoomId) // если выход из активной комнаты
-                return {...state, requestRoomId: null, currentRoomId: null, messages: [], statuses: []}
+                return {...state, requestRoomId: null, currentRoomId: null, messages: [], statuses: [], getNextMessagesAndStatuses: null}
             return state; // если из НЕ активной
 
         case REQUEST_USER_CONTACTS:

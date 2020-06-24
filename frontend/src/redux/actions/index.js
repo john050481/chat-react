@@ -122,11 +122,12 @@ export function requestUpdateRoomMetadata(roomId, functionToGetDataForSaga) {
     }
 }
 //___REQUEST_ROOMID_MESSAGES___
-export function requestRoomIdMessages(roomId, chatDbApi) {
+export function requestRoomIdMessages(roomId, chatDbApi, isFirstRequest=true) {
     return {
         type: REQUEST_ROOMID_MESSAGES,
         roomId,
-        chatDbApi
+        chatDbApi,
+        isFirstRequest
     }
 }
 //___CITATION___

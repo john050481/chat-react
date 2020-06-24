@@ -4,13 +4,24 @@ import Citation from '../Citation';
 import {connect} from "react-redux";
 import ChatMessage from '../ChatMessage';
 import SpinnerApp from "../../../../common/Spinner";
-import {setCitation} from "../../../../redux/actions";
+import {setCitation, requestRoomIdMessages} from "../../../../redux/actions";
 import {requestToSetReadAllMessages} from "../../../../redux/actions/statusesActions";
 import GoEndButton from './GoEndButton';
 import {useChat} from "../../../../hooks/useChatFirebase";
 import {isElementInViewportContainer} from '../../../../common/inViewport';
 
 let isBlinking = false;
+
+function scrollIsStart(elem) {
+    if (!elem)
+        return null;
+
+    const {scrollTop} = elem;
+    if ( scrollTop === 0 )
+        return true;
+
+    return false;
+}
 
 function scrollIsEnd(elem) {
     if (!elem)
@@ -26,13 +37,9 @@ function scrollIsEnd(elem) {
 function MessageBlock(props) {
     console.log('Render MessageBlock');
 
-    const {citation, messages, statuses, requestRoomId, currentRoomId, setCitation, appIsVisible, requestToSetReadAllMessages} = props;
+    const {citation, messages, statuses, requestRoomId, currentRoomId, setCitation, appIsVisible, requestToSetReadAllMessages, requestRoomIdMessages} = props;
 
     const chatDb = useChat();
-
-    useEffect( () => {
-        setIsScrollEnd( scrollIsEnd(messageBlockScroll.current) );
-    }, [messages])
 
     const [firstUnreadMessageId, setFirstUnreadMessageId] = useState(null);
     useEffect( () => {
@@ -43,31 +50,47 @@ function MessageBlock(props) {
         if (!firstUnreadMessageId)
             setFirstUnreadMessageId( statuses.find( messageStatus => messageStatus.usersWhoNotRead.includes(chatDb.userId))?.id );
     }, [statuses, firstUnreadMessageId]);
-
-    const unreadBlock = useRef(null);
-    const messageBlockScroll = useRef(null);
     useEffect( () => {
-        if (firstUnreadMessageId && unreadBlock.current && !appIsVisible) {
-            unreadBlock.current.scrollIntoView();
-        } else if (messageBlockScroll.current) {
-            messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
-        }
-
+        handleScroll();
         if (messages?.length) {
             const lastMessage = messages[messages.length-1];
             const itsMyMessage = chatDb.userId === lastMessage.userId;
             if (itsMyMessage)
                 setFirstUnreadMessageId(null);
         }
-    }, [firstUnreadMessageId, messages, appIsVisible]);
+    }, [messages])
+
+    const unreadBlock = useRef(null);
+    const messageBlockScroll = useRef(null);
+    useEffect( () => {
+        if (requestRoomId && currentRoomId) {
+            handleScroll();
+            if (firstUnreadMessageId && unreadBlock.current && !appIsVisible) {
+                unreadBlock.current.scrollIntoView();
+            } else if (messageBlockScroll.current) {
+                messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
+            };
+        };
+    }, [firstUnreadMessageId, appIsVisible, requestRoomId, currentRoomId]);
 
     const [isScrollEnd, setIsScrollEnd] = useState(null);
+    const [isScrollStart, setIsScrollStart] = useState(null);
     useEffect( () => {
-        if (isScrollEnd)
+        if (isScrollEnd && requestRoomId && currentRoomId) {
+            console.log("isScrollEnd = ", isScrollEnd, currentRoomId);
             requestToSetReadAllMessages(currentRoomId, chatDb);
-    }, [isScrollEnd])
+        }
+    }, [isScrollEnd, requestRoomId, currentRoomId])
+    useEffect( () => {
+        if (isScrollStart && requestRoomId && currentRoomId) {
+            console.log("isScrollStart = ", isScrollStart);
+            requestRoomIdMessages(currentRoomId, chatDb, false);
+        }
+    }, [isScrollStart, requestRoomId, currentRoomId])
     function handleScroll(e) {
+        console.log("handleScroll");
         setIsScrollEnd( scrollIsEnd(messageBlockScroll.current) );
+        setIsScrollStart( scrollIsStart(messageBlockScroll.current) );
     }
 
     function handleClick(e) {
@@ -146,7 +169,8 @@ const mapStateToProps = store => {
 }
 const mapDispatchToProps = {
     setCitation,
-    requestToSetReadAllMessages
+    requestToSetReadAllMessages,
+    requestRoomIdMessages
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageBlock)

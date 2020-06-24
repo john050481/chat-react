@@ -124,8 +124,8 @@ export default function (props) {
         let res = await chatDb.getNumberOfUnreadMessagesForAllRoom();
         console.log("handelGetNumberOfUnreadMessagesForAllRoom = ", res);
     }
-    async function handelPaginateQuery(e) {
-        let lastVisible = new firebase.firestore.Timestamp.fromDate(new Date('2020', '05', '19'));
+    async function handelPaginateQuery1(e) {
+        let lastVisible = new firebase.firestore.Timestamp.fromDate(new Date('2020', '05', '19', '00', '38', '08'));
 
         console.log("lastVisible/init = ", lastVisible);
 
@@ -136,10 +136,15 @@ export default function (props) {
                     .startAfter(lastVisible)
                     .limit(5)
                     .get()
-                    .then(function (documentSnapshots) {
+                    .then( documentSnapshots => {
                         lastVisible = documentSnapshots.docs[documentSnapshots.docs.length-1];
-                        console.log("last", documentSnapshots.size, lastVisible);
-                        return documentSnapshots;
+                        console.log("last/first", lastVisible);
+
+                        let messages = [];
+                        documentSnapshots.forEach(doc => {
+                            messages.push({...doc.data(), id: doc.id});
+                        });
+                        return messages;
                     });
             }
         }
@@ -158,9 +163,24 @@ export default function (props) {
         // console.log(await generator.next());
         // console.log(await generator.next());
         // console.log(await generator.next());
-    }
+    }// рабочий вариант, но... нужно задавать "let lastVisible = ...", во втором варианте мы начинаем с РЕАЛЬНО последней записи чата!
     async function handelPaginateQuery2(e) {
         let lastVisible = null;
+
+        function getMessagesAndStatuses(documentSnapshots) {
+            lastVisible = documentSnapshots.docs[documentSnapshots.docs.length-1];
+            console.log("last/first", lastVisible);
+
+            let messages = [];
+            let statuses = [];
+            documentSnapshots.forEach( async (doc) => {
+                messages.push({...doc.data(), id: doc.id});
+
+                const status = await chatDb.getRoomMessageStatus("room1", doc.id);
+                statuses.push(status);
+            });
+            return {messages: messages.reverse(), statuses: statuses.reverse(), lastVisible};
+        };
 
         async function* getNextMessages() {
             const refCollection = db.collection("room-messages").doc("room1").collection("messages").orderBy("timestamp", "desc");
@@ -168,32 +188,45 @@ export default function (props) {
             yield refCollection
                 .limit(5)
                 .get()
-                .then( documentSnapshots => {
-                    lastVisible = documentSnapshots.docs[documentSnapshots.docs.length-1];
-                    console.log("last/first", lastVisible);
-                    return documentSnapshots;
-                });
+                .then( getMessagesAndStatuses );
 
             while (lastVisible) {
                 yield refCollection
                     .startAfter(lastVisible)
                     .limit(5)
                     .get()
-                    .then(function (documentSnapshots) {
-                        lastVisible = documentSnapshots.docs[documentSnapshots.docs.length-1];
-                        console.log("last/next", lastVisible);
-                        return documentSnapshots;
-                    });
+                    .then( getMessagesAndStatuses );
             /**/
             }
         }
 
-        for await (let documentSnapshots of getNextMessages()) {
-            documentSnapshots.forEach( documentSnapshots => {
-                console.log(documentSnapshots.id);
-            })
-        }
+        // for await (let documentSnapshots of getNextMessages()) {
+        //     documentSnapshots.forEach( documentSnapshots => {
+        //         console.log(documentSnapshots.id);
+        //     })
+        // }
+        /* или */
+        const generator = getNextMessages();
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+    }// рабочий вариант, длинный, но правильный
+    async function handelPaginateQuery(e) {
+        const generator = chatDb.getMessagesAndStatusesWithLimit("room1", 5);
+        console.log("generator = ", generator);
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
+        console.log(await generator.next());
     }
+
     return (
         <div>
             <h1>Здесь будет профиль!!!</h1>
