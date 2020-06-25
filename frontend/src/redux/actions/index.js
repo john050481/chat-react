@@ -8,6 +8,7 @@ import {
     HIDE_LOADER,
 
     VISIBILITY_CHANGE,
+    APP_IN_FOCUS,
 
     USER_LOGIN,
     USER_LOGOUT,
@@ -92,6 +93,13 @@ export function visibilityChange(visible) {
     return {
         type: VISIBILITY_CHANGE,
         payload: visible
+    }
+}
+//___APP_IN_FOCUS___
+export function appFocusUpdate(focus) {
+    return {
+        type: APP_IN_FOCUS,
+        payload: focus
     }
 }
 //___CHAT_USER_UPDATE___

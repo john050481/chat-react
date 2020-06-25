@@ -1,7 +1,16 @@
-import {VISIBILITY_CHANGE, SHOW_LAYOUT, HIDE_ALERT, HIDE_LOADER, SHOW_ALERT, SHOW_LOADER} from './types'
+import {
+    SHOW_LAYOUT,
+    HIDE_ALERT,
+    HIDE_LOADER,
+    SHOW_ALERT,
+    SHOW_LOADER,
+    VISIBILITY_CHANGE,
+    APP_IN_FOCUS
+} from './types'
 
 const init = {
     appIsVisible: null,
+    appInFocus: null,
     loader: {
         visible: false,
         options: {}
@@ -31,6 +40,8 @@ export default function (state = init, action) {
             return {...state, layout: action.payload}
         case VISIBILITY_CHANGE:
             return {...state, appIsVisible: action.payload}
+        case APP_IN_FOCUS:
+            return {...state, appInFocus: action.payload}
         default:
             return state
     }

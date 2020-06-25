@@ -31,7 +31,7 @@ function scrollIsEnd(elem) {
 function MessageBlock(props) {
     console.log('Render MessageBlock');
 
-    const {citation, messages, statuses, requestRoomId, currentRoomId, setCitation, appIsVisible, requestToSetReadAllMessages, requestRoomIdMessages} = props;
+    const {citation, messages, statuses, requestRoomId, currentRoomId, setCitation, appIsVisible, appInFocus, requestToSetReadAllMessages, requestRoomIdMessages} = props;
 
     const chatDb = useChat();
 
@@ -53,19 +53,25 @@ function MessageBlock(props) {
                 setFirstUnreadMessageId(null);
         }
     }, [messages])
+    useEffect( () => {
+        if (!appInFocus)
+            setFirstUnreadMessageId(null);
+    }, [appInFocus]);
 
     const unreadBlock = useRef(null);
     const messageBlockScroll = useRef(null);
     useEffect( () => {
         if (requestRoomId && currentRoomId) {
             handleScroll();
-            if (firstUnreadMessageId && unreadBlock.current && !appIsVisible) {
+            if ( firstUnreadMessageId && unreadBlock.current && (!appIsVisible || !appInFocus) ) {
+                unreadBlock.current.scrollIntoView(false);
+            } else if (firstUnreadMessageId && appInFocus) {
                 unreadBlock.current.scrollIntoView();
             } else if (messageBlockScroll.current) {
                 messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
             };
         };
-    }, [firstUnreadMessageId, appIsVisible, requestRoomId, currentRoomId]);
+    }, [firstUnreadMessageId, appIsVisible, appInFocus, requestRoomId, currentRoomId]);
 
     const [isScrollStart, setIsScrollStart] = useState(null);
     const [isScrollEnd, setIsScrollEnd] = useState(null);
@@ -158,7 +164,8 @@ const mapStateToProps = store => {
         statuses: store.chat.statuses,
         requestRoomId: store.chat.requestRoomId,
         currentRoomId: store.chat.currentRoomId,
-        appIsVisible: store.app.appIsVisible
+        appIsVisible: store.app.appIsVisible,
+        appInFocus: store.app.appInFocus
     }
 }
 const mapDispatchToProps = {

@@ -5,9 +5,11 @@ import { useSelector, shallowEqual } from 'react-redux';
 export default function useOnScreenUnReadMessage(ref, chatDb, message, rootMargin = '0px') {
     const [isRead, setIsRead] = useState(null);
 
-    const { messageStatus, currentRoomId } = useSelector(store => ({
+    const { messageStatus, currentRoomId, appIsVisible, appInFocus } = useSelector(store => ({
         messageStatus: store.chat.statuses.find( messageStatus => messageStatus.id === message.id),
-        currentRoomId: store.chat.currentRoomId
+        currentRoomId: store.chat.currentRoomId,
+        appIsVisible: store.app.appIsVisible,
+        appInFocus: store.app.appInFocus
     }), shallowEqual);
 
     useEffect(() => {
@@ -22,7 +24,7 @@ export default function useOnScreenUnReadMessage(ref, chatDb, message, rootMargi
         const observer = new IntersectionObserver(
             ([entry]) => {
                 console.log("observer = new IntersectionObserver", entry);
-                if (entry.isIntersecting)
+                if (entry.isIntersecting && appIsVisible && appInFocus)
                     chatDb.userIsReadMessage(currentRoomId, message.id, chatDb.userId)
                         .then( () => observer.unobserve(ref.current) )
                         .catch( e => console.log('!!!!!!!! ERROR !!!!!!!!'));
@@ -38,7 +40,7 @@ export default function useOnScreenUnReadMessage(ref, chatDb, message, rootMargi
         return () => {
             observer.unobserve(ref.current);
         };
-    }, [chatDb.userId, message, messageStatus, currentRoomId]); // Empty array ensures that effect is only run on mount and unmount
+    }, [chatDb.userId, message, messageStatus, currentRoomId, appIsVisible, appInFocus]); // Empty array ensures that effect is only run on mount and unmount
 
     return isRead;
 }

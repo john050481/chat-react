@@ -16,18 +16,24 @@ import {useChat} from "../../../hooks/useChatFirebase";
 import useChatMessageEvents from "../../../hooks/useChatSubscribe/useChatMessageEvents";
 import useChatRoomEvents from "../../../hooks/useChatSubscribe/useChatRoomEvents";
 import useVisibilityChange from "../../../hooks/useVisibilityChange";
-import {chatUserUpdate, chatUserExit, visibilityChange} from "../../../redux/actions";
+import useWindowFocus from "../../../hooks/useWindowFocus";
+import {chatUserUpdate, chatUserExit, visibilityChange, appFocusUpdate} from "../../../redux/actions";
 import {connect} from "react-redux";
 
 const region = REGION_ROOT;
 
-function Root({chatUserUpdate, chatUserExit, visibilityChange}) {
+function Root({chatUserUpdate, chatUserExit, visibilityChange, appFocusUpdate}) {
     console.log('Render Root (ENTRY POINT)');
 
     let appIsVisible = useVisibilityChange();
     useEffect( () => {
         visibilityChange(appIsVisible);
     }, [appIsVisible])
+
+    let appInFocus = useWindowFocus();
+    useEffect( () => {
+        appFocusUpdate(appInFocus);
+    }, [appInFocus])
 
     const chatDb = useChat();
     const lastMessageEdit = useChatMessageEvents();
@@ -63,6 +69,7 @@ function Root({chatUserUpdate, chatUserExit, visibilityChange}) {
 const mapDispatchToProps = {
     chatUserUpdate,
     chatUserExit,
-    visibilityChange
+    visibilityChange,
+    appFocusUpdate
 }
 export default connect(null, mapDispatchToProps)(Root)
