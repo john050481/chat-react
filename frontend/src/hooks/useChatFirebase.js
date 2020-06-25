@@ -464,7 +464,7 @@ function useProvideChat() {
                 const size = documentSnapshots.size;
                 let count = 0;
                 documentSnapshots.forEach( async (doc) => {
-                    const status = await getRoomMessageStatus("room1", doc.id);
+                    const status = await getRoomMessageStatus(roomId, doc.id);
                     messages.push({...doc.data(), id: doc.id});
                     statuses.push(status);
                     count++;
