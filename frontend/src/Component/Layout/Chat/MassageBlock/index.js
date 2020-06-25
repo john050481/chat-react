@@ -17,10 +17,7 @@ function scrollIsStart(elem) {
         return null;
 
     const {scrollTop} = elem;
-    if ( scrollTop === 0 )
-        return true;
-
-    return false;
+    return ( scrollTop === 0 )
 }
 
 function scrollIsEnd(elem) {
@@ -28,10 +25,7 @@ function scrollIsEnd(elem) {
         return null;
 
     const {scrollTop, scrollHeight, clientHeight} = elem;
-    if ( Math.ceil(scrollTop + clientHeight) >= Math.floor(scrollHeight) )
-        return true;
-
-    return false;
+    return ( Math.ceil(scrollTop + clientHeight) >= Math.floor(scrollHeight) )
 }
 
 function MessageBlock(props) {
@@ -73,8 +67,8 @@ function MessageBlock(props) {
         };
     }, [firstUnreadMessageId, appIsVisible, requestRoomId, currentRoomId]);
 
-    const [isScrollEnd, setIsScrollEnd] = useState(null);
     const [isScrollStart, setIsScrollStart] = useState(null);
+    const [isScrollEnd, setIsScrollEnd] = useState(null);
     useEffect( () => {
         if (isScrollEnd && requestRoomId && currentRoomId) {
             console.log("isScrollEnd = ", isScrollEnd, currentRoomId);
