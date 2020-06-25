@@ -55,9 +55,9 @@ function ChatMessage(props) {
                 </Toast.Header>
                 <Toast.Body>
                     {
-                        citationMessage &&
+                        message.citationId &&
                         <div className='chat-message--citation in-one-row-with-ellipsis m-1 p-2'>
-                            <div title={citationMessage.message} data-citationid={citationMessage.id}><i>{citationMessage.message}</i></div>
+                            <div title={citationMessage ? citationMessage.message : "..."} data-citationid={message.citationId}><i>{citationMessage ? citationMessage.message : "..."}</i></div>
                         </div>
                     }
                     <p data-message={message.message} data-author={message.name} data-id={message.id}>{message.message}</p>
