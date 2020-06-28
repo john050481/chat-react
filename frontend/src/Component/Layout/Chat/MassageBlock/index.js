@@ -105,7 +105,7 @@ function MessageBlock(props) {
                 unreadBlock.current.scrollIntoView();
             } else if ( messages?.length !== prevMessagesLength ) { // в текущей комнате, пришло новое сообщение(я)
                 if (scrollHeightBeforeRequestNewMessageHistory) {
-                    messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight - scrollHeightBeforeRequestNewMessageHistory - 50;
+                    messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight - scrollHeightBeforeRequestNewMessageHistory - 40;
                     setScrollHeightBeforeRequestNewMessageHistory(null);
                 } else if ( prevIsScrollEnd || itsMyMessage(messages, messages.length-1, chatDb.userId) ) {
                     messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;

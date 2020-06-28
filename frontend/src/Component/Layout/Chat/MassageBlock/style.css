@@ -13,8 +13,8 @@
     padding: 0;
 }
 .message-block-loader--spinner {
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
 }
 
 .message-block {
