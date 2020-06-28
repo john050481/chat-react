@@ -10,6 +10,7 @@ function* sagaWorker(action) {
     const roomId = action.roomId;
     const chatDbApi = action.chatDbApi;
     const isFirstRequest = action.isFirstRequest;
+    const callback = action.callback;
 
     try {
         yield put(showLoader())
@@ -40,5 +41,7 @@ function* sagaWorker(action) {
         console.error("SAGA/REQUEST_ROOMID_MESSAGES: ", e);
         yield put(hideLoader());
         yield put(showAlert({text: e.message, options: {variant: 'danger'}}));
+    } finally {
+        callback && callback();
     }
 }

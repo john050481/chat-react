@@ -8,6 +8,15 @@
     overflow-x: hidden;
 }
 
+.message-block-loader {
+    margin: auto;
+    padding: 0;
+}
+.message-block-loader--spinner {
+    height: 50px;
+    width: 50px;
+}
+
 .message-block {
     -webkit-justify-content: flex-end;
     -moz-justify-content: flex-end;

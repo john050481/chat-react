@@ -130,12 +130,13 @@ export function requestUpdateRoomMetadata(roomId, functionToGetDataForSaga) {
     }
 }
 //___REQUEST_ROOMID_MESSAGES___
-export function requestRoomIdMessages(roomId, chatDbApi, isFirstRequest=true) {
+export function requestRoomIdMessages(roomId, chatDbApi, isFirstRequest=true, callback) {
     return {
         type: REQUEST_ROOMID_MESSAGES,
         roomId,
         chatDbApi,
-        isFirstRequest
+        isFirstRequest,
+        callback
     }
 }
 //___CITATION___

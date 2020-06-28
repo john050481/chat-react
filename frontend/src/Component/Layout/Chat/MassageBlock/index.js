@@ -9,6 +9,8 @@ import {requestToSetReadAllMessages} from "../../../../redux/actions/statusesAct
 import GoEndButton from './GoEndButton';
 import {useChat} from "../../../../hooks/useChatFirebase";
 import {isElementInViewportContainer} from '../../../../common/inViewport';
+import usePrevious from "../../../../hooks/usePrevious";
+import Spinner from "react-bootstrap/Spinner";
 
 let isBlinking = false;
 
@@ -28,17 +30,31 @@ function scrollIsEnd(elem) {
     return ( Math.ceil(scrollTop + clientHeight) >= Math.floor(scrollHeight) )
 }
 
+function itsMyMessage(messages, messageIndex, myUserId) {
+    if (!messages?.length || !myUserId || messageIndex<0)
+        return false;
+
+    const lastMessage = messages[messageIndex];
+    if (!lastMessage)
+        return false;
+
+    return myUserId === lastMessage.userId;
+}
+
 function MessageBlock(props) {
     console.log('Render MessageBlock');
 
-    const {citation, messages, statuses, requestRoomId, currentRoomId, setCitation, appIsVisible, appInFocus, requestToSetReadAllMessages, requestRoomIdMessages} = props;
+    const {citation, messages, statuses, requestRoomId, currentRoomId, setCitation, requestToSetReadAllMessages, requestRoomIdMessages} = props;
+    const prevMessagesLength = usePrevious(messages?.length);
+    const prevCurrentRoomId = usePrevious(currentRoomId);
 
     const chatDb = useChat();
 
     const [firstUnreadMessageId, setFirstUnreadMessageId] = useState(null);
+    const prevFirstUnreadMessageId = usePrevious(firstUnreadMessageId);
     useEffect( () => {
         if (currentRoomId !== requestRoomId)
-            setFirstUnreadMessageId(null);
+            setFirstUnreadMessageId(false);
     }, [currentRoomId, requestRoomId]);
     useEffect( () => {
         if (!firstUnreadMessageId)
@@ -46,49 +62,59 @@ function MessageBlock(props) {
     }, [statuses, firstUnreadMessageId]);
     useEffect( () => {
         handleScroll();
-        if (messages?.length) {
-            const lastMessage = messages[messages.length-1];
-            const itsMyMessage = chatDb.userId === lastMessage.userId;
-            if (itsMyMessage)
-                setFirstUnreadMessageId(null);
+        if (messages?.length && messages?.length !== prevMessagesLength) {
+            if (itsMyMessage(messages, messages.length-1, chatDb.userId)) {
+                setFirstUnreadMessageId(false);
+            }
         }
-    }, [messages])
+    }, [messages, prevMessagesLength])
+
+    const [isScrollStart, setIsScrollStart] = useState(null);
+//    const prevIsScrollStart = usePrevious(isScrollStart);
+    const [isScrollEnd, setIsScrollEnd] = useState(null);
+    const prevIsScrollEnd = usePrevious(isScrollEnd);
+    const [scrollHeightBeforeRequestNewMessageHistory, setScrollHeightBeforeRequestNewMessageHistory] = useState(null);
+    const [requestRoomIdMessagesFinish, setRequestRoomIdMessagesFinish] = useState(true);
     useEffect( () => {
-        if (!appInFocus)
-            setFirstUnreadMessageId(null);
-    }, [appInFocus]);
+        if (isScrollStart && requestRoomId && currentRoomId) {
+            setRequestRoomIdMessagesFinish(false);
+            requestRoomIdMessages( currentRoomId, chatDb, false, () => setRequestRoomIdMessagesFinish(true) );
+            setScrollHeightBeforeRequestNewMessageHistory(messageBlockScroll.current?.scrollHeight);
+        }
+    }, [isScrollStart, requestRoomId, currentRoomId])
+    useEffect( () => {
+        if (isScrollEnd && requestRoomId && currentRoomId) {
+            requestToSetReadAllMessages(currentRoomId, chatDb);
+        }
+    }, [isScrollEnd, requestRoomId, currentRoomId])
 
     const unreadBlock = useRef(null);
     const messageBlockScroll = useRef(null);
     useEffect( () => {
-        if (requestRoomId && currentRoomId) {
+        if (requestRoomId && currentRoomId) { // комната выбрана
             handleScroll();
-            if ( firstUnreadMessageId && unreadBlock.current && (!appIsVisible || !appInFocus) ) {
-                unreadBlock.current.scrollIntoView(false);
-            } else if (firstUnreadMessageId && appInFocus) {
-                unreadBlock.current.scrollIntoView();
-            } else if (messageBlockScroll.current) {
-                messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
-            };
-        };
-    }, [firstUnreadMessageId, appIsVisible, appInFocus, requestRoomId, currentRoomId]);
+            //console.log("##############", prevFirstUnreadMessageId, firstUnreadMessageId, messageBlockScroll.current?.scrollHeight, scrollHeightBeforeRequestNewMessageHistory, messages?.length, prevMessagesLength);
 
-    const [isScrollStart, setIsScrollStart] = useState(null);
-    const [isScrollEnd, setIsScrollEnd] = useState(null);
-    useEffect( () => {
-        if (isScrollEnd && requestRoomId && currentRoomId) {
-            console.log("isScrollEnd = ", isScrollEnd, currentRoomId);
-            requestToSetReadAllMessages(currentRoomId, chatDb);
-        }
-    }, [isScrollEnd, requestRoomId, currentRoomId])
-    useEffect( () => {
-        if (isScrollStart && requestRoomId && currentRoomId) {
-            console.log("isScrollStart = ", isScrollStart);
-            requestRoomIdMessages(currentRoomId, chatDb, false);
-        }
-    }, [isScrollStart, requestRoomId, currentRoomId])
+            if (currentRoomId !== prevCurrentRoomId) { // поменяли комнату
+                if (firstUnreadMessageId) {
+                    unreadBlock.current.scrollIntoView();
+                } else {
+                    messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
+                }
+            } else if (firstUnreadMessageId && prevFirstUnreadMessageId !== firstUnreadMessageId && isScrollEnd) {
+                unreadBlock.current.scrollIntoView();
+            } else if ( messages?.length !== prevMessagesLength ) { // в текущей комнате, пришло новое сообщение(я)
+                if (scrollHeightBeforeRequestNewMessageHistory) {
+                    messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight - scrollHeightBeforeRequestNewMessageHistory - 50;
+                    setScrollHeightBeforeRequestNewMessageHistory(null);
+                } else if ( prevIsScrollEnd || itsMyMessage(messages, messages.length-1, chatDb.userId) ) {
+                    messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
+                };
+            }
+        };
+    }, [prevFirstUnreadMessageId, prevIsScrollEnd, scrollHeightBeforeRequestNewMessageHistory, firstUnreadMessageId, requestRoomId, currentRoomId, messages, prevMessagesLength, prevCurrentRoomId]);
+
     function handleScroll(e) {
-        console.log("handleScroll");
         setIsScrollEnd( scrollIsEnd(messageBlockScroll.current) );
         setIsScrollStart( scrollIsStart(messageBlockScroll.current) );
     }
@@ -125,6 +151,12 @@ function MessageBlock(props) {
     return (
         <main className="content message-block-wrapper" onClick={handleClick} >
             <div ref={messageBlockScroll} className='content message-block-scroll' onScroll={handleScroll}>
+                {
+                    (scrollHeightBeforeRequestNewMessageHistory && currentRoomId && requestRoomId && !requestRoomIdMessagesFinish)
+                    && <div className="message-block-loader">
+                           <Spinner animation="border" variant="success" className="message-block-loader--spinner" />
+                       </div>
+                }
                 <div id='message-block' className='content message-block p-1'>
                     {   !currentRoomId && requestRoomId
                         ? <SpinnerApp />
@@ -164,8 +196,6 @@ const mapStateToProps = store => {
         statuses: store.chat.statuses,
         requestRoomId: store.chat.requestRoomId,
         currentRoomId: store.chat.currentRoomId,
-        appIsVisible: store.app.appIsVisible,
-        appInFocus: store.app.appInFocus
     }
 }
 const mapDispatchToProps = {
