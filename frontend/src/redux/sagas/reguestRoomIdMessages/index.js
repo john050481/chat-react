@@ -12,6 +12,8 @@ function* sagaWorker(action) {
     const isFirstRequest = action.isFirstRequest;
     const callback = action.callback;
 
+    console.log("!!!!!!!!!!###3");
+
     try {
         yield put(showLoader())
 

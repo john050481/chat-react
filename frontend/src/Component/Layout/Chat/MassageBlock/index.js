@@ -77,8 +77,12 @@ function MessageBlock(props) {
     const [requestRoomIdMessagesFinish, setRequestRoomIdMessagesFinish] = useState(true);
     useEffect( () => {
         if (isScrollStart && requestRoomId && currentRoomId) {
+            console.log("!!!!!!!!!!###1");
             setRequestRoomIdMessagesFinish(false);
-            requestRoomIdMessages( currentRoomId, chatDb, false, () => setRequestRoomIdMessagesFinish(true) );
+            requestRoomIdMessages( currentRoomId, chatDb, false, () => {
+                console.log("!!!!!!!!!!###2");
+                setRequestRoomIdMessagesFinish(true)
+            } );
             setScrollHeightBeforeRequestNewMessageHistory(messageBlockScroll.current?.scrollHeight);
         }
     }, [isScrollStart, requestRoomId, currentRoomId])
