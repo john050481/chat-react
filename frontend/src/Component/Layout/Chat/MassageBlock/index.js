@@ -100,18 +100,18 @@ function MessageBlock(props) {
             //console.log("##############", prevFirstUnreadMessageId, firstUnreadMessageId, messageBlockScroll.current?.scrollHeight, scrollHeightBeforeRequestNewMessageHistory, messages?.length, prevMessagesLength);
 
             if (currentRoomId !== prevCurrentRoomId) { // поменяли комнату
-                if (firstUnreadMessageId) {
+                if (firstUnreadMessageId) { // если есть непрочитанные, то показываем их
                     unreadBlock.current.scrollIntoView();
-                } else {
+                } else { // иначе листаем в самый низ
                     messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
                 }
             } else if (firstUnreadMessageId && prevFirstUnreadMessageId !== firstUnreadMessageId && isScrollEnd) {
                 unreadBlock.current.scrollIntoView();
             } else if ( messages?.length !== prevMessagesLength ) { // в текущей комнате, пришло новое сообщение(я)
-                if (scrollHeightBeforeRequestNewMessageHistory && !prevIsScrollEnd) {
+                if (scrollHeightBeforeRequestNewMessageHistory && !prevIsScrollEnd) { // если мы скролили вверх, то запрашиваем историю
                     messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight - scrollHeightBeforeRequestNewMessageHistory - 40;
                     setScrollHeightBeforeRequestNewMessageHistory(null);
-                } else if ( prevIsScrollEnd || itsMyMessage(messages, messages.length-1, chatDb.userId) ) {
+                } else if ( prevIsScrollEnd || itsMyMessage(messages, messages.length-1, chatDb.userId) ) { // если мы стояли внизу или запостили сообщение
                     messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
                 };
             }
