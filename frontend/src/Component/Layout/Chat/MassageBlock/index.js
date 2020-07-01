@@ -88,6 +88,7 @@ function MessageBlock(props) {
     }, [isScrollStart, requestRoomId, currentRoomId])
     useEffect( () => {
         if (isScrollEnd && requestRoomId && currentRoomId) {
+            console.log("!!!!!!!!!!###4");
             requestToSetReadAllMessages(currentRoomId, chatDb);
         }
     }, [isScrollEnd, requestRoomId, currentRoomId])
@@ -99,19 +100,27 @@ function MessageBlock(props) {
             handleScroll();
             //console.log("##############", prevFirstUnreadMessageId, firstUnreadMessageId, messageBlockScroll.current?.scrollHeight, scrollHeightBeforeRequestNewMessageHistory, messages?.length, prevMessagesLength);
 
+            console.log("SCROLL/111/ENTER", scrollHeightBeforeRequestNewMessageHistory);
             if (currentRoomId !== prevCurrentRoomId) { // поменяли комнату
+                console.log("SCROLL/222/поменяли комнату");
                 if (firstUnreadMessageId) { // если есть непрочитанные, то показываем их
+                    console.log("SCROLL/333/если есть непрочитанные, то показываем их");
                     unreadBlock.current.scrollIntoView();
                 } else { // иначе листаем в самый низ
+                    console.log("SCROLL/333/иначе листаем в самый низ");
                     messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
                 }
             } else if (firstUnreadMessageId && prevFirstUnreadMessageId !== firstUnreadMessageId && isScrollEnd) {
+                console.log("SCROLL/222/???");
                 unreadBlock.current.scrollIntoView();
             } else if ( messages?.length !== prevMessagesLength ) { // в текущей комнате, пришло новое сообщение(я)
+                console.log("SCROLL/222/в текущей комнате, пришло новое сообщение(я)");
                 if (scrollHeightBeforeRequestNewMessageHistory && !prevIsScrollEnd) { // если мы скролили вверх, то запрашиваем историю
+                    console.log("SCROLL/333/если мы скролили вверх, то запрашиваем историю", scrollHeightBeforeRequestNewMessageHistory);
                     messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight - scrollHeightBeforeRequestNewMessageHistory - 40;
                     setScrollHeightBeforeRequestNewMessageHistory(null);
                 } else if ( prevIsScrollEnd || itsMyMessage(messages, messages.length-1, chatDb.userId) ) { // если мы стояли внизу или запостили сообщение
+                    console.log("SCROLL/333/если мы стояли внизу или запостили сообщение");
                     messageBlockScroll.current.scrollTop = messageBlockScroll.current.scrollHeight;
                 };
             }
